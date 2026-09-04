@@ -51,6 +51,9 @@
 // [ ] Drag the six Assets/Data/Tools/ assets into the tool bar's tool list.
 // ---------------------------------------------------------------
 
+//user questions: is this just a setup tool for the mvp or can it be reused for future versions and adding new posters?
+//is it okay to have this many assets? are they all necessary? how heavy will this make the game be?
+
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -518,7 +521,7 @@ namespace RestoriumEmporium.EditorTools
             Add(table, "tool.pencil", "Lápis");
 
             // ---- Poster ----
-            Add(table, "poster.poster01.title", "Cartaz nº 1");
+            Add(table, "poster.poster01.title", "Visite Lethe Falls");
 
             // ---- Stages ----
             Add(table, "stage.dust.title", "Tirando a poeira");
