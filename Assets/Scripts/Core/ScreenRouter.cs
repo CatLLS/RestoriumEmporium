@@ -25,21 +25,21 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Open the Game scene. In the Hierarchy create an empty object via
+// [x] Open the Game scene. In the Hierarchy create an empty object via
 //     GameObject -> Create Empty and rename it to exactly "GameFlow".
-// [ ] Select "GameFlow", click "Add Component" in the Inspector, type
+// [x] Select "GameFlow", click "Add Component" in the Inspector, type
 //     "ScreenRouter", press Enter.
-// [ ] Each screen root object (JournalScreen, CleaningScreen,
+// [x] Each screen root object (JournalScreen, CleaningScreen,
 //     LinenBackingFrontScreen, LinenBackingBackScreen, LinenBackingFinalScreen,
 //     FinishedRepairScreen) must have a component deriving from ScreenView on it.
 //     Those components are built by the UI work; this router only needs them to
 //     exist.
-// [ ] On the ScreenRouter component, set "Screens" Size to the number of screen
+// [x] On the ScreenRouter component, set "Screens" Size to the number of screen
 //     objects you have, then drag each screen root from the Hierarchy into one
 //     of the empty slots. Order does not matter.
 //     (If you leave Size at 0, the router instead finds every ScreenView that is
 //     a CHILD of "GameFlow" — only useful if you parent the screens under it.)
-// [ ] Leave all screen objects ticked/active in the Hierarchy while you author
+// [x] Leave all screen objects ticked/active in the Hierarchy while you author
 //     them. The router hides them all on the first frame.
 // ---------------------------------------------------------------
 

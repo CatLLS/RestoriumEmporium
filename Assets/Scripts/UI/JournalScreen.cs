@@ -27,66 +27,66 @@
 // Figma frame but upward in Unity: type -175 where the design says y = 175.
 //
 // A) THE CANVAS (do this once for the whole Game scene)
-// [ ] GameObject -> UI -> Canvas. Name it exactly: Canvas
-// [ ] Canvas component: Render Mode = Screen Space - Camera.
+// [x] GameObject -> UI -> Canvas. Name it exactly: Canvas
+// [x] Canvas component: Render Mode = Screen Space - Camera.
 //     Drag the Main Camera into Render Camera. Plane Distance = 100.
 //     Sorting Layer = Default, Order in Layer = 0.
-// [ ] Canvas Scaler component: UI Scale Mode = Scale With Screen Size,
+// [x] Canvas Scaler component: UI Scale Mode = Scale With Screen Size,
 //     Reference Resolution X = 412, Y = 917, Screen Match Mode = Match Width
 //     Or Height, Match = 0.5.
 //
 // B) THE SCREEN ROOT
-// [ ] Right-click Canvas -> Create Empty. Name it exactly: JournalScreen
-// [ ] Rect Transform: anchor preset = stretch/stretch (Alt+Shift, bottom-right
+// [x] Right-click Canvas -> Create Empty. Name it exactly: JournalScreen
+// [x] Rect Transform: anchor preset = stretch/stretch (Alt+Shift, bottom-right
 //     box), Left/Right/Top/Bottom all 0.
-// [ ] Add Component -> Journal Screen (this script).
+// [x] Add Component -> Journal Screen (this script).
 //
 // C) CHILDREN, in this order (order = draw order, first is behind)
-// [ ] Right-click JournalScreen -> UI -> Image. Name: Background
+// [x] Right-click JournalScreen -> UI -> Image. Name: Background
 //       Anchor preset stretch/stretch, Left/Right/Top/Bottom = 0.
 //       Source Image = Assets/Art/journalAssets/bg
-// [ ] Right-click JournalScreen -> UI -> Image. Name: Paper
+// [x] Right-click JournalScreen -> UI -> Image. Name: Paper
 //       Anchor top-left. Pos X = 0, Pos Y = -175, Width = 412, Height = 541.
 //       Source Image = Assets/Art/journalAssets/paper 1
-// [ ] Right-click JournalScreen -> UI -> Image. Name: PosterThumbnail
+// [x] Right-click JournalScreen -> UI -> Image. Name: PosterThumbnail
 //       Anchor top-left. Pos X = 120, Pos Y = -270, Width = 173, Height = 309.
 //       Source Image = Assets/Art/journalAssets/
 //         posterBeforeDusting(30opacity,beforeRestoring)
 //       (This is only the placeholder look; the script overwrites it at runtime
 //        from PosterData.journalThumbnail.)
-// [ ] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PosterTitle
+// [x] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PosterTitle
 //       If Unity asks to import TMP Essentials, click Import TMP Essentials.
 //       Anchor top-left. Pos X = 120, Pos Y = -240, Width = 173, Height = 28.
 //       Alignment = Center + Middle. Font Size = 18.
-// [ ] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: RestoreButton
+// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: RestoreButton
 //       Anchor top-left. Pos X = 104, Pos Y = -592, Width = 202, Height = 69.
 //       Its Image -> Source Image = Assets/Art/journalAssets/buttonBase
 //       Select its child "Text (TMP)": anchor stretch/stretch, all offsets 0,
 //       Alignment = Center + Middle, Font Size = 24.
 //       Add Component -> Localized Text on that child, Key = ui.journal.restore
 //       Add Component -> Button Sfx on RestoreButton, Sfx = Button Click.
-// [ ] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: NextPageButton
+// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: NextPageButton
 //       Anchor top-left. Pos X = 330, Pos Y = -787, Width = 31, Height = 59.
 //       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Page Flip.
-// [ ] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: PrevPageButton
+// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: PrevPageButton
 //       Anchor top-left. Pos X = 82, Pos Y = -846, Width = 31, Height = 59.
 //       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Page Flip.
-// [ ] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PageHint
+// [x] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PageHint
 //       Anchor top-left. Pos X = 128, Pos Y = -810, Width = 160, Height = 20.
 //       Alignment = Center + Middle. Font Size = 12.
 //       Add Component -> Localized Text, Key = ui.journal.pageHint
 //
 // D) WIRE THE INSPECTOR (select JournalScreen and drag these in)
-// [ ] Poster            <- Assets/Data/Poster1/Poster01
-// [ ] Thumbnail Image   <- the PosterThumbnail child
-// [ ] Title Label       <- the PosterTitle child
-// [ ] Restore Button    <- the RestoreButton child
-// [ ] Prev Page Button  <- the PrevPageButton child
-// [ ] Next Page Button  <- the NextPageButton child
-// [ ] Leave Disabled Page Arrow Alpha at 0.35.
-// [ ] On Restore Requested (+): drag the GameFlow object in and pick the method
+// [x] Poster            <- Assets/Data/Poster1/Poster01
+// [x] Thumbnail Image   <- the PosterThumbnail child
+// [x] Title Label       <- the PosterTitle child
+// [x] Restore Button    <- the RestoreButton child
+// [x] Prev Page Button  <- the PrevPageButton child
+// [x] Next Page Button  <- the NextPageButton child
+// [x] Leave Disabled Page Arrow Alpha at 0.35.
+// [x] On Restore Requested (+): drag the GameFlow object in and pick the method
 //     the GameFlowController exposes for starting the restoration.
-// [ ] Add Component -> Tutorial Anchor on RestoreButton,
+// [x] Add Component -> Tutorial Anchor on RestoreButton,
 //     Anchor Id = journal.restoreButton
 // ---------------------------------------------------------------
 

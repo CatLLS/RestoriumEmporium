@@ -18,12 +18,12 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] In the Project window, right-click Assets/Audio -> Create -> Folder,
+// [x] In the Project window, right-click Assets/Audio -> Create -> Folder,
 //     name it "Data" (final path: Assets/Audio/Data).
-// [ ] Right-click that folder -> Create -> Restorium -> Sfx Library.
+// [x] Right-click that folder -> Create -> Restorium -> Sfx Library.
 //     Name the asset exactly "SfxLibrary".
-// [ ] Select the asset. In the Inspector, set Entries -> Size to 13.
-// [ ] Fill the entries as follows. For each one set Id from the dropdown,
+// [x] Select the asset. In the Inspector, set Entries -> Size to 13.
+// [x] Fill the entries as follows. For each one set Id from the dropdown,
 //     drag the clip from Assets/Audio into Clip, leave Volume at 1 and set
 //     Pitch Min / Pitch Max to 0.95 / 1.05 (use 1 / 1 for music-like cues):
 //       Element 0  Id = ButtonClick          Clip = (leave empty until authored)
@@ -39,11 +39,11 @@
 //       Element 10 Id = ToolRoller           Clip = (roller)freesound_community-organic-blurpy-sticky-sound-in-kitchen-01-43763
 //       Element 11 Id = ToolPencil           Clip = (pencil)freesound_community-pencil-29272
 //       Element 12 Id = None                 Clip = (leave empty; harmless placeholder)
-// [ ] IMPORTANT: select the six tool clips (Elements 6-11) in the Project
+// [x] IMPORTANT: select the six tool clips (Elements 6-11) in the Project
 //     window together and, in the Inspector, tick "Loop" is NOT needed here —
 //     instead set Load Type = "Decompress On Load" and Preload Audio Data = on.
 //     They are looped by the AudioManager, not by the clip.
-// [ ] Drag this SfxLibrary asset into the "Sfx Library" field of the
+// [x] Drag this SfxLibrary asset into the "Sfx Library" field of the
 //     AudioManager component (see AudioManager.cs setup).
 // ---------------------------------------------------------------
 

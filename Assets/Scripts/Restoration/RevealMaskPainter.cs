@@ -28,23 +28,23 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] There must be exactly one EventSystem in the scene. If the Hierarchy has
+// [x] There must be exactly one EventSystem in the scene. If the Hierarchy has
 //     none: right-click in the Hierarchy -> UI -> Event System. Then select it
 //     and make sure the component is "Input System UI Input Module" (Unity adds
 //     this automatically for this project). If it says "Standalone Input
 //     Module", click the "Replace with InputSystemUIInputModule" button on it.
-// [ ] Select the "Poster" object built in the PosterLayerStack checklist.
+// [x] Select the "Poster" object built in the PosterLayerStack checklist.
 //     Add Component -> Reveal Mask Painter.
-// [ ] The same object must have an Image component with "Raycast Target"
+// [x] The same object must have an Image component with "Raycast Target"
 //     TICKED. Without a raycast target, no pointer event ever reaches this
 //     script and nothing will paint. The Image's Source Image may be None and
 //     its Color's alpha may be 0 - an empty Image still receives raycasts.
-// [ ] Wire the field:
+// [x] Wire the field:
 //       Poster Surface <- the same "Poster" object (its Poster Layer Stack)
-// [ ] UNTICK the checkbox next to "Reveal Mask Painter" in the Inspector so the
+// [x] UNTICK the checkbox next to "Reveal Mask Painter" in the Inspector so the
 //     component starts disabled. RestorationController enables it only once the
-//     player has picked up the stage's required tool.
-// [ ] Optional: add a Tutorial Anchor component to the same object with
+//     player has picked up the stage's required tool.(user's question: but what if they stop clicking then grab the tool again?)
+// [x] Optional: add a Tutorial Anchor component to the same object with
 //     Anchor Id "poster.surface" so the tutorial hand can point at it.
 // ---------------------------------------------------------------
 

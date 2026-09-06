@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a1a9be55db7094995f2a7ac2599894, type: 3}
+  m_Name: 03_Deacidifier
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.ToolData
+  id: 3
+  nameKey: tool.deacidifier
+  icon: {fileID: 21300000, guid: 194334df309b02a40808ddcbfbfd8fb4, type: 3}
+  loopSfx: 12
+  brushRadiusUv: 0.14
+  fxPrefab: {fileID: 0}

@@ -19,21 +19,21 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] File -> Open Scene -> Assets/Scenes/SampleScene.unity
-// [ ] In the Hierarchy, find the Canvas that holds the New Game button.
+// [x] File -> Open Scene -> Assets/Scenes/SampleScene.unity
+// [x] In the Hierarchy, find the Canvas that holds the New Game button.
 //     Right-click that Canvas -> Create Empty. Name it exactly: TitleScreen
-// [ ] Select TitleScreen -> Add Component -> Title Screen Controller.
-// [ ] Set "Game Scene Name" to exactly: Game
+// [x] Select TitleScreen -> Add Component -> Title Screen Controller.
+// [x] Set "Game Scene Name" to exactly: Game
 //     (This must match the file name of Assets/Scenes/Game.unity, without the
 //      .unity extension. If the scene is named differently, type that name.)
-// [ ] Drag the existing New Game button object from the Hierarchy into the
+// [x] Drag the existing New Game button object from the Hierarchy into the
 //     "New Game Button" field.
-// [ ] Select the New Game button -> Add Component -> Button Sfx,
+// [x] Select the New Game button -> Add Component -> Button Sfx,
 //     Sfx = Button Click.
-// [ ] File -> Build Profiles -> Scene List. Make sure BOTH scenes are listed
+// [x] File -> Build Profiles -> Scene List. Make sure BOTH scenes are listed
 //     and ticked: SampleScene at index 0, Game at index 1. A scene missing from
 //     this list cannot be loaded at runtime, no matter how the name is spelled.
-// [ ] Press Play and click New Game. If the console says the scene could not be
+// [x] Press Play and click New Game. If the console says the scene could not be
 //     loaded, the name or the Scene List is wrong — nothing else can cause it.
 // ---------------------------------------------------------------
 

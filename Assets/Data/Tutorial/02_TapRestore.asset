@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2bcf88f9d1e6b342bb9dd052c53cf66, type: 3}
+  m_Name: 02_TapRestore
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
+  stepId: tapRestore
+  lineKey: tutorial.tapRestore
+  mood: 0
+  targetAnchorId: journal.restoreButton
+  gateInputToTarget: 1
+  pointerDelay: 0.6
+  advance: 1
+  requiredScreen: 0
+  requiredTool: 0
+  autoAdvanceSeconds: 25

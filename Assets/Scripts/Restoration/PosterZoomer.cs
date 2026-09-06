@@ -24,29 +24,29 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Select the "Poster" object under the Canvas -> Add Component ->
+// [x] Select the "Poster" object under the Canvas -> Add Component ->
 //     Poster Zoomer. Leave "Target" empty so it moves this object.
-// [ ] Create the two framing markers as siblings of Poster:
+// [x] Create the two framing markers as siblings of Poster:
 //       Right-click the Poster's PARENT in the Hierarchy -> Create Empty,
 //       name it "PosterFraming_Wide". Add Component -> Rect Transform is
 //       automatic for UI children; if the Inspector shows a plain Transform,
 //       delete the object and instead duplicate Poster (Ctrl+D), rename the
 //       copy, and delete every component on it except Rect Transform.
 //       Duplicate that marker and name the copy "PosterFraming_Zoomed".
-// [ ] Give the markers the SAME anchors and pivot as Poster (copy them by hand
+// [x] Give the markers the SAME anchors and pivot as Poster (copy them by hand
 //     from Poster's Rect Transform), then:
 //       PosterFraming_Wide  : drag it to where the poster sits while it is
 //                             being mounted. Scale 1, 1, 1.
 //       PosterFraming_Zoomed: drag it to the close-up framing for the pencil
 //                             stage, and set its Scale to about 1.8, 1.8, 1.
-// [ ] UNTICK the checkbox at the top of both marker objects' Inspectors so they
+// [x] UNTICK the checkbox at the top of both marker objects' Inspectors so they
 //     are inactive and never drawn. Their Rect Transform values are still read.
-// [ ] Wire this component's fields:
+// [x] Wire this component's fields:
 //       Target       <- leave empty (uses the Poster itself)
 //       Wide State   <- PosterFraming_Wide
 //       Zoomed State <- PosterFraming_Zoomed
-// [ ] Set Duration to 0.6 and leave the Curve at its default ease-in-out.
-// [ ] Nothing calls this by itself. The object listening to
+// [x] Set Duration to 0.6 and leave the Curve at its default ease-in-out.
+// [x] Nothing calls this by itself. The object listening to
 //     RestorationController.TransitionRequested calls ZoomIn(onComplete) when
 //     it receives FlipToFrontAndMount.
 // ---------------------------------------------------------------

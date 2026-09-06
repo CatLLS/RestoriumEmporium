@@ -37,12 +37,12 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Open the Game scene. Select the "GameFlow" object you created for
+// [x] Open the Game scene. Select the "GameFlow" object you created for
 //     ScreenRouter (or create it: GameObject -> Create Empty, rename to
 //     exactly "GameFlow").
-// [ ] With "GameFlow" selected, click "Add Component", type
+// [x] With "GameFlow" selected, click "Add Component", type
 //     "GameFlowController", press Enter.
-// [ ] Wire its three fields:
+// [x] Wire its three fields:
 //       Router             <- drag the "GameFlow" object from the Hierarchy
 //                             (it holds the ScreenRouter component).
 //       Restoration Source <- drag the object holding the RestorationController
@@ -50,13 +50,13 @@
 //                             was added).
 //       Poster             <- drag the Poster01 asset from
 //                             Assets/Data/Poster1/ in the Project window.
-// [ ] Hook up the two buttons. Select the journal's "Restore" button in the
+// [x] Hook up the two buttons. Select the journal's "Restore" button in the
 //     Hierarchy, find its "Button" component, and under "On Click ()" click "+".
 //     Drag "GameFlow" into the empty object slot, then open the function
 //     dropdown and choose GameFlowController -> StartRestoration ().
-// [ ] Do the same for the FinishedRepair screen's "Continue" button, choosing
+// [x] Do the same for the FinishedRepair screen's "Continue" button, choosing
 //     GameFlowController -> GoToThanksForPlaying ().
-// [ ] Make sure the "ThanksForPlaying" scene is in File -> Build Profiles ->
+// [x] Make sure the "ThanksForPlaying" scene is in File -> Build Profiles ->
 //     Scenes In Build, or the Continue button will log an error and do nothing.
 // [ ] To test the resume path: play, start the restoration, finish one stage,
 //     stop play mode, press play again. You should land back mid-restoration.

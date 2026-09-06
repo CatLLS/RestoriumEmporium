@@ -19,16 +19,16 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create one asset per stage: right-click in Project ->
+// [x] Create one asset per stage: right-click in Project ->
 //     Create -> Restorium -> Restoration Stage.
-// [ ] Put them in Assets/Data/Poster1/Stages/ and name them in play order:
+// [x] Put them in Assets/Data/Poster1/Stages/ and name them in play order:
 //     01_Dust, 02_Water, 03_Deacidify, 04_Squeegee, 05_Roller, 06_Pencil.
-// [ ] On each asset, drag the poster sprites into From Sprite and To Sprite.
-// [ ] IMPORTANT: every poster sprite must be imported with
+// [x] On each asset, drag the poster sprites into From Sprite and To Sprite.
+// [x] IMPORTANT: every poster sprite must be imported with
 //     Texture Type = Sprite (2D and UI) and Mesh Type = Full Rect.
 //     Tight meshes break the reveal shader's UV mapping.
-// [ ] Assign Required Tool and On Complete for each stage.
-// [ ] Finally, drag the stages, in order, into PosterData.stages.
+// [x] Assign Required Tool and On Complete for each stage.
+// [x] Finally, drag the stages, in order, into PosterData.stages.
 // ---------------------------------------------------------------
 
 using UnityEngine;

@@ -27,18 +27,18 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create the three scenes if they do not exist: menu File -> New Scene,
+// [x] Create the three scenes if they do not exist: menu File -> New Scene,
 //     choose the "Basic 2D (URP)" template, then File -> Save As... into
 //     Assets/Scenes/. Save them under exactly these names (spelling and
 //     capitalisation matter): "Title", "Game", "ThanksForPlaying".
-// [ ] Open File -> Build Profiles (Unity 6) or File -> Build Settings.
+// [x] Open File -> Build Profiles (Unity 6) or File -> Build Settings.
 //     Drag all three scenes from Assets/Scenes/ into the "Scenes In Build" list.
-// [ ] Order them: Title first (index 0), then Game, then ThanksForPlaying.
+// [x] Order them: Title first (index 0), then Game, then ThanksForPlaying.
 //     Index 0 is the scene the built app opens on.
-// [ ] Make sure every scene's checkbox in that list is ticked.
-// [ ] Select the "Systems" object in the Title scene, click "Add Component",
+// [x] Make sure every scene's checkbox in that list is ticked.
+// [x] Select the "Systems" object in the Title scene, click "Add Component",
 //     type "SceneLoader", press Enter.
-// [ ] Leave "Fade Seconds" at 0.25 unless the fade overlay animation is longer.
+// [x] Leave "Fade Seconds" at 0.25 unless the fade overlay animation is longer.
 //     Whoever builds the fade overlay subscribes to FadeOutRequested and
 //     FadeInRequested from their own script; nothing to wire in the Inspector.
 // ---------------------------------------------------------------

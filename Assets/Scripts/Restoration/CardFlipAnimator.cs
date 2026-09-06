@@ -42,16 +42,26 @@
 //     Canvas; for the FinishedRepair screen, its before/after Image object.
 //     Select it -> Add Component -> Card Flip Animator.
 // [ ] Wire its fields:
-//       Target      <- leave empty to spin this object's own Rect Transform
-//       Face Image  <- the Image whose Source Image should change mid-flip.
-//                      For the poster this is the "BottomLayer" child.
-//       Face Rect   <- leave empty to use the Face Image's own Rect Transform
+//       Target          <- leave empty to spin this object's own Rect Transform
+//       Face Image      <- the Image whose Source Image should change mid-flip.
+//                          For the poster this is the "BottomLayer" child; for
+//                          the FinishedRepair card it is "FrontFace".
+//       Face Rect       <- leave empty to use the Face Image's own Rect Transform
+//       Back Face Source<- only for the FinishedRepair card: drag "BackFace" in.
+//                          Leave EMPTY on the poster, which is driven from script.
 // [ ] Set Duration to 0.5 (seconds). Leave the Curve at its default
 //     ease-in-out; click it if you want to reshape the motion.
-// [ ] Nothing calls this by itself. The object that listens to
-//     RestorationController.TransitionRequested is what calls
-//     Flip(front, back, onComplete) and passes
-//     RestorationController.ContinueAfterTransition as the callback.
+// [ ] This animator is ONE-SIDED: it spins the rect and swaps the sprite on the
+//     single Face Image as the card goes edge-on. There is no second face being
+//     revealed, so "BackFace" is only ever a place to keep the after artwork —
+//     Play() switches its object off the first time it runs.
+// [ ] Two ways in:
+//       - From script: the object listening to
+//         RestorationController.TransitionRequested calls
+//         Flip(front, back, onComplete) and passes
+//         RestorationController.ContinueAfterTransition as the callback.
+//       - From the Inspector: Play() takes no arguments, so a UnityEvent can
+//         call it. This is what FinishedRepairScreen's On Shown uses.
 // ---------------------------------------------------------------
 
 using System;
@@ -73,6 +83,11 @@ namespace RestoriumEmporium.Restoration
 
         [Tooltip("Counter-mirrored during the second half. Left empty, Face Image's rect.")]
         [SerializeField] private RectTransform faceRect;
+
+        [Tooltip("Optional, for Play(). The Image holding the artwork the card turns TO. " +
+                 "Only its sprite is used — this animator is one-sided, so the object " +
+                 "itself is switched off and never drawn.")]
+        [SerializeField] private Image backFaceSource;
 
         [Header("Motion")]
         [Range(0.1f, 2f)]
@@ -134,6 +149,40 @@ namespace RestoriumEmporium.Restoration
             }
 
             _routine = StartCoroutine(FlipRoutine(front, back, onComplete));
+        }
+
+        /// <summary>
+        /// Parameterless flip for a UnityEvent, which cannot call
+        /// <see cref="Flip"/> (three arguments, one of them a delegate). Turns the
+        /// card from whatever <c>Face Image</c> currently shows to
+        /// <c>Back Face Source</c>'s sprite. This is what the FinishedRepair
+        /// screen's On Shown event calls.
+        /// </summary>
+        public void Play()
+        {
+            if (faceImage == null)
+            {
+                Debug.LogWarning("[CardFlipAnimator] Play() needs a Face Image. Drag the Image " +
+                                 "showing the card's front into the Face Image field.", this);
+                return;
+            }
+
+            if (backFaceSource == null)
+            {
+                Debug.LogWarning("[CardFlipAnimator] Play() needs a Back Face Source. Drag the " +
+                                 "Image holding the after artwork into that field, or call " +
+                                 "Flip() from script instead.", this);
+                return;
+            }
+
+            // One-sided by design: the back face is a sprite donor, not a second
+            // drawn object. Left visible it would sit mirrored on top of the front.
+            if (backFaceSource.gameObject.activeSelf)
+            {
+                backFaceSource.gameObject.SetActive(false);
+            }
+
+            Flip(faceImage.sprite, backFaceSource.sprite, null);
         }
 
         /// <summary>Sets the visible artwork without animating.</summary>

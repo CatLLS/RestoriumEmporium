@@ -32,14 +32,14 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Open the Title scene (Assets/Scenes/Title.unity).
-// [ ] If it does not exist yet, create the systems object: menu
+// [x] Open the Title scene (Assets/Scenes/Title.unity).
+// [x] If it does not exist yet, create the systems object: menu
 //     GameObject -> Create Empty, then rename it to exactly "Systems"
 //     (select it, press F2, type Systems, press Enter).
-// [ ] With "Systems" selected, click "Add Component" and add all four of these,
+// [x] With "Systems" selected, click "Add Component" and add all four of these,
 //     one at a time: "GameBootstrap", "SaveManager", "LocalizationService",
 //     "SceneLoader". Add the audio manager component too once it exists.
-// [ ] Now wire the GameBootstrap fields. Everything you drag in is on this SAME
+// [x] Now wire the GameBootstrap fields. Everything you drag in is on this SAME
 //     "Systems" object, so drag the "Systems" object itself from the Hierarchy
 //     into each slot:
 //       Save Manager          <- drag "Systems"  (picks up SaveManager)
@@ -48,14 +48,14 @@
 //                                component; leave empty until it exists.
 //     If a drag offers you a list of components, choose the one named in
 //     brackets above.
-// [ ] Leave "Target Frame Rate" at 60 and "Keep Screen Awake" ticked.
-// [ ] Turn "Systems" into a prefab: drag it from the Hierarchy into the Project
+// [x] Leave "Target Frame Rate" at 60 and "Keep Screen Awake" ticked.
+// [x] Turn "Systems" into a prefab: drag it from the Hierarchy into the Project
 //     window folder Assets/Prefabs/ (right-click -> Create -> Folder to make it).
-// [ ] Open the Game scene and the ThanksForPlaying scene and make sure NEITHER
+// [x] Open the Game scene and the ThanksForPlaying scene and make sure NEITHER
 //     of them contains a "Systems" object. The one from Title survives scene
 //     loads on its own; a second copy would be destroyed on arrival and is just
 //     confusing.
-// [ ] Startup ordering needs no setup: this script carries a
+// [x] Startup ordering needs no setup: this script carries a
 //     [DefaultExecutionOrder(-100)] attribute so it runs before everything else.
 //     Just do not add GameBootstrap to Edit -> Project Settings -> Script
 //     Execution Order with a number above 0, which would override that.

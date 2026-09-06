@@ -37,7 +37,7 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] IMPORT THE ART FIRST. Select every poster sprite in
+// [x] IMPORT THE ART FIRST. Select every poster sprite in
 //     Assets/Art/Posters/poster1/ (posterBeforeDusting, posterNoDust,
 //     posterYellowWet, posterWhiteWet, posterDry, posterFinal) and also
 //     Assets/Art/LinnenAssets/PosterBack. In the Inspector set:
@@ -51,34 +51,34 @@
 //       Generate Physics Shape = off
 //     Then press Apply. Do NOT add these sprites to a Sprite Atlas: atlasing
 //     remaps their UVs into the atlas and breaks the mask the same way.
-// [ ] Create the material: right-click in Assets/Art -> Create -> Material,
+// [x] Create the material: right-click in Assets/Art -> Create -> Material,
 //     name it "M_PosterReveal". At the top of its Inspector set Shader to
 //     Restorium/UI/PosterReveal. Leave every field at its default; this asset is
 //     only a template, the component copies it at runtime.
-// [ ] Build the poster object under the Canvas:
+// [x] Build the poster object under the Canvas:
 //       Right-click Canvas -> UI -> Image, name it "Poster".
 //       On Poster's Rect Transform set Width 322, Height 577 (or whatever the
 //       layout calls for - only the ratio matters).
 //       On Poster's Image component: Source Image = None, and UNTICK
 //       "Raycast Target" only if you put RevealMaskPainter on a separate child;
 //       leave it TICKED if RevealMaskPainter goes on this object (recommended).
-// [ ] Right-click Poster -> UI -> Image, name it "BottomLayer".
+// [x] Right-click Poster -> UI -> Image, name it "BottomLayer".
 //       Set its Rect Transform anchor preset to "stretch/stretch" with
 //       Left/Right/Top/Bottom all 0 (hold Alt when clicking the preset).
 //       Untick "Raycast Target". Leave Material = None.
-// [ ] Right-click Poster -> UI -> Image, name it "TopLayer". Same stretch
+// [x] Right-click Poster -> UI -> Image, name it "TopLayer". Same stretch
 //       anchors, same 0 offsets. Untick "Raycast Target". Drag the
 //       M_PosterReveal material into its Material field.
 //       TopLayer must be BELOW BottomLayer in the Hierarchy list (uGUI draws
 //       later siblings on top).
-// [ ] Add this component: select Poster -> Add Component -> Poster Layer Stack.
-// [ ] Wire its fields:
+// [x] Add this component: select Poster -> Add Component -> Poster Layer Stack.
+// [x] Wire its fields:
 //       Poster Rect     <- the Poster object itself
 //       Bottom Layer    <- BottomLayer
 //       Top Layer       <- TopLayer
 //       Reveal Material <- the M_PosterReveal asset from the Project window
 //       Canvas          <- the root Canvas object (leave empty to auto-find)
-// [ ] Leave Mask Width 128 / Mask Height 218 unless the poster's aspect ratio
+// [x] Leave Mask Width 128 / Mask Height 218 unless the poster's aspect ratio
 //     changes; they should roughly match the poster's width:height.
 // ---------------------------------------------------------------
 

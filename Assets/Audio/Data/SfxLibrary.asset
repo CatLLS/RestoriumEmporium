@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192170e7aee9da649aeab721a4145abf, type: 3}
+  m_Name: SfxLibrary
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Audio.SfxLibrary
+  entries:
+  - id: 1
+    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 2
+    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 3
+    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 4
+    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 5
+    clip: {fileID: 8300000, guid: b24b4b3722701124f80c486c8f0d9c39, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 6
+    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 10
+    clip: {fileID: 8300000, guid: 2f54d136946e0ba44af7fdabbbc0d83f, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 11
+    clip: {fileID: 8300000, guid: 6d361b69cba0ec747963dc7df4be0be1, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 12
+    clip: {fileID: 8300000, guid: 7e1cb2c04ba347346a368130b7739edc, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 13
+    clip: {fileID: 8300000, guid: f8e56dab3eeeafa438bced104948370d, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 14
+    clip: {fileID: 8300000, guid: b183006a067db8a4e8ae05eb3a02d289, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 15
+    clip: {fileID: 8300000, guid: b7abe5818fff906499a1c9c3eaa2a883, type: 3}
+    volume: 1
+    pitchMin: 0.95
+    pitchMax: 1.05
+  - id: 0
+    clip: {fileID: 0}
+    volume: 0
+    pitchMin: 0
+    pitchMax: 0

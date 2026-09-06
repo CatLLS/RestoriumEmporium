@@ -31,9 +31,9 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create an empty object at the root of the Game scene: right-click in the
+// [x] Create an empty object at the root of the Game scene: right-click in the
 //     Hierarchy -> Create Empty, name it "GameFlow".
-// [ ] Select GameFlow -> Add Component -> Restoration Controller.
+// [x] Select GameFlow -> Add Component -> Restoration Controller.
 // [ ] Wire its fields:
 //       Poster        <- Assets/Data/Poster1/Poster01 (the PosterData asset)
 //       Poster Stack  <- the "Poster" object under the Canvas

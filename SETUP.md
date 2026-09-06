@@ -158,7 +158,7 @@ With `Systems` selected, **Add Component** for each of these (see each script's 
 
 Then drag `Systems` from the Hierarchy into `Assets/Prefabs/` to make it a prefab.
 
-> **Do not add a second `Systems` to the other two scenes.** It survives scene loads on its own. A duplicate destroys itself on arrival, which works but is confusing.
+> **Do not add a second `Systems` to the other two scenes.** It survives scene loads on its own, A duplicate destroys itself on arrival, which works but is confusing.
 
 ### 5.4 The New Game button
 

@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c5abdcf0891a14e869965abfc32773, type: 3}
+  m_Name: pt-BR
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocaleTable
+  localeCode: pt-BR
+  displayName: Portugues (Brasil)
+  entries:
+  - key: ui.title.newGame
+    value: Novo jogo
+  - key: ui.title.continue
+    value: Continuar
+  - key: ui.title.settings
+    value: Ajustes
+  - key: ui.title.quit
+    value: Sair
+  - key: ui.journal.title
+    value: "Di\xE1rio de restaura\xE7\xF5es"
+  - key: ui.journal.restore
+    value: Restaurar
+  - key: ui.journal.changePages
+    value: "Toque para mudar de p\xE1gina"
+  - key: ui.journal.locked
+    value: Em breve
+  - key: ui.journal.complete
+    value: "Conclu\xEDdo"
+  - key: ui.cleaning.title
+    value: Hora de limpar!
+  - key: ui.cleaning.toolbar
+    value: Ferramentas de limpeza
+  - key: ui.linenBacking.title
+    value: "Refor\xE7o de linho"
+  - key: ui.linenBacking.toolbar
+    value: "Ferramentas de refor\xE7o"
+  - key: ui.finishedRepair.title
+    value: "Restaura\xE7\xE3o conclu\xEDda!"
+  - key: ui.finishedRepair.continue
+    value: Continuar
+  - key: ui.finishedRepair.backToWorkbench
+    value: Voltar para a bancada
+  - key: ui.dialogue.tapToContinue
+    value: toque para continuar
+  - key: ui.dialogue.advance
+    value: "Toque para avan\xE7ar o di\xE1logo"
+  - key: ui.pause.title
+    value: Jogo pausado
+  - key: ui.pause.resume
+    value: Voltar ao jogo
+  - key: ui.pause.quit
+    value: Sair do jogo
+  - key: ui.thanks.title
+    value: O fim?
+  - key: ui.thanks.body
+    value: "Obrigada por testar o jogo! Pe\xE7o desculpas por ser t\xE3o curto, estamos
+      em fase de desenvolvimento e ainda acertando os aspectos chave da gameplay.
+      Em atualiza\xE7\xF5es futuras traremos mais posters e uma hist\xF3ria misteriosa
+      para voc\xEAs! Enquanto espera desenvolvermos mais do jogo, que tal mandar
+      um feedback do que achou do jogo? encontrou algum bug? tem alguma ideia de
+      como melhorar a gameplay? Sou toda ouvidos!"
+  - key: ui.thanks.continue
+    value: Continuar
+  - key: tool.dustRemover
+    value: Espanador
+  - key: tool.waterSpray
+    value: Borrifador
+  - key: tool.deacidifier
+    value: Desacidificante
+  - key: tool.squeegee
+    value: Rodo
+  - key: tool.roller
+    value: Rolo de cola
+  - key: tool.pencil
+    value: "L\xE1pis"
+  - key: poster.poster01.title
+    value: Visite Lethe Falls
+  - key: stage.dust.title
+    value: Tirando a poeira
+  - key: stage.dust.prompt
+    value: "Passe o espanador por todo o cartaz at\xE9 a poeira sumir."
+  - key: stage.wash.title
+    value: Lavagem
+  - key: stage.wash.prompt
+    value: "Borrife \xE1gua e cubra o cartaz inteirinho."
+  - key: stage.deacidify.title
+    value: "Desacidifica\xE7\xE3o"
+  - key: stage.deacidify.prompt
+    value: Espalhe o desacidificante para o papel voltar a ser branco.
+  - key: stage.squeegee.title
+    value: Hora de secar
+  - key: stage.squeegee.prompt
+    value: "Deslize o rodo de um lado ao outro para tirar a \xE1gua."
+  - key: stage.adhesive.title
+    value: Rolando, rolando!
+  - key: stage.adhesive.prompt
+    value: Passe o rolo com cola por todo o verso do cartaz.
+  - key: stage.mend.title
+    value: Retoques finais
+  - key: stage.mend.prompt
+    value: "Use o l\xE1pis para completar os pedacinhos que faltam."
+  - key: tutorial.welcome
+    value: "Oi, oi! Que bom te ver por aqui. Eu sou a Tracy, e este \xE9 o Restorium
+      Emporium. Vamos devolver a vida a um cartaz bem antigo?"
+  - key: tutorial.tapRestore
+    value: "Nosso primeiro trabalho est\xE1 aqui no di\xE1rio. Toque em Restaurar
+      para come\xE7armos."
+  - key: tutorial.pickDustRemover
+    value: Primeiro, a poeira. Pegue o espanador ali na barra de ferramentas.
+  - key: tutorial.useDustRemover
+    value: "Agora deslize o dedo pelo cartaz, devagarinho, at\xE9 tirar toda a poeira."
+  - key: tutorial.pickWaterSpray
+    value: "Muito bem! Agora pegue o borrifador de \xE1gua."
+  - key: tutorial.useWaterSpray
+    value: "Umede\xE7a o cartaz inteiro. Sem pressa, o papel agradece."
+  - key: tutorial.pickDeacidifier
+    value: O papel amarelou com o tempo. Pegue o desacidificante para a gente resolver
+      isso.
+  - key: tutorial.useDeacidifier
+    value: "Espalhe por tudo e veja o branquinho voltar. Essa \xE9 a minha parte
+      favorita."
+  - key: tutorial.pickSqueegee
+    value: Hora de secar. Pegue o rodo, por favor.
+  - key: tutorial.useSqueegee
+    value: "Deslize o rodo de um lado ao outro para tirar a \xE1gua que sobrou."
+  - key: tutorial.pickRoller
+    value: "Virei o cartaz para voc\xEA. Agora pegue o rolo de cola."
+  - key: tutorial.useRoller
+    value: "Passe cola por todo o verso \u2014 \xE9 ela que vai segurar o cartaz
+      no linho."
+  - key: tutorial.pickPencil
+    value: "Falta pouquinho! Pegue o l\xE1pis."
+  - key: tutorial.usePencil
+    value: Agora complete com carinho os pedacinhos que se perderam pelo caminho.
+  - key: tutorial.congrats
+    value: "Olha s\xF3 isso! Ficou lindo. Voc\xEA tem m\xE3o para essa arte, viu?"
+  - key: tutorial.tapContinue
+    value: Toque em Continuar quando quiser seguir.

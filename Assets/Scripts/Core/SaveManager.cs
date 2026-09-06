@@ -29,16 +29,16 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Open the Title scene. If the persistent systems object does not exist
+// [x] Open the Title scene. If the persistent systems object does not exist
 //     yet, use the menu GameObject -> Create Empty, then rename the new object
 //     to exactly "Systems" (select it in the Hierarchy, press F2, type it).
-// [ ] Select "Systems" in the Hierarchy. In the Inspector click
+// [x] Select "Systems" in the Hierarchy. In the Inspector click
 //     "Add Component", type "SaveManager", press Enter.
-// [ ] Leave "File Name" as "save.json". Changing it after release makes every
+// [x] Leave "File Name" as "save.json". Changing it after release makes every
 //     existing player look like a brand new one.
-// [ ] Leave "Pretty Print" and "Log Writes" unticked for a release build. Tick
+// [x] Leave "Pretty Print" and "Log Writes" unticked for a release build. Tick
 //     them while testing if you want a readable save file and write logging.
-// [ ] Drag the "Systems" object from the Hierarchy into the Project window
+// [x] Drag the "Systems" object from the Hierarchy into the Project window
 //     folder Assets/Prefabs/ to turn it into a prefab. Create that folder first
 //     if it is missing: right-click in Project -> Create -> Folder.
 // [ ] To test a first launch, delete the save file. On Windows it is at

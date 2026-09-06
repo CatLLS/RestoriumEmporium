@@ -28,32 +28,32 @@
 // Pos Y is NEGATIVE: type -174 where the design says y = 174.
 //
 // A) THE SCREEN ROOT
-// [ ] Right-click Canvas -> Create Empty. Name it exactly: FinishedRepairScreen
-// [ ] Rect Transform: anchor stretch/stretch, Left/Right/Top/Bottom = 0.
-// [ ] Add Component -> Finished Repair Screen (this script).
-// [ ] Start it DISABLED (untick the box at the top-left of the Inspector).
+// [x] Right-click Canvas -> Create Empty. Name it exactly: FinishedRepairScreen
+// [x] Rect Transform: anchor stretch/stretch, Left/Right/Top/Bottom = 0.
+// [x] Add Component -> Finished Repair Screen (this script).
+// [x] Start it DISABLED (untick the box at the top-left of the Inspector).
 //
 // B) CHILDREN, in this order (order = draw order, first is behind)
-// [ ] Right-click FinishedRepairScreen -> UI -> Image. Name: Background
+// [x] Right-click FinishedRepairScreen -> UI -> Image. Name: Background
 //       Anchor stretch/stretch, all offsets 0.
 //       Source Image = Assets/Art/FinishedRepairBG
-// [ ] Right-click FinishedRepairScreen -> UI -> Text - TextMeshPro. Name: Title
+// [x] Right-click FinishedRepairScreen -> UI -> Text - TextMeshPro. Name: Title
 //       Anchor top-left. Pos X = 89, Pos Y = -128, Width = 235, Height = 20.
 //       Alignment = Center + Middle. Font Size = 18.
 //       Add Component -> Localized Text, Key = ui.finishedRepair.title
-// [ ] Right-click FinishedRepairScreen -> Create Empty. Name: FlipCard
+// [x] Right-click FinishedRepairScreen -> Create Empty. Name: FlipCard
 //       Anchor top-left. Pos X = 65, Pos Y = -174, Width = 283, Height = 506.
-// [ ] Right-click FlipCard -> UI -> Image. Name: FrontFace
+// [x] Right-click FlipCard -> UI -> Image. Name: FrontFace
 //       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
 //       Source Image = Assets/Art/Posters/poster1/posterBeforeDusting
 //       (Overwritten at runtime from PosterData.beforeSprite.)
-// [ ] Right-click FlipCard -> UI -> Image. Name: BackFace
+// [x] Right-click FlipCard -> UI -> Image. Name: BackFace
 //       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
 //       Source Image = Assets/Art/Posters/poster1/posterFinal
 //       Set its Rect Transform Rotation Y = 180 so it reads correctly once the
 //       card has flipped. Untick the checkbox at the top of the Inspector so it
 //       starts hidden; the flip animator turns it on halfway through.
-// [ ] Right-click FinishedRepairScreen -> UI -> Button - TextMeshPro.
+// [x] Right-click FinishedRepairScreen -> UI -> Button - TextMeshPro.
 //       Name: ContinueButton
 //       Anchor top-left. Pos X = 105, Pos Y = -734, Width = 202, Height = 69.
 //       Image -> Source Image = Assets/Art/journalAssets/buttonBase
@@ -66,16 +66,16 @@
 //       Anchor Id = finishedRepair.continueButton
 //
 // C) WIRE THE INSPECTOR (select FinishedRepairScreen and drag these in)
-// [ ] Poster          <- Assets/Data/Poster1/Poster01
-// [ ] Flip Card Root  <- the FlipCard child
-// [ ] Front Face      <- the FrontFace child
-// [ ] Back Face       <- the BackFace child
-// [ ] Continue Button <- the ContinueButton child
-// [ ] On Shown (+): drag the FlipCard object in and pick
+// [x] Poster          <- Assets/Data/Poster1/Poster01
+// [x] Flip Card Root  <- the FlipCard child
+// [x] Front Face      <- the FrontFace child
+// [x] Back Face       <- the BackFace child
+// [x] Continue Button <- the ContinueButton child
+// [x] On Shown (+): drag the FlipCard object in and pick
 //     CardFlipAnimator -> Play(). THIS is what starts the flip; without it the
 //     card just sits there. (Agent B provides CardFlipAnimator; add that
 //     component to the FlipCard object first.)
-// [ ] On Continue Requested (+): drag the GameFlow object in and pick the method
+// [x] On Continue Requested (+): drag the GameFlow object in and pick the method
 //     the GameFlowController exposes for leaving the finished repair.
 // ---------------------------------------------------------------
 

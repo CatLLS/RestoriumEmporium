@@ -27,19 +27,19 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create the Portuguese table first if it does not exist: right-click in
+// [x] Create the Portuguese table first if it does not exist: right-click in
 //     the Project window -> Create -> Restorium -> Locale Table. Name the new
 //     asset "pt-BR" and move it into Assets/Data/Localization/ (create that
 //     folder with right-click -> Create -> Folder if needed).
-// [ ] Select the "pt-BR" asset and set "Locale Code" to exactly pt-BR and
+// [x] Select the "pt-BR" asset and set "Locale Code" to exactly pt-BR and
 //     "Display Name" to "Portugues (Brasil)".
-// [ ] Select the "Systems" object in the Title scene. Click "Add Component",
+// [x] Select the "Systems" object in the Title scene. Click "Add Component",
 //     type "LocalizationService", press Enter.
-// [ ] On the LocalizationService component set "Tables" Size to 1, then drag
+// [x] On the LocalizationService component set "Tables" Size to 1, then drag
 //     the "pt-BR" asset from the Project window into the "Element 0" slot.
-// [ ] Set "Fallback Locale Code" to exactly pt-BR. It must match the "Locale
+// [x] Set "Fallback Locale Code" to exactly pt-BR. It must match the "Locale
 //     Code" on one of the assets in the Tables list, character for character.
-// [ ] Nothing to do about startup ordering: GameBootstrap already carries a
+// [x] Nothing to do about startup ordering: GameBootstrap already carries a
 //     [DefaultExecutionOrder(-100)] attribute, so it registers this service
 //     before any screen asks it for text. If you ever open Edit -> Project
 //     Settings -> Script Execution Order, do not give GameBootstrap a number

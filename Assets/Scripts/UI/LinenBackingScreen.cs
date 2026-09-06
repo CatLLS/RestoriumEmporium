@@ -28,48 +28,48 @@
 // You build THREE objects from this script. They are siblings under Canvas.
 //
 // A) LinenBackingFrontScreen
-// [ ] Right-click Canvas -> Create Empty. Name: LinenBackingFrontScreen
+// [x] Right-click Canvas -> Create Empty. Name: LinenBackingFrontScreen
 //       Anchor stretch/stretch, Left/Right/Top/Bottom = 0. Start it DISABLED
 //       (untick the box at the top-left of the Inspector).
-// [ ] Add Component -> Linen Backing Screen. Set Served Screen = Linen Backing Front.
-// [ ] Right-click it -> UI -> Image. Name: Background
+// [x] Add Component -> Linen Backing Screen. Set Served Screen = Linen Backing Front.
+// [x] Right-click it -> UI -> Image. Name: Background
 //       Anchor stretch/stretch, all offsets 0.
 //       Source Image = Assets/Art/LinnenAssets/LinnenBackingBG(all)
-// [ ] Right-click it -> UI -> Image. Name: Desk
+// [x] Right-click it -> UI -> Image. Name: Desk
 //       Anchor top-left. Pos X = -43, Pos Y = -848, Width = 498, Height = 779.
 //       Source Image = Assets/Art/LinnenAssets/LinnenBackingBG(all)
-// [ ] Right-click it -> Create Empty. Name: PosterStackRoot
+// [x] Right-click it -> Create Empty. Name: PosterStackRoot
 //       Anchor top-left. Pos X = 45, Pos Y = -127, Width = 322, Height = 577.
 //       Leave it EMPTY; the poster stack is parented here at runtime.
-// [ ] Right-click it -> UI -> Text - TextMeshPro. Name: Header
+// [x] Right-click it -> UI -> Text - TextMeshPro. Name: Header
 //       Anchor top-left. Pos X = 98, Pos Y = -62, Width = 216, Height = 24.
 //       Alignment = Center + Middle. Font Size = 18. No Localized Text here.
-// [ ] Right-click it -> Create Empty. Name: ToolBarRoot
+// [x] Right-click it -> Create Empty. Name: ToolBarRoot
 //       Anchor top-left. Pos X = 0, Pos Y = -748, Width = 412, Height = 76.
-// [ ] Right-click ToolBarRoot -> UI -> Image. Name: ToolsBarBG
+// [x] Right-click ToolBarRoot -> UI -> Image. Name: ToolsBarBG
 //       Anchor top-left. Pos X = 0, Pos Y = 0, Width = 412, Height = 76.
 //       Source Image = Assets/Art/LinnenAssets/toolsBarBG
-// [ ] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: SqueegeeButton
+// [x] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: SqueegeeButton
 //       Anchor top-left. Pos X = 19, Pos Y = 11, Width = 120, Height = 121.
 //       Image -> Source Image = Assets/Art/LinnenAssets/squeegee
 //       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Tool Select.
 //       Add Component -> Tutorial Anchor, Anchor Id = toolbar.squeegee
-// [ ] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: RollerButton
+// [x] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: RollerButton
 //       Anchor top-left. Pos X = 147, Pos Y = 0, Width = 136, Height = 135.
 //       Image -> Source Image = Assets/Art/LinnenAssets/roller
 //       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Tool Select.
 //       Add Component -> Tutorial Anchor, Anchor Id = toolbar.roller
-// [ ] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: PencilButton
+// [x] Right-click ToolBarRoot -> UI -> Button - TextMeshPro. Name: PencilButton
 //       Anchor top-left. Pos X = 315, Pos Y = -26, Width = 38, Height = 135.
 //       Image -> Source Image = Assets/Art/LinnenAssets/pencil
 //       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Tool Select.
 //       Add Component -> Tutorial Anchor, Anchor Id = toolbar.pencil
 //       (Those Pos Y values are the design Y minus the bar Y of 748:
 //        759-748 = 11, 748-748 = 0, 722-748 = -26.)
-// [ ] Select ToolBarRoot -> Add Component -> Canvas. Tick Override Sorting,
+// [x] Select ToolBarRoot -> Add Component -> Canvas. Tick Override Sorting,
 //       Sorting Layer = Default, Order in Layer = 2.
 //       Then Add Component -> Graphic Raycaster.
-// [ ] Inspector wiring on LinenBackingFrontScreen:
+// [x] Inspector wiring on LinenBackingFrontScreen:
 //       Restoration Source <- the GameFlow object
 //       Poster Stack Root  <- PosterStackRoot
 //       Tool Bar Root      <- ToolBarRoot
@@ -77,28 +77,28 @@
 //       Linen Frame        <- leave EMPTY
 //
 // B) LinenBackingBackScreen
-// [ ] Select LinenBackingFrontScreen -> Ctrl+D to duplicate.
+// [x] Select LinenBackingFrontScreen -> Ctrl+D to duplicate.
 //       Rename the copy to: LinenBackingBackScreen
-// [ ] Set Served Screen = Linen Backing Back.
-// [ ] Select its PosterStackRoot: Pos X = 46, Pos Y = -117,
+// [x] Set Served Screen = Linen Backing Back.
+// [x] Select its PosterStackRoot: Pos X = 46, Pos Y = -117,
 //       Width = 321, Height = 574.
-// [ ] Select its Header: Pos X = 110, Pos Y = -69, Width = 192, Height = 24.
-// [ ] Everything else stays as duplicated. Re-check that Restoration Source,
+// [x] Select its Header: Pos X = 110, Pos Y = -69, Width = 192, Height = 24.
+// [x] Everything else stays as duplicated. Re-check that Restoration Source,
 //       Poster Stack Root, Tool Bar Root and Header Label now point at THIS
 //       object children, not the front screen ones (duplication normally keeps
 //       them internal, but verify — a cross-wired reference is invisible).
 //
 // C) LinenBackingFinalScreen
-// [ ] Duplicate LinenBackingFrontScreen again. Rename to: LinenBackingFinalScreen
-// [ ] Set Served Screen = Linen Backing Final.
-// [ ] Right-click it -> UI -> Image. Name: LinenFrame
+// [x] Duplicate LinenBackingFrontScreen again. Rename to: LinenBackingFinalScreen
+// [x] Set Served Screen = Linen Backing Final.
+// [x] Right-click it -> UI -> Image. Name: LinenFrame
 //       Anchor top-left. Pos X = 19, Pos Y = -61, Width = 375, Height = 638.
 //       Source Image = Assets/Art/LinnenAssets/linnenBacking
 //       Drag LinenFrame so it sits ABOVE PosterStackRoot in the Hierarchy
 //       (it must draw behind the poster).
-// [ ] Select its PosterStackRoot: Pos X = 47, Pos Y = -101,
+// [x] Select its PosterStackRoot: Pos X = 47, Pos Y = -101,
 //       Width = 318, Height = 567.
-// [ ] Inspector: drag LinenFrame into the Linen Frame field.
+// [x] Inspector: drag LinenFrame into the Linen Frame field.
 // ---------------------------------------------------------------
 
 using UnityEngine;

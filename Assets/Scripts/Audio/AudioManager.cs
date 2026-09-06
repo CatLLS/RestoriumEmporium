@@ -32,39 +32,39 @@
 // its Audio Mixer reference is already assigned. Follow these steps instead.
 //
 // A) FINISH THE EXISTING OBJECT IN SampleScene.unity
-// [ ] File -> Open Scene -> Assets/Scenes/SampleScene.unity.
-// [ ] In the Hierarchy find the object that carries this script (type "Audio"
+// [x] File -> Open Scene -> Assets/Scenes/SampleScene.unity.
+// [x] In the Hierarchy find the object that carries this script (type "Audio"
 //     into the Hierarchy search box). Rename it to exactly: Systems
-// [ ] With Systems selected, in the Inspector confirm Main Mixer still points at
+// [x] With Systems selected, in the Inspector confirm Main Mixer still points at
 //     Assets/Audio/MainMixer. If it went blank, drag MainMixer back into it.
-// [ ] Right-click Systems -> Create Empty. Name the child exactly: SfxSource
+// [x] Right-click Systems -> Create Empty. Name the child exactly: SfxSource
 //       Add Component -> Audio -> Audio Source.
 //       Untick Play On Awake. Untick Loop.
 //       Set Output to the SFX group of MainMixer.
-// [ ] Right-click Systems -> Create Empty. Name the child exactly: MusicSource
+// [x] Right-click Systems -> Create Empty. Name the child exactly: MusicSource
 //       Add Component -> Audio -> Audio Source.
 //       Untick Play On Awake. TICK Loop.
 //       Set Output to the Music group of MainMixer.
-// [ ] Right-click Systems -> Create Empty. Name the child exactly: ToolLoopSource
+// [x] Right-click Systems -> Create Empty. Name the child exactly: ToolLoopSource
 //       Add Component -> Audio -> Audio Source.
 //       Untick Play On Awake. TICK Loop.
 //       Set Output to the SFX group of MainMixer.
-// [ ] Select Systems again and drag the three children into the matching
+// [x] Select Systems again and drag the three children into the matching
 //     Inspector fields: Sfx Source, Music Source, Tool Loop Source.
-// [ ] Drag Assets/Audio/Data/SfxLibrary into the Sfx Library field.
-// [ ] Optional: drag Assets/Audio/(bgSongThatPlaysDuringTheGamePlay)lilliben-
+// [x] Drag Assets/Audio/Data/SfxLibrary into the Sfx Library field.
+// [x] Optional: drag Assets/Audio/(bgSongThatPlaysDuringTheGamePlay)lilliben-
 //     dark-ambient-background-mystery-365195 into Startup Music if you want
 //     music from the title screen onward. Leave it empty for no boot music.
-// [ ] Save the scene (Ctrl+S).
+// [x] Save the scene (Ctrl+S).
 //
 // B) MAKE THE MIXER EXPOSE THE TWO VOLUME PARAMETERS (do this once)
-// [ ] Double-click Assets/Audio/MainMixer to open the Audio Mixer window.
-// [ ] Confirm there are groups named Music and SFX under Master. If not,
+// [x] Double-click Assets/Audio/MainMixer to open the Audio Mixer window.
+// [x] Confirm there are groups named Music and SFX under Master. If not,
 //     right-click Master -> Add child group and name them exactly that.
-// [ ] Click the Music group. In the Inspector, right-click the Volume label and
+// [x] Click the Music group. In the Inspector, right-click the Volume label and
 //     choose the Expose ... to script entry.
-// [ ] Click the SFX group and do the same for its Volume.
-// [ ] Back in the Audio Mixer window click Exposed Parameters (top right) and
+// [x] Click the SFX group and do the same for its Volume.
+// [x] Back in the Audio Mixer window click Exposed Parameters (top right) and
 //     rename the two entries to exactly:  MusicVolume  and  SFXVolume
 //     They are case-sensitive; this script looks them up by those strings.
 //
@@ -72,7 +72,7 @@
 // [ ] This object survives scene loads by itself (DontDestroyOnLoad), so do NOT
 //     add a second copy to Game.unity or ThanksForPlaying.unity. A duplicate
 //     destroys itself in Awake, but you would lose its Inspector values.
-// [ ] File -> Build Profiles -> Scene List: SampleScene must be index 0, so the
+// [x] File -> Build Profiles -> Scene List: SampleScene must be index 0, so the
 //     game always boots through the scene that owns this object.
 // ---------------------------------------------------------------
 
