@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 10_UseSqueegee
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: useSqueegee
-  lineKey: tutorial.useSqueegee
+  lineKey: 
   mood: 0
   targetAnchorId: poster.surface
   gateInputToTarget: 0

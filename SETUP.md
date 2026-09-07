@@ -231,7 +231,7 @@ Note the tools sit **higher** than the bar and overhang it — that is intention
 
 **Linen Backing — back**: `PosterBack` at (46, 117) 321 × 574; header at (110, 69). Same tool bar.
 
-**Linen Backing — final**: linen frame at (19, 61) 375 × 638, with the poster at (47, 101) 318 × 567 inside it. This is the zoomed-in framing.
+**Linen Backing — final**: linen frame at (19, 61) 375 × 638, with the poster at (47, 101) 318 × 567 inside it. This is the close-in framing for the pencil work.
 
 **Finished Repair**
 | Element | Position | Size |
@@ -256,9 +256,10 @@ Poster                (Image, Raycast Target ON, 322 × 577)
 On `Poster`, add:
 - **Poster Layer Stack** — wire Poster Rect, Bottom Layer, Top Layer, Reveal Material, Canvas
 - **Reveal Mask Painter** — wire Poster Surface to the same object, then **untick the component** so it starts disabled (the controller enables it only when the right tool is held)
-- **Card Flip Animator** — Face Image = `BottomLayer`, Duration 0.5
-- **Poster Zoomer** — with two inactive marker objects for the wide and zoomed framings
+- **Card Flip Animator** — Face Image = `BottomLayer`, Duration 0.5. Leave `Back Face Source` empty; the poster's flips are driven from script.
 - **Tutorial Anchor** — Anchor Id `poster.surface`
+
+Do **not** position the Poster by hand. `RestorationPresenter` reparents it into the visible screen's `PosterStackRoot` and stretches it to fill, so each screen's authored framing is what places it.
 
 ### 6.4 The GameFlow object
 
@@ -268,8 +269,11 @@ On `Poster`, add:
 |---|---|
 | `ScreenRouter` | `Screens` → drag in the six screen root objects |
 | `RestorationController` | Poster → `Poster01`; Poster Stack + Painter → the `Poster` object; Tools → the six `ToolData` assets |
+| `RestorationPresenter` | Restoration + Router → `GameFlow`; Poster + Poster Flip → the `Poster` object |
 | `GameFlowController` | Router → `GameFlow`; Restoration Source → `GameFlow`; Poster → `Poster01` |
 | `TutorialController` | Steps → the tutorial assets in order |
+
+> **`RestorationPresenter` is not optional.** `RestorationController` raises a transition and then waits for someone to say the animation has finished. The presenter is that someone. Leave it out and the restoration freezes the moment the deacidifier stage completes — and `Auto Continue When Unhandled` will not cover for it, because `ToolBarController` is also subscribed to that event, so the "nobody is listening" fallback never fires.
 
 Then wire the two buttons:
 - Journal **Restore** button → `On Click ()` → `GameFlowController.StartRestoration()`
@@ -343,7 +347,7 @@ All three ticked. **Index 0 must be `Title`** — it owns the `Systems` object t
 3. Cleaning: hand points at the dust remover. Only that tool is in colour; the other two are grey. Pick it up, drag across the poster — dust puffs appear and the grime lifts. At ~85% the stage completes on its own.
 4. Water spray, then deacidifier, the same way. After the deacidifier the tool bar swaps to the linen tools.
 5. Squeegee → the poster flips over.
-6. Roller on the back → a wet sheen spreads → the poster flips back, mounts on the linen and zooms in.
+6. Roller on the back → a wet sheen spreads → the poster flips back and mounts on the linen.
 7. Pencil: swipe to erase the damaged layer and reveal the restored art. At 60% it finishes on its own.
 8. Finished Repair: the before/after flip, then **Continuar**.
 9. Thanks For Playing.
@@ -356,6 +360,9 @@ Kill the app at any point and relaunch — you should land back mid-restoration.
 |---|---|
 | **Dragging on the poster does nothing** | Almost always `Mesh Type` is still "Tight" instead of **Full Rect**. Second most likely: `Raycast Target` is off on the `Poster` Image, or the EventSystem is still using the old Standalone Input Module. |
 | Poster renders solid white in the Scene view | Expected. The reveal mask is empty outside Play mode. |
+| **The restoration stops after a stage completes and nothing responds** | No `RestorationPresenter` on `GameFlow`, or its `Restoration` field is empty. The controller is sitting in `IsAwaitingTransition` forever. Most visible at the end of the deacidifier stage (the first one with a transition). |
+| The poster does not appear on a restoration screen | That screen's `Poster Stack Root` field is empty, so the presenter has nowhere to put the poster and deactivates it. |
+| The poster's artwork is mirrored after a flip | `CardFlipAnimator.ResetOrientation()` is not running — check the presenter's `Poster Flip` field points at the poster's animator. |
 | All tools are grey, none light up | `ToolBarController.Runtime` is not wired to the `GameFlow` object, or the `ToolData` ids do not match the stages' `Required Tool`. |
 | Particles invisible, or drawn over the tool bar | Sorting orders. Canvas 0, particles 1, ToolBarRoot 2 with Override Sorting ticked. Also check `Plane Distance` on `ToolFxController` matches the Canvas. |
 | Text shows raw keys like `ui.journal.restore` | The `pt-BR` table is not assigned to `LocalizationService.Tables`, or that key is not in it. |

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 11_PickRoller
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickRoller
-  lineKey: tutorial.pickRoller
+  lineKey: tutorial.useRoller
   mood: 0
   targetAnchorId: toolbar.roller
   gateInputToTarget: 1

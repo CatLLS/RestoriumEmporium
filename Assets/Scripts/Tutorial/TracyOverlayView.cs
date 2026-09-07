@@ -27,32 +27,39 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Make sure the scene has an EventSystem: right-click in the Hierarchy ->
+// [x] Make sure the scene has an EventSystem: right-click in the Hierarchy ->
 //     UI -> Event System. Without it no tap is ever received.
 //     If Unity created it with a "Standalone Input Module", click the
 //     "Replace with InputSystemUIInputModule" button on that component.
-// [ ] Right-click your Canvas -> UI -> Image. Rename it "TracyHelpOverlay".
+// [x] Right-click your Canvas -> UI -> Image. Rename it "TracyHelpOverlay".
 //     Drag it near the BOTTOM of the Canvas' children (above HelpingHand).
-// [ ] Select TracyHelpOverlay. In the Rect Transform, click the Anchor Presets
+// [x] Select TracyHelpOverlay. In the Rect Transform, click the Anchor Presets
 //     square, then hold ALT and click the bottom-right box (stretch/stretch) so
 //     it fills the whole screen.
-// [ ] On its Image component set Source Image to "TracyHelpOverlayBG"
+// [x] On its Image component set Source Image to "TracyHelpOverlayBG"
 //     (Assets/Art/TracyHelpOverlay/TracyHelpOverlayBG.png) and TICK "Raycast Target".
-// [ ] With TracyHelpOverlay selected, click "Add Component" -> Canvas Group.
-// [ ] Click "Add Component" again and add this script (TracyOverlayView).
-// [ ] Right-click TracyHelpOverlay -> UI -> Image. Rename it "TracyPortrait".
+// [x] With TracyHelpOverlay selected, click "Add Component" -> Canvas Group.
+// [x] SORTING - without this the tool bar draws OVER Tracy. Each screen's
+//     ToolBarRoot has its own Canvas at Order in Layer 2, so this panel needs its
+//     own too, sorted above it:
+//       Add Component -> Canvas. Tick "Override Sorting".
+//       Sorting Layer = Default, Order in Layer = 10.
+//       Add Component -> Graphic Raycaster. A nested Canvas needs its own, or
+//       this panel stops receiving the tap that dismisses it.
+// [x] Click "Add Component" again and add this script (TracyOverlayView).
+// [x] Right-click TracyHelpOverlay -> UI -> Image. Rename it "TracyPortrait".
 //     Set its Source Image to "tracy&DialogueBox(still)"
 //     (Assets/Art/TracyHelpOverlay/). UNTICK its "Raycast Target".
 //     Position it over the lower half of the screen and press "Set Native Size".
-// [ ] Right-click TracyPortrait -> UI -> Text - TextMeshPro. Rename it "LineText".
+// [x] Right-click TracyPortrait -> UI -> Text - TextMeshPro. Rename it "LineText".
 //     (If Unity asks to "Import TMP Essentials", click that button once.)
 //     Drag its Rect Transform to sit exactly inside the dialogue-box art.
 //     UNTICK its "Raycast Target". Set Alignment to left + middle and turn on
 //     "Wrapping". Set Font Size around 22.
-// [ ] Right-click TracyPortrait -> UI -> Text - TextMeshPro. Rename it "TapHint".
+// [x] Right-click TracyPortrait -> UI -> Text - TextMeshPro. Rename it "TapHint".
 //     Put it in the bottom-right corner of the dialogue box, Font Size around 14,
 //     colour a soft grey. UNTICK its "Raycast Target".
-// [ ] Select TracyHelpOverlay again and fill in the Inspector fields of this script:
+// [x] Select TracyHelpOverlay again and fill in the Inspector fields of this script:
 //       Scrim Image        <- TracyHelpOverlay itself (its own Image component)
 //       Portrait Image     <- TracyPortrait
 //       Line Label         <- LineText
@@ -60,10 +67,10 @@
 //       Still Sprite       <- Art/TracyHelpOverlay/tracy&DialogueBox(still).png
 //       Happy Sprite       <- Art/TracyHelpOverlay/tracy&DialogueBox(happy).png
 //       Embarrassed Sprite <- Art/TracyHelpOverlay/tracy&DialogueBox(embarassed).png
-// [ ] Leave "Tap Hint Key" as ui.dialogue.tapToContinue. That key is filled in by
+// [x] Leave "Tap Hint Key" as ui.dialogue.tapToContinue. That key is filled in by
 //     the menu Restorium -> Create Poster 1 Data.
-// [ ] Drag this TracyHelpOverlay GameObject into TutorialController -> "Overlay".
-// [ ] Leave the TracyHelpOverlay GameObject ACTIVE. The script fades it out itself.
+// [x] Drag this TracyHelpOverlay GameObject into TutorialController -> "Overlay".
+// [x] Leave the TracyHelpOverlay GameObject ACTIVE. The script fades it out itself.
 // ---------------------------------------------------------------
 
 using System;
@@ -122,6 +129,7 @@ namespace RestoriumEmporium.Tutorial
         private Coroutine _reveal;
         private ILocalizationService _localization;
         private int _totalCharacters;
+        private bool _tapAdvances;
 
         /// <summary>True while the overlay is on screen.</summary>
         public bool IsVisible { get; private set; }
@@ -152,6 +160,11 @@ namespace RestoriumEmporium.Tutorial
         /// </param>
         public void Show(string localizationKey, TracyMood mood, bool blockInput = true)
         {
+            // Only a blocking beat is advanced by a tap on this panel, so only a
+            // blocking beat may promise one. On an action beat the hint would be
+            // inviting a tap that does nothing.
+            _tapAdvances = blockInput;
+
             ApplyMood(mood);
             ApplyVisibility(true, blockInput);
 
@@ -312,8 +325,14 @@ namespace RestoriumEmporium.Tutorial
                 return;
             }
 
-            if (visible && string.IsNullOrEmpty(tapHintLabel.text))
+            visible &= _tapAdvances;
+
+            if (visible)
             {
+                // Resolved every time it is shown, not just when the label is blank.
+                // The layout checklist encourages typing placeholder copy into this
+                // label so the dialogue box can be positioned, and an "only if empty"
+                // test leaves that placeholder on screen for the whole game.
                 tapHintLabel.text = Resolve(tapHintKey);
             }
 

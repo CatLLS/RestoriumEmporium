@@ -17,4 +17,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 714018806e45dda43a64fdb2383723e7, type: 3}
   loopSfx: 14
   brushRadiusUv: 0.18
-  fxPrefab: {fileID: 0}
+  fxPrefab: {fileID: 5944637044066977998, guid: 4dc2be8cd725c9242943576d858abd4c, type: 3}

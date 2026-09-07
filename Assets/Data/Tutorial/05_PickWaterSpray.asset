@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 05_PickWaterSpray
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickWaterSpray
-  lineKey: tutorial.pickWaterSpray
+  lineKey: tutorial.useWaterSpray
   mood: 0
   targetAnchorId: toolbar.waterSpray
   gateInputToTarget: 1

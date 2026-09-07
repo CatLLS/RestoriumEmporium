@@ -26,28 +26,28 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create the saturation material: right-click in Assets/Art ->
+// [x] Create the saturation material: right-click in Assets/Art ->
 //     Create -> Material, name it "M_UISaturation". Set its Shader (top of the
 //     Inspector) to Restorium/UI/Saturation. Leave Saturation at 1.
-// [ ] Build one button: right-click the tool bar object in the Hierarchy ->
+// [x] Build one button: right-click the tool bar object in the Hierarchy ->
 //     UI -> Button - TextMeshPro. Name it "ToolButton_1". When Unity asks to
 //     import TMP Essentials, click "Import TMP Essentials".
 //     Delete the child "Text (TMP)" object; the buttons are icon-only.
-// [ ] On ToolButton_1's own Image component: Source Image = None,
+// [x] On ToolButton_1's own Image component: Source Image = None,
 //     Color alpha = 0 (it is only the tap area), Raycast Target TICKED.
-// [ ] Right-click ToolButton_1 -> UI -> Image, name it "Icon".
+// [x] Right-click ToolButton_1 -> UI -> Image, name it "Icon".
 //     Anchor preset stretch/stretch with all offsets 0 (hold Alt when clicking
 //     the preset), Raycast Target UNTICKED.
 //     Drag the M_UISaturation material into the Icon's Material field.
-// [ ] Select ToolButton_1 -> Add Component -> Tool Button. Wire:
+// [x] Select ToolButton_1 -> Add Component -> Tool Button. Wire:
 //       Icon Image         <- the "Icon" child
 //       Button             <- leave empty; it finds the Button on this object
 //       Saturation Material<- the M_UISaturation asset in the Project window
 //       Shake Target       <- leave empty to shake this object's own RectTransform
-// [ ] Duplicate ToolButton_1 twice (Ctrl+D) so the bar has ToolButton_1,
+// [x] Duplicate ToolButton_1 twice (Ctrl+D) so the bar has ToolButton_1,
 //     ToolButton_2 and ToolButton_3. Three slots are enough: the cleaning set
 //     and the linen set each hold three tools.
-// [ ] Add a Tutorial Anchor component to each button. Anchor Ids are assigned
+// [x] Add a Tutorial Anchor component to each button. Anchor Ids are assigned
 //     by the tutorial's own checklist, e.g. "toolbar.dustRemover".
 // ---------------------------------------------------------------
 
@@ -93,6 +93,15 @@ namespace RestoriumEmporium.Restoration
         [Tooltip("Pixels the rejection shake travels at its widest.")]
         [SerializeField] private float shakePixels = 8f;
 
+        [Range(0f, 40f)]
+        [Tooltip("Pixels the tool lifts while it is the one being held. The only " +
+                 "cue that a tool is IN HAND rather than merely usable.")]
+        [SerializeField] private float selectedRisePixels = 10f;
+
+        [Range(0.02f, 0.5f)]
+        [Tooltip("Seconds for the tool to lift or settle back.")]
+        [SerializeField] private float selectedTweenSeconds = 0.12f;
+
         private static readonly int SaturationId = Shader.PropertyToID("_Saturation");
 
         private Material _runtimeMaterial;
@@ -100,10 +109,18 @@ namespace RestoriumEmporium.Restoration
         private Vector2 _restPosition;
         private Coroutine _saturationRoutine;
         private Coroutine _shakeRoutine;
+        private Coroutine _riseRoutine;
+
+        // The shake and the lift both move this rect, on different axes. They are
+        // kept as separate offsets and composed in ApplyOffsets, so a rejection
+        // mid-lift cannot leave the button parked at the wrong height.
+        private float _shakeOffsetX;
+        private float _riseOffsetY;
 
         private ToolData _tool;
         private float _saturation = 1f;
         private bool _usable = true;
+        private bool _selected;
 
         /// <summary>Raised when the player taps this button. Argument is the bound tool.</summary>
         public event Action<ToolButton> Clicked;
@@ -113,6 +130,9 @@ namespace RestoriumEmporium.Restoration
 
         /// <summary>True when this slot is the one the current stage accepts.</summary>
         public bool IsUsable => _usable;
+
+        /// <summary>True while this tool is the one the player is holding.</summary>
+        public bool IsSelected => _selected;
 
         private void Awake()
         {
@@ -165,6 +185,10 @@ namespace RestoriumEmporium.Restoration
         {
             _tool = tool;
 
+            // A rebound slot is a different tool; it must not inherit the previous
+            // one's raised "in hand" pose.
+            SetSelected(false, true);
+
             bool hasTool = tool != null;
             gameObject.SetActive(hasTool);
 
@@ -208,6 +232,31 @@ namespace RestoriumEmporium.Restoration
             _saturationRoutine = StartCoroutine(TweenSaturation(target));
         }
 
+        /// <summary>
+        /// Lifts the tool to show it is the one in hand, or settles it back.
+        /// </summary>
+        public void SetSelected(bool selected, bool instant = false)
+        {
+            _selected = selected;
+
+            float target = selected ? selectedRisePixels : 0f;
+
+            if (_riseRoutine != null)
+            {
+                StopCoroutine(_riseRoutine);
+                _riseRoutine = null;
+            }
+
+            if (instant || !isActiveAndEnabled || selectedTweenSeconds <= 0f)
+            {
+                _riseOffsetY = target;
+                ApplyOffsets();
+                return;
+            }
+
+            _riseRoutine = StartCoroutine(RiseRoutine(target));
+        }
+
         /// <summary>Soft rejection: a short horizontal shake. Never an error state.</summary>
         public void PlayRejection()
         {
@@ -219,7 +268,8 @@ namespace RestoriumEmporium.Restoration
             if (_shakeRoutine != null)
             {
                 StopCoroutine(_shakeRoutine);
-                _shakeRect.anchoredPosition = _restPosition;
+                _shakeOffsetX = 0f;
+                ApplyOffsets();
             }
 
             _shakeRoutine = StartCoroutine(ShakeRoutine());
@@ -295,13 +345,43 @@ namespace RestoriumEmporium.Restoration
                 float t = Mathf.Clamp01(elapsed / shakeSeconds);
 
                 // Three quick swings, damped to nothing by the end.
-                float offset = Mathf.Sin(t * Mathf.PI * 6f) * shakePixels * (1f - t);
-                _shakeRect.anchoredPosition = new Vector2(_restPosition.x + offset, _restPosition.y);
+                _shakeOffsetX = Mathf.Sin(t * Mathf.PI * 6f) * shakePixels * (1f - t);
+                ApplyOffsets();
                 yield return null;
             }
 
-            _shakeRect.anchoredPosition = _restPosition;
+            _shakeOffsetX = 0f;
+            ApplyOffsets();
             _shakeRoutine = null;
+        }
+
+        private IEnumerator RiseRoutine(float target)
+        {
+            float start = _riseOffsetY;
+            float elapsed = 0f;
+
+            while (elapsed < selectedTweenSeconds)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / selectedTweenSeconds);
+                _riseOffsetY = Mathf.Lerp(start, target, t * t * (3f - (2f * t)));
+                ApplyOffsets();
+                yield return null;
+            }
+
+            _riseOffsetY = target;
+            ApplyOffsets();
+            _riseRoutine = null;
+        }
+
+        private void ApplyOffsets()
+        {
+            if (_shakeRect != null)
+            {
+                _shakeRect.anchoredPosition = new Vector2(
+                    _restPosition.x + _shakeOffsetX,
+                    _restPosition.y + _riseOffsetY);
+            }
         }
     }
 }

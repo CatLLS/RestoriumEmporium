@@ -17,14 +17,14 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create one asset per step: right-click in Project ->
+// [x] Create one asset per step: right-click in Project ->
 //     Create -> Restorium -> Tutorial Step.
-// [ ] Put them in Assets/Data/Tutorial/ and number them: 01_Welcome,
+// [x] Put them in Assets/Data/Tutorial/ and number them: 01_Welcome,
 //     02_TapRestore, 03_PickDustRemover, and so on.
-// [ ] Set Line Key to a key present in the pt-BR LocaleTable.
-// [ ] Set Target Anchor Id to match the Anchor Id field on the
+// [x] Set Line Key to a key present in the pt-BR LocaleTable.
+// [x] Set Target Anchor Id to match the Anchor Id field on the
 //     TutorialAnchor component of the button you want the hand to point at.
-// [ ] Drag the finished list, in order, into TutorialController.steps.
+// [x] Drag the finished list, in order, into TutorialController.steps.
 // ---------------------------------------------------------------
 
 using UnityEngine;

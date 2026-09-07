@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 13_PickPencil
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickPencil
-  lineKey: tutorial.pickPencil
+  lineKey: tutorial.usePencil
   mood: 0
   targetAnchorId: toolbar.pencil
   gateInputToTarget: 1

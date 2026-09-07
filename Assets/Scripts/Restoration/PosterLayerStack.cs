@@ -237,8 +237,26 @@ namespace RestoriumEmporium.Restoration
 
             if (stage == null)
             {
-                if (bottomLayer != null) { bottomLayer.sprite = null; }
-                if (topLayer != null) { topLayer.sprite = null; }
+                // "No stage" must be genuinely blank, not just sprite-less. An
+                // Image with a null sprite that is still enabled draws a plain
+                // quad in its own colour, and Image.color is a tint MULTIPLIER,
+                // so white here means "no tint" rather than "paint it white".
+                // Left alone, the roller stage's revealTint would still be
+                // multiplying whatever the card shows during the flip that
+                // follows it, putting the wet sheen on the poster's front.
+                if (bottomLayer != null)
+                {
+                    bottomLayer.sprite = null;
+                    bottomLayer.color = Color.white;
+                }
+
+                if (topLayer != null)
+                {
+                    topLayer.sprite = null;
+                    topLayer.color = Color.white;
+                    topLayer.enabled = false;
+                }
+
                 ResetMask();
                 return;
             }

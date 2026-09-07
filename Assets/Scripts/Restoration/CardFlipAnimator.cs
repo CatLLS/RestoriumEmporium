@@ -198,6 +198,19 @@ namespace RestoriumEmporium.Restoration
         /// <summary>Snaps the card back to un-rotated, un-mirrored, showing <paramref name="sprite"/>.</summary>
         public void ResetToFront(Sprite sprite)
         {
+            ResetOrientation();
+            SetFace(sprite);
+        }
+
+        /// <summary>
+        /// Undoes a landed flip's rotation and mirror without touching the
+        /// artwork. Visually a no-op — a rect at 180 degrees with a
+        /// counter-mirrored face looks identical to one at 0 with a normal face —
+        /// but it leaves the rect in a state that survives being reparented or
+        /// flipped again, which a raw 180 does not.
+        /// </summary>
+        public void ResetOrientation()
+        {
             if (_routine != null)
             {
                 StopCoroutine(_routine);
@@ -215,7 +228,6 @@ namespace RestoriumEmporium.Restoration
             }
 
             ApplyMirror(0f);
-            SetFace(sprite);
         }
 
         private IEnumerator FlipRoutine(Sprite front, Sprite back, Action onComplete)

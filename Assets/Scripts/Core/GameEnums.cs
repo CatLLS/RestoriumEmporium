@@ -38,7 +38,7 @@ namespace RestoriumEmporium.Core
         /// <summary>Poster flipped over; roller spreads adhesive on the back.</summary>
         LinenBackingBack = 4,
 
-        /// <summary>Poster mounted on the linen, zoomed in; pencil / mend work.</summary>
+        /// <summary>Poster mounted on the linen; pencil / mend work.</summary>
         LinenBackingFinal = 5,
 
         /// <summary>Before/after flip reveal.</summary>
@@ -83,7 +83,7 @@ namespace RestoriumEmporium.Core
         /// <summary>Flip the poster over to reveal its back.</summary>
         FlipToBack = 2,
 
-        /// <summary>Flip back to the front, mount on the linen, then zoom in.</summary>
+        /// <summary>Flip back to the front and mount on the linen.</summary>
         FlipToFrontAndMount = 3,
 
         /// <summary>Leave the restoration and show the before/after reveal.</summary>

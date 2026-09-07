@@ -143,3 +143,7 @@ MonoBehaviour:
     value: "Olha s\xF3 isso! Ficou lindo. Voc\xEA tem m\xE3o para essa arte, viu?"
   - key: tutorial.tapContinue
     value: Toque em Continuar quando quiser seguir.
+  - key: ui.journal.pageHint
+    value: "Aperte as setas para mudar de p\xE1gina"
+  - key: ui.thanks.quit
+    value: Fechar

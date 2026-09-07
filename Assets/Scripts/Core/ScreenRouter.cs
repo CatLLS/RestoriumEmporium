@@ -116,6 +116,17 @@ namespace RestoriumEmporium.Core
         /// <summary>True when a view is registered for <paramref name="screen"/>.</summary>
         public bool Has(GameScreen screen) => _views.ContainsKey(screen);
 
+        /// <summary>
+        /// Looks up the view serving <paramref name="screen"/>. Lets the
+        /// presentation layer read a screen's layout (the root the poster is
+        /// parented under, say) without holding six Inspector references that
+        /// would duplicate this component's list.
+        /// </summary>
+        public bool TryGetView(GameScreen screen, out ScreenView view)
+        {
+            return _views.TryGetValue(screen, out view) && view != null;
+        }
+
         private void BuildIndex()
         {
             _views.Clear();

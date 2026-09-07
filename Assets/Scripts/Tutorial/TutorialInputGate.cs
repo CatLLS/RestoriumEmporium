@@ -30,24 +30,24 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Select the "GameFlow" GameObject (the one that also holds
+// [x] Select the "GameFlow" GameObject (the one that also holds
 //     TutorialController). If it does not exist yet: right-click in the
 //     Hierarchy -> Create Empty, and rename it "GameFlow".
-// [ ] Click "Add Component" and add this script (TutorialInputGate).
-// [ ] Now give every group of buttons you want to be gate-able a Canvas Group:
+// [x] Click "Add Component" and add this script (TutorialInputGate).
+// [x] Now give every group of buttons you want to be gate-able a Canvas Group:
 //     select each of the GameObjects below, click "Add Component" -> Canvas Group.
 //       - the Journal screen's page/button area
 //       - the tool bar (the object holding the six tool buttons)
 //       - the poster object the player drags on
 //       - the FinishedRepair screen's button row
-// [ ] On EVERY one of those Canvas Groups leave "Blocks Raycasts" TICKED. This
+// [x] On EVERY one of those Canvas Groups leave "Blocks Raycasts" TICKED. This
 //     script unticks and re-ticks it at runtime; ticked is the normal state.
-// [ ] Back on GameFlow, set "Gated Roots" Size to the number of Canvas Groups you
+// [x] Back on GameFlow, set "Gated Roots" Size to the number of Canvas Groups you
 //     just made, and drag each of those GameObjects into a slot.
-// [ ] IMPORTANT: every element a tutorial step points at must be a CHILD of one of
+// [x] IMPORTANT: every element a tutorial step points at must be a CHILD of one of
 //     those gated roots, or the gate will (safely) turn itself off for that step
 //     and log a warning telling you which anchor was outside.
-// [ ] Drag this GameFlow GameObject into TutorialController -> "Input Gate".
+// [x] Drag this GameFlow GameObject into TutorialController -> "Input Gate".
 // ---------------------------------------------------------------
 
 using UnityEngine;

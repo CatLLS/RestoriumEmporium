@@ -71,14 +71,23 @@ namespace RestoriumEmporium.UI
                 }
 
                 _runtimeResolved = true;
-                _runtime = restorationSource as IRestorationRuntime;
 
-                if (_runtime == null && restorationSource != null)
+                if (restorationSource != null)
                 {
-                    Debug.LogError(
-                        "[RestorationScreenBase] Restoration Source does not implement " +
-                        "IRestorationRuntime. Drag the object that carries " +
-                        "RestorationController into it.", this);
+                    // Dropping a GameObject on a MonoBehaviour field makes Unity keep
+                    // that object's FIRST component, which is rarely the intended one.
+                    // Look along the whole object before calling it a mis-wiring.
+                    _runtime = restorationSource as IRestorationRuntime
+                               ?? restorationSource.GetComponent<IRestorationRuntime>();
+
+                    if (_runtime == null)
+                    {
+                        Debug.LogError(
+                            "[RestorationScreenBase] The object in Restoration Source " +
+                            $"('{restorationSource.name}') has no component implementing " +
+                            "IRestorationRuntime. Drag the object that carries " +
+                            "RestorationController into it.", this);
+                    }
                 }
 
                 return _runtime;

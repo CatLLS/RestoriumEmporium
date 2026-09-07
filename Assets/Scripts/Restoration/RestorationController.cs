@@ -7,10 +7,10 @@
 //   which is how a state machine avoids ending up with two owners.
 // KEY DECISIONS:
 //   - It raises a transition, it does not perform one. StageTransition says
-//     "flip to back" or "go to finished repair"; actually flipping, zooming or
-//     routing belongs to the presentation layer, which subscribes to
-//     TransitionRequested. Putting a CardFlipAnimator reference in here would
-//     weld the rules to one particular scene layout.
+//     "flip to back" or "go to finished repair"; actually flipping or routing
+//     belongs to the presentation layer — RestorationPresenter — which
+//     subscribes to TransitionRequested. Putting a CardFlipAnimator reference in
+//     here would weld the rules to one particular scene layout.
 //   - Because the presentation layer needs time to play that transition, the
 //     controller does NOT advance immediately. It waits for
 //     ContinueAfterTransition(). The single exception is when nothing is
@@ -34,7 +34,7 @@
 // [x] Create an empty object at the root of the Game scene: right-click in the
 //     Hierarchy -> Create Empty, name it "GameFlow".
 // [x] Select GameFlow -> Add Component -> Restoration Controller.
-// [ ] Wire its fields:
+// [x] Wire its fields:
 //       Poster        <- Assets/Data/Poster1/Poster01 (the PosterData asset)
 //       Poster Stack  <- the "Poster" object under the Canvas
 //       Painter       <- the same "Poster" object (its Reveal Mask Painter)
@@ -42,13 +42,18 @@
 //                        ToolData assets from Assets/Data/Tools/:
 //                        ToolDustRemover, ToolWaterSpray, ToolDeacidifier,
 //                        ToolSqueegee, ToolRoller, ToolPencil
-// [ ] Leave "Begin On Start" TICKED while you are testing a single poster on
+// [x] Leave "Begin On Start" TICKED while you are testing a single poster on
 //     its own. UNTICK it once the Journal screen exists, because the journal's
 //     Restore button is what should call BeginPoster.
-// [ ] Nothing else subscribes to Transition Requested yet? Then leave
-//     "Auto Continue When Unhandled" TICKED so the poster still plays through.
-//     Once CardFlipAnimator/PosterZoomer are wired to it, the listener must call
-//     ContinueAfterTransition() when its animation finishes.
+// [x] Add a Restoration Presenter to the same GameFlow object. It is what
+//     listens to Transition Requested, plays the flips, and calls
+//     ContinueAfterTransition(). WITHOUT IT THE RESTORATION FREEZES at the end
+//     of stage 3, and "Auto Continue When Unhandled" will NOT save you: the tool
+//     bar also subscribes to that event, so the handler is never null and the
+//     fallback never runs. See RestorationPresenter.cs.
+// [x] Leave "Auto Continue When Unhandled" TICKED. It only matters while you are
+//     testing the poster on its own, with no tool bar and no presenter in the
+//     scene at all.
 // ---------------------------------------------------------------
 
 using System;

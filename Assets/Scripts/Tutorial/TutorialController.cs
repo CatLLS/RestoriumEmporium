@@ -1,5 +1,5 @@
 // ============================================================
-// TutorialController — plays the ordered tutorial steps and can never soft-lock.
+// TutorialController — plays the ordered tutorial steps at the player's pace.
 // WHAT & WHY: The MVP's first playthrough is guided end to end: Tracy talks, a hand
 //   points, input is gated to one target, and the step ends on the exact action it
 //   asked for. This component walks a TutorialStepData[] and drives the three view
@@ -12,11 +12,11 @@
 //     same order the player experiences it; an Update switch would scatter the same
 //     sequence across a dozen enum cases and invite the double-advance bugs that
 //     make tutorials lock up.
-//   - EVERY step is waited on with a timeout, not just the ones the designer
-//     remembered. autoAdvanceSeconds is used when set and a Fallback Timeout is used
-//     when it is zero, so no combination of a bad asset, a missing anchor and a
-//     misheard instruction can strand a playtester. Skip() and Restart() are public
-//     for the same reason.
+//   - A step waits for the player, with NO clock on it by default. An earlier
+//     revision timed every step out; in play that meant the tutorial marched on
+//     while the player was still reading, so Tracy ended up narrating a screen
+//     they had not reached. Skip() and Restart() are the escape hatches instead,
+//     and useSafetyTimeout puts the old behaviour back for a scripted test run.
 //   - The interfaces the tutorial listens to (IRestorationRuntime, IScreenRouter)
 //     come from serialized MonoBehaviour fields cast at Awake, not from
 //     ServiceLocator. They are scene objects, so a visible Inspector reference is
@@ -36,27 +36,29 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] First run the menu item Restorium -> Create Poster 1 Data. It creates every
+// [x] First run the menu item Restorium -> Create Poster 1 Data. It creates every
 //     data asset this component needs, including the tutorial steps.
-// [ ] In the Hierarchy select the "GameFlow" GameObject (create it with
+// [x] In the Hierarchy select the "GameFlow" GameObject (create it with
 //     right-click -> Create Empty and rename it if it does not exist).
-// [ ] Click "Add Component" and add this script (TutorialController).
-// [ ] In the Project window open Assets/Data/Tutorial/. Select ALL of the
+// [x] Click "Add Component" and add this script (TutorialController).
+// [x] In the Project window open Assets/Data/Tutorial/. Select ALL of the
 //     TutorialStep assets (click 01_Welcome, then shift-click the last one).
-// [ ] In the Inspector set "Steps" Size to the number of assets, then drag them in
+// [x] In the Inspector set "Steps" Size to the number of assets, then drag them in
 //     ONE BY ONE in numbered order: 01 into Element 0, 02 into Element 1, and so on.
 //     ORDER MATTERS - the save file stores a position in this list.
-// [ ] Drag the TracyHelpOverlay GameObject into "Overlay".
-// [ ] Drag the HelpingHand GameObject into "Hand Pointer".
-// [ ] Drag this same GameFlow GameObject into "Input Gate"
+// [x] Drag the TracyHelpOverlay GameObject into "Overlay".
+// [x] Drag the HelpingHand GameObject into "Hand Pointer".
+// [x] Drag this same GameFlow GameObject into "Input Gate"
 //     (TutorialInputGate lives on it too).
-// [ ] Drag the GameObject holding RestorationController into "Restoration Source".
-// [ ] Drag the GameObject holding ScreenRouter into "Screen Router Source".
+// [x] Drag the GameObject holding RestorationController into "Restoration Source".
+// [x] Drag the GameObject holding ScreenRouter into "Screen Router Source".
 //     Unity will pick the right component off each object.
-// [ ] Leave "Run Automatically" ticked so the tutorial starts with the game.
-// [ ] "Fallback Timeout" (default 120s) only applies to steps whose
-//     Auto Advance Seconds is 0. Leave it alone unless you know why.
-// [ ] To watch the tutorial again while testing, right-click this component's
+// [x] Leave "Run Automatically" ticked so the tutorial starts with the game.
+// [x] Leave "Use Safety Timeout" UNTICKED. Steps then wait for the player for as
+//     long as it takes, which is the point. Tick it only to march through the
+//     script while testing; "Fallback Timeout" is what it uses for steps whose
+//     Auto Advance Seconds is 0.
+// [x] To watch the tutorial again while testing, right-click this component's
 //     header in the Inspector and choose "Restart Tutorial".
 // ---------------------------------------------------------------
 
@@ -95,12 +97,19 @@ namespace RestoriumEmporium.Tutorial
         [Tooltip("Start the tutorial automatically when the scene loads.")]
         [SerializeField] private bool runAutomatically = true;
 
-        [Tooltip("Seconds of breathing room between steps.")]
+        [Tooltip("Seconds of breathing room between steps. A beat here lets a " +
+                 "finished stage land before Tracy speaks again.")]
         [Range(0f, 2f)]
-        [SerializeField] private float betweenStepsDelay = 0.2f;
+        [SerializeField] private float betweenStepsDelay = 0.5f;
 
-        [Tooltip("Safety timeout used for any step whose Auto Advance Seconds is 0. " +
-                 "There is deliberately no way to wait forever.")]
+        [Tooltip("Let steps give up and advance on their own. OFF by design: a step " +
+                 "that advances while the player is still reading teaches the wrong " +
+                 "thing and strands them a screen behind. Skip Tutorial is the escape " +
+                 "hatch instead. Tick it only to burn through the script while testing.")]
+        [SerializeField] private bool useSafetyTimeout;
+
+        [Tooltip("Only used when Use Safety Timeout is ticked, and only for steps " +
+                 "whose Auto Advance Seconds is 0.")]
         [Range(5f, 300f)]
         [SerializeField] private float fallbackTimeout = 120f;
 
@@ -121,6 +130,7 @@ namespace RestoriumEmporium.Tutorial
         private TutorialTapProbe _probe;
         private bool _probeIsOurs;
         private bool _advanced;
+        private bool _overlayDismissed;
         private WaitForSecondsRealtime _betweenSteps;
 
         /// <summary>Index of the step currently running. -1 when the tutorial is not running.</summary>
@@ -281,10 +291,11 @@ namespace RestoriumEmporium.Tutorial
                 _advanced = true;
             }
 
-            // A dialogue beat blocks the screen so a tap anywhere advances it. Every
-            // other beat needs the player to reach the game underneath the overlay.
-            var blocking = step.advance == TutorialAdvance.TapAnywhere;
-
+            // ---- Read phase: the player sets the pace --------------------------
+            // Every line is dismissed by a tap, never by a timer, so nobody is
+            // hurried through a sentence they are still reading. The panel blocks
+            // the game underneath for exactly as long as it is up, which also keeps
+            // the player from acting on an instruction they have not seen yet.
             if (overlay != null)
             {
                 if (string.IsNullOrEmpty(step.lineKey))
@@ -293,10 +304,27 @@ namespace RestoriumEmporium.Tutorial
                 }
                 else
                 {
-                    overlay.Show(step.lineKey, step.mood, blocking);
+                    _overlayDismissed = false;
+                    overlay.Tapped += OnOverlayDismissed;
+                    overlay.Show(step.lineKey, step.mood, true);
+
+                    // No clock on a line. Reading speed is not something this
+                    // component gets to have an opinion about.
+                    var reading = 0f;
+
+                    while (!_overlayDismissed
+                           && (!useSafetyTimeout || reading < fallbackTimeout))
+                    {
+                        reading += Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+
+                    overlay.Tapped -= OnOverlayDismissed;
+                    overlay.Hide();
                 }
             }
 
+            // ---- Act phase: the screen belongs to the player -------------------
             if (inputGate != null)
             {
                 if (step.gateInputToTarget)
@@ -309,11 +337,18 @@ namespace RestoriumEmporium.Tutorial
                 }
             }
 
+            // The hand has said its piece once the player starts working; leaving it
+            // bobbing over a poster being scrubbed only covers the work.
+            if (_restoration != null)
+            {
+                _restoration.StageProgressChanged += OnStageProgress;
+            }
+
             var timeout = step.autoAdvanceSeconds > 0f ? step.autoAdvanceSeconds : fallbackTimeout;
             var elapsed = 0f;
             var pointerShown = false;
 
-            while (!_advanced && elapsed < timeout)
+            while (!_advanced && (!useSafetyTimeout || elapsed < timeout))
             {
                 elapsed += Time.unscaledDeltaTime;
 
@@ -330,7 +365,12 @@ namespace RestoriumEmporium.Tutorial
                 yield return null;
             }
 
-            if (!_advanced)
+            if (_restoration != null)
+            {
+                _restoration.StageProgressChanged -= OnStageProgress;
+            }
+
+            if (!_advanced && useSafetyTimeout)
             {
                 Debug.Log(
                     $"[TutorialController] Step '{step.stepId}' timed out after {timeout:0.#}s " +
@@ -477,6 +517,7 @@ namespace RestoriumEmporium.Tutorial
             if (overlay != null)
             {
                 overlay.Tapped -= OnTapSignal;
+                overlay.Tapped -= OnOverlayDismissed;
             }
 
             if (_restoration != null)
@@ -484,6 +525,7 @@ namespace RestoriumEmporium.Tutorial
                 _restoration.StageStarted -= OnStageEvent;
                 _restoration.StageCompleted -= OnStageEvent;
                 _restoration.ToolSelected -= OnToolSelected;
+                _restoration.StageProgressChanged -= OnStageProgress;
             }
 
             if (_router != null)
@@ -555,6 +597,22 @@ namespace RestoriumEmporium.Tutorial
         private void OnStageEvent(RestorationStageData stage, int index)
         {
             _advanced = true;
+        }
+
+        /// <summary>Tap on Tracy's panel. Ends the reading pause, never the step.</summary>
+        private void OnOverlayDismissed()
+        {
+            _overlayDismissed = true;
+        }
+
+        private void OnStageProgress(float progress)
+        {
+            // Any painting at all means the instruction landed. EnterCurrentStage
+            // reports 0 on every stage open, so only real work clears the hand.
+            if (progress > 0f)
+            {
+                handPointer?.Clear();
+            }
         }
 
         private void OnScreenChanged(GameScreen screen)

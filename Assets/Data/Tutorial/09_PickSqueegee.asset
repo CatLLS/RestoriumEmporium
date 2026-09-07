@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 09_PickSqueegee
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickSqueegee
-  lineKey: tutorial.pickSqueegee
+  lineKey: tutorial.useSqueegee
   mood: 0
   targetAnchorId: toolbar.squeegee
   gateInputToTarget: 1

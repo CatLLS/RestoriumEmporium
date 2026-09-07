@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 12_UseRoller
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: useRoller
-  lineKey: tutorial.useRoller
+  lineKey: 
   mood: 0
   targetAnchorId: poster.surface
   gateInputToTarget: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 08_UseDeacidifier
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: useDeacidifier
-  lineKey: tutorial.useDeacidifier
+  lineKey: 
   mood: 0
   targetAnchorId: poster.surface
   gateInputToTarget: 0

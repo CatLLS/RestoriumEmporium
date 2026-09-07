@@ -17,12 +17,12 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Right-click in Project -> Create -> Restorium -> Locale Table.
-// [ ] Name it "pt-BR" and put it in Assets/Data/Localization/.
-// [ ] Set Locale Code to "pt-BR" and Display Name to "Portugues (Brasil)".
-// [ ] Menu Restorium -> Create Poster 1 Data fills in every entry for you;
+// [x] Right-click in Project -> Create -> Restorium -> Locale Table.
+// [x] Name it "pt-BR" and put it in Assets/Data/Localization/.
+// [x] Set Locale Code to "pt-BR" and Display Name to "Portugues (Brasil)".
+// [x] Menu Restorium -> Create Poster 1 Data fills in every entry for you;
 //     run that instead of typing the rows by hand.
-// [ ] Drag the asset into LocalizationService.tables on the Systems prefab.
+// [x] Drag the asset into LocalizationService.tables on the Systems prefab.
 // ---------------------------------------------------------------
 
 using System;

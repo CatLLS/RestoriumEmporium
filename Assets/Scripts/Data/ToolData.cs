@@ -12,13 +12,13 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Create one asset per tool: right-click in Project ->
+// [x] Create one asset per tool: right-click in Project ->
 //     Create -> Restorium -> Tool Data. Name them ToolDustRemover,
 //     ToolWaterSpray, ToolDeacidifier, ToolSqueegee, ToolRoller, ToolPencil.
-// [ ] Put them in Assets/Data/Tools/.
-// [ ] On each asset set Id, then drag the matching sprite from
+// [x] Put them in Assets/Data/Tools/.
+// [x] On each asset set Id, then drag the matching sprite from
 //     Assets/Art/cleaningAssets/ or Assets/Art/LinnenAssets/ into Icon.
-// [ ] Set Name Key to the matching key in the pt-BR LocaleTable
+// [x] Set Name Key to the matching key in the pt-BR LocaleTable
 //     (for example "tool.dustRemover").
 // ---------------------------------------------------------------
 

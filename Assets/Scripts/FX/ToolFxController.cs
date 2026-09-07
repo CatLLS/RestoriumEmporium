@@ -5,14 +5,18 @@
 //   pencil. This owns one pool per tool, follows which tool is active, and emits
 //   at the paint position.
 // KEY DECISIONS:
-//   - The painter pushes into a public EmitAt(Vector2 screenPos); this class
-//     does NOT subscribe to it. Agent B RevealMaskPainter is being written in
-//     parallel, and a serialised MonoBehaviour cast to a locally-declared
-//     interface would only compile as long as both sides agreed on a member name
-//     nobody owns. A public method is the smaller contract: the painter calls it
-//     directly if it holds a reference, or the human wires a UnityEvent<Vector2>
-//     to it in the Inspector. Either way nothing here has to compile against
-//     anything that does not exist yet.
+//   - Paint positions come from RevealMaskPainter.PaintedAt, which this class
+//     subscribes to. EmitAt stays public so anything else (a test, a second
+//     painter) can push into it, but the subscription is what actually makes the
+//     particles fire: PaintedAt is a C# event, so it cannot be wired in the
+//     Inspector and something has to hook it up in code.
+//   - The painter reference is found automatically when the field is empty,
+//     including on inactive objects. RestorationController keeps the painter
+//     component disabled until a tool is picked up and the poster object itself
+//     starts inactive, so an active-only search finds nothing at Awake.
+//   - The subscription is held for the lifetime of this component, not the
+//     painter's enabled window. A disabled painter raises no events anyway, and
+//     re-subscribing on every tool pickup is how you end up with duplicates.
 //   - Tool selection DOES come through IRestorationRuntime, because that is a
 //     shared contract that already exists and already promises a ToolSelected
 //     event. Reading it beats making the painter tell us twice.
@@ -29,9 +33,9 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] First build the six particle prefabs. See the checklist at the top of
+// [x] First build the six particle prefabs. See the checklist at the top of
 //     ParticleBurstPool.cs — do that before this, or there is nothing to pool.
-// [ ] Assign each prefab to its tool asset: select Assets/Data/Tools/ToolDustRemover
+// [x] Assign each prefab to its tool asset: select Assets/Data/Tools/ToolDustRemover
 //     and drag Assets/Prefabs/FxDustRemover into its "Fx Prefab" field. Repeat:
 //       ToolDustRemover -> FxDustRemover
 //       ToolWaterSpray  -> FxWaterSpray
@@ -39,11 +43,11 @@
 //       ToolSqueegee    -> FxSqueegee
 //       ToolRoller      -> FxRoller
 //       ToolPencil      -> FxPencil
-// [ ] In Game.unity, right-click the Canvas -> Create Empty. Name it exactly:
+// [x] In Game.unity, right-click the Canvas -> Create Empty. Name it exactly:
 //     ToolFx
 //     Rect Transform: anchor preset stretch/stretch, Left/Right/Top/Bottom = 0.
-// [ ] Select ToolFx -> Add Component -> Tool Fx Controller.
-// [ ] Wire the Inspector on ToolFx:
+// [x] Select ToolFx -> Add Component -> Tool Fx Controller.
+// [x] Wire the Inspector on ToolFx:
 //       Restoration Source <- the GameFlow object (has RestorationController)
 //       Ui Camera          <- the Main Camera (the same one in Canvas ->
 //                             Render Camera; leave empty to auto-find it)
@@ -57,12 +61,11 @@
 //       Plane Distance       leave at 100 — it MUST match the Canvas
 //                             Plane Distance, or the puffs appear at the wrong
 //                             size and drift as you drag.
-// [ ] Tell the painter where to send its paint positions. Whichever of these
-//     Agent B RevealMaskPainter exposes:
-//       - if it has a "Painted At" UnityEvent in the Inspector: click +, drag
-//         the ToolFx object in, and choose ToolFxController -> EmitAt.
-//       - if it has a "Tool Fx" object field instead: drag ToolFx into it.
-//     Nothing else needs wiring; without this step the particles never fire.
+// [x] Painter <- the "Poster" object (its Reveal Mask Painter). This is where
+//     the paint positions come from; without it the particles never fire.
+//     Leaving the field empty is also fine — the controller then finds the one
+//     painter in the scene at Awake — but wiring it explicitly is faster and
+//     survives a second painter being added later.
 // [ ] IMPORTANT sorting check: each screen ToolBarRoot must have its own Canvas
 //     with Override Sorting ticked and Order in Layer = 2, and the main Canvas
 //     must be Order in Layer = 0. Particles sit at 1, between the two, so they
@@ -91,6 +94,10 @@ namespace RestoriumEmporium.FX
                  "Camera.main at Awake.")]
         [SerializeField] private Camera uiCamera;
 
+        [Tooltip("The painter whose stroke positions drive the particles. Leave " +
+                 "empty to find the one in the scene at Awake.")]
+        [SerializeField] private RevealMaskPainter painter;
+
         [Header("Content")]
         [Tooltip("Every tool. Each supplies its own particle prefab via Fx Prefab. " +
                  "A tool with no prefab simply has no particles.")]
@@ -103,7 +110,7 @@ namespace RestoriumEmporium.FX
 
         [Range(1, 30)]
         [Tooltip("Particles emitted per burst.")]
-        [SerializeField] private int particlesPerEmit = 3;
+        [SerializeField] private int particlesPerEmit = 5;
 
         [Range(0f, 64f)]
         [Tooltip("Minimum screen-pixel gap between bursts. Keeps a slow drag from " +
@@ -137,19 +144,61 @@ namespace RestoriumEmporium.FX
                 uiCamera = Camera.main;
             }
 
+            if (painter == null)
+            {
+                // Include inactive: the poster starts inactive and the painter
+                // component itself is disabled until a tool is picked up.
+                RevealMaskPainter[] found =
+                    FindObjectsByType<RevealMaskPainter>(FindObjectsInactive.Include);
+
+                if (found.Length > 0)
+                {
+                    painter = found[0];
+                }
+
+                if (found.Length > 1)
+                {
+                    Debug.LogWarning(
+                        "[ToolFxController] The scene has " + found.Length +
+                        " RevealMaskPainters; particles will follow '" +
+                        painter.name + "'. Assign Painter explicitly to choose.", this);
+                }
+            }
+
+            if (painter == null)
+            {
+                Debug.LogError(
+                    "[ToolFxController] No RevealMaskPainter found. Nothing will " +
+                    "feed EmitAt, so no tool particles will ever appear. Drag the " +
+                    "Poster object into the Painter field.", this);
+            }
+
             BuildPools();
         }
 
         private void OnEnable()
         {
-            _runtime = restorationSource as IRestorationRuntime;
+            if (painter != null)
+            {
+                painter.PaintedAt += EmitAt;
+                painter.StrokeEnded += EndStroke;
+            }
+
+            // Dropping a GameObject on a MonoBehaviour field makes Unity keep that
+            // object's FIRST component, which is rarely the intended one. Look along
+            // the whole object before calling it a mis-wiring.
+            _runtime = restorationSource != null
+                ? restorationSource as IRestorationRuntime
+                  ?? restorationSource.GetComponent<IRestorationRuntime>()
+                : null;
 
             if (_runtime == null)
             {
                 if (restorationSource != null)
                 {
                     Debug.LogError(
-                        "[ToolFxController] Restoration Source does not implement " +
+                        "[ToolFxController] The object in Restoration Source " +
+                        $"('{restorationSource.name}') has no component implementing " +
                         "IRestorationRuntime. Drag the object that carries " +
                         "RestorationController into it.", this);
                 }
@@ -165,6 +214,12 @@ namespace RestoriumEmporium.FX
 
         private void OnDisable()
         {
+            if (painter != null)
+            {
+                painter.PaintedAt -= EmitAt;
+                painter.StrokeEnded -= EndStroke;
+            }
+
             if (_subscribed && _runtime != null)
             {
                 _runtime.ToolSelected -= HandleToolSelected;

@@ -14,6 +14,13 @@
 //   - The swap is driven by StageTransition.SwapToLinenTools coming off
 //     RestorationController.TransitionRequested, not by counting stages. The
 //     data says when the tools change; the bar just listens.
+//   - Which set a bar binds at startup is authored per bar (startWithLinenSet),
+//     and a bar with no linen set ignores the swap entirely. Both exist because
+//     this component supports two shapes: ONE shared bar that swaps sets
+//     mid-restoration, or one bar per screen that only ever shows its own set.
+//     Without them a per-screen linen bar would have to duplicate its tools into
+//     both lists to survive Awake and the swap, which is data lying to dodge
+//     a code path.
 //   - Highlighting keys off CurrentStage.requiredTool, not off ActiveTool. The
 //     bar must show what the player SHOULD pick up before they have picked
 //     anything up, which is the whole point of the greyed-out row.
@@ -26,22 +33,28 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Build the bar: right-click the Cleaning screen object -> UI -> Image,
-//     name it "ToolBar". Drag Assets/Art/LinnenAssets/toolsBarBG into its
-//     Source Image. Position it along the bottom of the screen.
-// [ ] Add the three ToolButton objects from the ToolButton checklist as
-//     children of ToolBar, laid out left to right.
-// [ ] Select ToolBar -> Add Component -> Tool Bar Controller.
-// [ ] Wire its fields:
-//       Runtime  <- the "GameFlow" object (its Restoration Controller)
-//       Buttons  <- Size 3, then drag ToolButton_1, ToolButton_2, ToolButton_3
-//                   in left-to-right order
-//       Cleaning Tools <- Size 3: ToolDustRemover, ToolWaterSpray,
-//                         ToolDeacidifier   (in that order)
-//       Linen Tools    <- Size 3: ToolSqueegee, ToolRoller, ToolPencil
-//                         (in that order)
-// [ ] Both lists come from Assets/Data/Tools/. Order matters: it is the order
-//     the buttons appear in on screen.
+// It is "ToolBarRoot". The screen checklists (CleaningScreen.cs,
+// LinenBackingScreen.cs) own the bar's name and layout and are the authority;
+// this component just goes on the object they build. There is no separate
+// "ToolBar" object.
+//
+// [x] Select a screen's ToolBarRoot -> Add Component -> Tool Bar Controller.
+//     One per screen that has tools; four in this scene.
+// [x] Runtime <- the "GameFlow" object (its Restoration Controller).
+// [x] Buttons <- Size 3, then that screen's three tool buttons in left-to-right
+//     screen order. Each needs a ToolButton component; see ToolButton.cs.
+// [x] Fill in only the set that bar actually shows, from Assets/Data/Tools/.
+//     Order matters: it is the order the buttons appear in on screen.
+//       CleaningScreen/ToolBarRoot
+//         Cleaning Tools <- 01_DustRemover, 02_WaterSpray, 03_Deacidifier
+//         Linen Tools    <- leave EMPTY
+//         Start With Linen Set = unticked
+//       each LinenBacking*Screen/ToolBarRoot
+//         Cleaning Tools <- leave EMPTY
+//         Linen Tools    <- 04_Squeegee, 05_Roller, 06_Pencil
+//         Start With Linen Set = TICKED
+// [x] Both lists are only filled on a single shared bar that swaps sets
+//     mid-restoration. With one bar per screen, each bar authors one set.
 // ---------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -67,8 +80,14 @@ namespace RestoriumEmporium.Restoration
         [Tooltip("Shown from the start: dust remover, water spray, deacidifier.")]
         [SerializeField] private List<ToolData> cleaningTools = new List<ToolData>();
 
-        [Tooltip("Shown after SwapToLinenTools: squeegee, roller, pencil.")]
+        [Tooltip("Shown after SwapToLinenTools: squeegee, roller, pencil. " +
+                 "Leave EMPTY on a bar that never swaps; the swap is then ignored.")]
         [SerializeField] private List<ToolData> linenTools = new List<ToolData>();
+
+        [Header("Initial state")]
+        [Tooltip("Tick on a bar that lives on a linen screen, so it binds the linen " +
+                 "set at startup instead of the cleaning set.")]
+        [SerializeField] private bool startWithLinenSet;
 
         private readonly List<ToolData> _activeSet = new List<ToolData>();
         private bool _showingLinenSet;
@@ -87,7 +106,7 @@ namespace RestoriumEmporium.Restoration
                 }
             }
 
-            ShowSet(false, true);
+            ShowSet(startWithLinenSet, true);
         }
 
         private void OnDestroy()
@@ -154,6 +173,7 @@ namespace RestoriumEmporium.Restoration
             runtime.StageStarted += OnStageStarted;
             runtime.StageCompleted += OnStageCompleted;
             runtime.TransitionRequested += OnTransitionRequested;
+            runtime.ToolSelected += OnToolSelected;
             _subscribed = true;
         }
 
@@ -167,12 +187,32 @@ namespace RestoriumEmporium.Restoration
             runtime.StageStarted -= OnStageStarted;
             runtime.StageCompleted -= OnStageCompleted;
             runtime.TransitionRequested -= OnTransitionRequested;
+            runtime.ToolSelected -= OnToolSelected;
             _subscribed = false;
         }
 
         private void OnStageStarted(RestorationStageData stage, int index)
         {
             RefreshHighlight(false);
+        }
+
+        /// <summary>
+        /// Raises the tool the player is holding and settles every other one. The
+        /// controller reports ToolId.None on stage boundaries, which drops the row
+        /// flat without this needing to know why.
+        /// </summary>
+        private void OnToolSelected(ToolId tool)
+        {
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                ToolButton slot = buttons[i];
+                if (slot == null || slot.Tool == null)
+                {
+                    continue;
+                }
+
+                slot.SetSelected(tool != ToolId.None && slot.Tool.id == tool);
+            }
         }
 
         private void OnStageCompleted(RestorationStageData stage, int index)
@@ -183,7 +223,10 @@ namespace RestoriumEmporium.Restoration
 
         private void OnTransitionRequested(StageTransition transition, RestorationStageData stage)
         {
-            if (transition == StageTransition.SwapToLinenTools)
+            // A bar with no linen set authored is a per-screen bar that never
+            // swaps. Honouring the transition there would blank its whole row.
+            if (transition == StageTransition.SwapToLinenTools
+                && linenTools != null && linenTools.Count > 0)
             {
                 ShowSet(true);
             }

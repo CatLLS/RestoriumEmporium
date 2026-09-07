@@ -14,18 +14,18 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Right-click in Project -> Create -> Restorium -> Poster Data.
-// [ ] Name it Poster01 and put it in Assets/Data/Poster1/.
-// [ ] Set Poster Id to "poster01". This string goes into the save file, so do
+// [x] Right-click in Project -> Create -> Restorium -> Poster Data.
+// [x] Name it Poster01 and put it in Assets/Data/Poster1/.
+// [x] Set Poster Id to "poster01". This string goes into the save file, so do
 //     not change it after you have shipped a build.
-// [ ] Drag in the sprites:
+// [x] Drag in the sprites:
 //       Journal Thumbnail    <- Art/journalAssets/posterBeforeDusting(30opacity...)
 //       Before Sprite        <- Art/Posters/poster1/posterBeforeDusting
 //       Final Sprite         <- Art/Posters/poster1/posterFinal
 //       Back Sprite          <- Art/LinnenAssets/PosterBack
 //       Linen Backing Sprite <- Art/LinnenAssets/linnenBacking
-// [ ] Drag the six RestorationStage assets into Stages, in play order.
-// [ ] Assign this asset to RestorationController.poster in the Game scene
+// [x] Drag the six RestorationStage assets into Stages, in play order.
+// [x] Assign this asset to RestorationController.poster in the Game scene
 //     (the MVP has a single poster).
 // ---------------------------------------------------------------
 

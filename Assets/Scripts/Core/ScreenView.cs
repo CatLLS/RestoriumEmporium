@@ -15,7 +15,7 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Nothing directly — attach the concrete subclasses (JournalScreen,
+// [x] Nothing directly — attach the concrete subclasses (JournalScreen,
 //     CleaningScreen, LinenBackingScreen, FinishedRepairScreen) to their
 //     corresponding root objects under the Canvas.
 // ---------------------------------------------------------------

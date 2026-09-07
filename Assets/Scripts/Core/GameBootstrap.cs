@@ -159,12 +159,16 @@ namespace RestoriumEmporium.Core
             }
             else
             {
-                _audio = audioServiceSource as IAudioService;
+                // Dropping a GameObject on a MonoBehaviour field makes Unity keep that
+                // object's FIRST component, which is rarely the intended one. Look
+                // along the whole object before calling it a mis-wiring.
+                _audio = audioServiceSource as IAudioService
+                         ?? audioServiceSource.GetComponent<IAudioService>();
 
                 if (_audio == null)
                 {
-                    Debug.LogError($"[GameBootstrap] '{audioServiceSource.GetType().Name}' was " +
-                                   "assigned to Audio Service Source but does not implement " +
+                    Debug.LogError($"[GameBootstrap] The object in Audio Service Source " +
+                                   $"('{audioServiceSource.name}') has no component implementing " +
                                    "IAudioService. The game will run silently.", this);
                 }
             }

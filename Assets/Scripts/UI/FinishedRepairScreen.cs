@@ -80,6 +80,7 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -108,9 +109,16 @@ namespace RestoriumEmporium.UI
 
         [SerializeField] private Button continueButton;
 
+        [Header("Pacing")]
+        [Tooltip("Seconds the BEFORE artwork is held before the card turns. The " +
+                 "reveal only reads as a reveal if the player had time to take in " +
+                 "what is being turned over.")]
+        [Range(0f, 5f)]
+        [SerializeField] private float flipDelaySeconds = 1.2f;
+
         [Header("Events")]
-        [Tooltip("Raised after this screen becomes visible and its faces are set. " +
-                 "Wire the flip animation here.")]
+        [Tooltip("Raised after this screen becomes visible and its faces are set, " +
+                 "once Flip Delay Seconds has passed. Wire the flip animation here.")]
         [SerializeField] private UnityEvent onShown = new UnityEvent();
 
         [Tooltip("Raised when the player taps Continue. The GameFlowController listens.")]
@@ -149,8 +157,27 @@ namespace RestoriumEmporium.UI
             ApplyFaces();
 
             // Raised last, so anything listening (the flip) starts from a card
-            // that already shows the right art.
-            onShown?.Invoke();
+            // that already shows the right art, and only after the before artwork
+            // has been on screen long enough to register.
+            if (flipDelaySeconds <= 0f)
+            {
+                onShown?.Invoke();
+                return;
+            }
+
+            StartCoroutine(RaiseOnShownAfterDelay());
+        }
+
+        private IEnumerator RaiseOnShownAfterDelay()
+        {
+            yield return new WaitForSecondsRealtime(flipDelaySeconds);
+
+            // The screen can be hidden again inside the delay; firing the flip at
+            // a card nobody is looking at would leave it mid-turn on the way back.
+            if (IsVisible)
+            {
+                onShown?.Invoke();
+            }
         }
 
         /// <summary>Swaps the poster whose before/after this screen reveals.</summary>

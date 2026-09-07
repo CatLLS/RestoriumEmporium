@@ -2,7 +2,7 @@
 // LinenBackingScreen — one script serving the front, back and final linen views.
 // WHAT & WHY: The three linen stages share a background, a desk, and the same
 //   three-tool bar; only the framing of the poster changes (front of the poster,
-//   back of the poster, then the poster mounted on the linen and zoomed in).
+//   back of the poster, then the poster mounted on the linen and framed close).
 //   One script with a Served Screen dropdown means three objects in the scene
 //   and one file to maintain, instead of three near-identical classes.
 // KEY DECISIONS:
@@ -14,8 +14,10 @@
 //     seven members and picking Journal here would silently steal the journal
 //     route; failing loudly in the Editor is much cheaper than debugging that.
 //   - linenFrame is optional and only used by the Final variant. Making it a
-//     separate object rather than a mode on the poster stack keeps the zoomed-in
-//     framing a layout fact the human can nudge, not a hard-coded number.
+//     separate object rather than a mode on the poster stack keeps the close-in
+//     framing a layout fact the human can nudge, not a hard-coded number. The
+//     Final variant's PosterStackRoot is simply authored smaller and tighter;
+//     there is no animated move onto it.
 //   - Header, subscription and localisation all come from RestorationScreenBase.
 //     This screen still implements no rules.
 // ============================================================

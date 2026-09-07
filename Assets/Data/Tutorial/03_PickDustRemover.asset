@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 03_PickDustRemover
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickDustRemover
-  lineKey: tutorial.pickDustRemover
+  lineKey: tutorial.useDustRemover
   mood: 0
   targetAnchorId: toolbar.dustRemover
   gateInputToTarget: 1

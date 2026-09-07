@@ -29,26 +29,26 @@
 // prefabs it pools. Build each one like this:
 //
 // A) MAKE ONE PARTICLE PREFAB PER TOOL (repeat six times)
-// [ ] GameObject -> Effects -> Particle System.
-// [ ] Rename it to one of: FxDustRemover, FxWaterSpray, FxDeacidifier,
+// [x] GameObject -> Effects -> Particle System.
+// [x] Rename it to one of: FxDustRemover, FxWaterSpray, FxDeacidifier,
 //     FxSqueegee, FxRoller, FxPencil.
-// [ ] In the Particle System module (the top one), set:
+// [x] In the Particle System module (the top one), set:
 //       Duration = 1, Looping = OFF, Start Lifetime = 0.5,
 //       Start Speed = 1.5, Start Size = 12, Gravity Modifier = 0.2,
 //       Simulation Space = WORLD  (critical — otherwise particles follow the
 //         finger instead of being left behind), Play On Awake = OFF,
 //       Max Particles = 60.
-// [ ] Start Color — click the colour swatch and set RGB per tool:
+// [x] Start Color — click the colour swatch and set RGB per tool:
 //       FxDustRemover   warm brown        R 138  G  99  B  62   A 255
 //       FxWaterSpray    blue              R  74  G 144  B 226   A 220
 //       FxDeacidifier   white             R 245  G 245  B 245   A 200
 //       FxSqueegee      brown-yellow      R 176  G 141  B  61   A 230
 //       FxRoller        glossy off-white  R 238  G 233  B 220   A 235
 //       FxPencil        grey graphite     R  92  G  92  B  96   A 240
-// [ ] Emission module: UNTICK it (set Rate over Time = 0 if you prefer). The
+// [x] Emission module: UNTICK it (set Rate over Time = 0 if you prefer). The
 //     pool emits explicitly; a rate would spray constantly.
-// [ ] Shape module: Shape = Sphere, Radius = 6.
-// [ ] Renderer module (scroll to the bottom):
+// [x] Shape module: Shape = Sphere, Radius = 6.
+// [x] Renderer module (scroll to the bottom):
 //       Render Mode = Billboard,
 //       Material = Default-Particle
 //         (click the circle -> switch the picker to the "All" tab ->
@@ -56,20 +56,20 @@
 //          Do NOT create a new material and do NOT look for a texture file;
 //          Default-Particle ships with Unity.)
 //       Sorting Layer ID = Default, Order in Layer = 1.
-// [ ] Drag the finished object from the Hierarchy into Assets/Prefabs to make
+// [x] Drag the finished object from the Hierarchy into Assets/Prefabs to make
 //     it a prefab, then DELETE it from the Hierarchy.
 //
 // B) SORTING (why Order in Layer = 1)
-// [ ] The Canvas renders at Sorting Layer Default, Order in Layer 0.
-// [ ] Each screen ToolBarRoot has its own Canvas with Override Sorting ticked
+// [x] The Canvas renders at Sorting Layer Default, Order in Layer 0.
+// [x] Each screen ToolBarRoot has its own Canvas with Override Sorting ticked
 //     and Order in Layer = 2 (see CleaningScreen.cs / LinenBackingScreen.cs).
-// [ ] Order 1 therefore sits ABOVE the poster and BELOW the tool bar, which is
+// [x] Order 1 therefore sits ABOVE the poster and BELOW the tool bar, which is
 //     exactly where the tool particles belong. If particles vanish, this number
 //     is almost certainly the reason.
 //
 // C) IF YOU DO PLACE A POOL BY HAND
-// [ ] Create Empty under the screen -> Add Component -> Particle Burst Pool.
-// [ ] Drag one of the Fx prefabs into Prefab, leave Size at 4, leave
+// [x] Create Empty under the screen -> Add Component -> Particle Burst Pool.
+// [x] Drag one of the Fx prefabs into Prefab, leave Size at 4, leave
 //     Sorting Layer Name at "Default" and Sorting Order at 1.
 // ---------------------------------------------------------------
 

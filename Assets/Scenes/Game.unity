@@ -368,8 +368,8 @@ Camera:
   m_GameObject: {fileID: 155344214}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.21509439, g: 0.080761835, b: 0.080761835, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 323092958}
   - component: {fileID: 323092960}
   - component: {fileID: 323092959}
+  - component: {fileID: 323092961}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -630,7 +631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -716,6 +717,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323092957}
   m_CullTransparentMesh: 1
+--- !u!114 &323092961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323092957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aedbe8aa91f6c43bda984dcf8ad8b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocalizedText
+  key: ui.journal.restore
 --- !u!1 &342430145
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -831,15 +845,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291483604
+  m_fontColor: {r: 0.8313726, g: 0.8431373, b: 0.79215693, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -925,7 +939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120, y: -62}
+  m_AnchoredPosition: {x: 200, y: -60}
   m_SizeDelta: {x: 172, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &444359959
@@ -942,6 +956,7 @@ GameObject:
   - component: {fileID: 444359963}
   - component: {fileID: 444359962}
   - component: {fileID: 444359961}
+  - component: {fileID: 444359966}
   m_Layer: 5
   m_Name: RollerButton
   m_TagString: Untagged
@@ -1051,7 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1077,6 +1092,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444359959}
   m_CullTransparentMesh: 1
+--- !u!114 &444359966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444359959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 444359964}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &445389873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,6 +1128,7 @@ GameObject:
   - component: {fileID: 445389877}
   - component: {fileID: 445389876}
   - component: {fileID: 445389875}
+  - component: {fileID: 445389880}
   m_Layer: 5
   m_Name: SqueegeeButton
   m_TagString: Untagged
@@ -1200,7 +1238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1226,6 +1264,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445389873}
   m_CullTransparentMesh: 1
+--- !u!114 &445389880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445389873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 445389878}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &494008884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,6 +1356,9 @@ GameObject:
   - component: {fileID: 545148233}
   - component: {fileID: 545148232}
   - component: {fileID: 545148231}
+  - component: {fileID: 545148235}
+  - component: {fileID: 545148234}
+  - component: {fileID: 545148236}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -1417,6 +1480,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545148229}
   m_CullTransparentMesh: 1
+--- !u!114 &545148234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545148229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf8c8fa098f959f4e8e64d72c11c0a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.TutorialAnchor
+  anchorId: finishedRepair.continueButton
+  pointAt: {fileID: 0}
+--- !u!114 &545148235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545148229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88df6d41c49029047bff7f6e24ff8eeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.UI.ButtonSfx
+  sfx: 1
+--- !u!225 &545148236
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545148229}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &547928013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,6 +1608,7 @@ GameObject:
   - component: {fileID: 555547606}
   - component: {fileID: 555547605}
   - component: {fileID: 555547604}
+  - component: {fileID: 555547609}
   m_Layer: 5
   m_Name: SqueegeeButton
   m_TagString: Untagged
@@ -1615,7 +1718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1641,6 +1744,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555547602}
   m_CullTransparentMesh: 1
+--- !u!114 &555547609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555547602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 555547607}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &574203364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1655,6 +1780,7 @@ GameObject:
   - component: {fileID: 574203368}
   - component: {fileID: 574203367}
   - component: {fileID: 574203366}
+  - component: {fileID: 574203371}
   m_Layer: 5
   m_Name: PencilButton
   m_TagString: Untagged
@@ -1764,7 +1890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1790,6 +1916,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574203364}
   m_CullTransparentMesh: 1
+--- !u!114 &574203371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574203364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 574203369}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &588533855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,6 +1952,7 @@ GameObject:
   - component: {fileID: 588533859}
   - component: {fileID: 588533858}
   - component: {fileID: 588533857}
+  - component: {fileID: 588533862}
   m_Layer: 5
   m_Name: DeacidifierButton
   m_TagString: Untagged
@@ -1913,7 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1939,6 +2088,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588533855}
   m_CullTransparentMesh: 1
+--- !u!114 &588533862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588533855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 588533860}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &622334885
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,7 +2278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98, y: -62}
+  m_AnchoredPosition: {x: 98, y: -50}
   m_SizeDelta: {x: 216, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &627964376
@@ -2124,7 +2295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2132,15 +2303,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291483604
+  m_fontColor: {r: 0.8313726, g: 0.8431373, b: 0.79215693, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2284,6 +2455,143 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647110188}
+  m_CullTransparentMesh: 1
+--- !u!1 &673840082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 673840083}
+  - component: {fileID: 673840085}
+  - component: {fileID: 673840084}
+  m_Layer: 5
+  m_Name: LineText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &673840083
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673840082}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1816533460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -126}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &673840084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673840082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 18
+  m_fontSizeBase: 18
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -40.638313, y: -7.121622, z: -20.866516, w: -44.148827}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &673840085
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673840082}
   m_CullTransparentMesh: 1
 --- !u!1 &695525914
 GameObject:
@@ -2430,6 +2738,8 @@ GameObject:
   - component: {fileID: 708841432}
   - component: {fileID: 708841434}
   - component: {fileID: 708841433}
+  - component: {fileID: 708841435}
+  - component: {fileID: 708841436}
   m_Layer: 5
   m_Name: ToolBarRoot
   m_TagString: Untagged
@@ -2501,6 +2811,44 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!225 &708841435
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708841431}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &708841436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708841431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf4ff14f434a5b4f8683317d56d454e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolBarController
+  runtime: {fileID: 1424121523}
+  buttons:
+  - {fileID: 1307487406}
+  - {fileID: 444359966}
+  - {fileID: 1112513287}
+  cleaningTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  linenTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  startWithLinenSet: 0
 --- !u!1 &858654111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,6 +3201,7 @@ GameObject:
   - component: {fileID: 1036550506}
   - component: {fileID: 1036550505}
   - component: {fileID: 1036550504}
+  - component: {fileID: 1036550509}
   m_Layer: 5
   m_Name: RollerButton
   m_TagString: Untagged
@@ -2962,7 +3311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2988,6 +3337,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036550502}
   m_CullTransparentMesh: 1
+--- !u!114 &1036550509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036550502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1036550507}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1045641480
 GameObject:
   m_ObjectHideFlags: 0
@@ -3002,6 +3373,7 @@ GameObject:
   - component: {fileID: 1045641483}
   - component: {fileID: 1045641482}
   - component: {fileID: 1045641486}
+  - component: {fileID: 1045641487}
   m_Layer: 5
   m_Name: RestoreButton
   m_TagString: Untagged
@@ -3150,6 +3522,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.UI.ButtonSfx
   sfx: 2
+--- !u!225 &1045641487
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045641480}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1051276327
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,6 +3545,8 @@ GameObject:
   - component: {fileID: 1051276328}
   - component: {fileID: 1051276330}
   - component: {fileID: 1051276329}
+  - component: {fileID: 1051276331}
+  - component: {fileID: 1051276332}
   m_Layer: 5
   m_Name: ToolBarRoot
   m_TagString: Untagged
@@ -3232,6 +3618,44 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!225 &1051276331
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051276327}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1051276332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051276327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf4ff14f434a5b4f8683317d56d454e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolBarController
+  runtime: {fileID: 1424121523}
+  buttons:
+  - {fileID: 445389880}
+  - {fileID: 1364240918}
+  - {fileID: 1538346255}
+  cleaningTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  linenTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  startWithLinenSet: 0
 --- !u!1 &1083914267
 GameObject:
   m_ObjectHideFlags: 0
@@ -3301,6 +3725,8 @@ GameObject:
   - component: {fileID: 1107838862}
   - component: {fileID: 1107838864}
   - component: {fileID: 1107838863}
+  - component: {fileID: 1107838865}
+  - component: {fileID: 1107838866}
   m_Layer: 5
   m_Name: ToolBarRoot
   m_TagString: Untagged
@@ -3372,6 +3798,44 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!225 &1107838865
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107838861}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1107838866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107838861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf4ff14f434a5b4f8683317d56d454e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolBarController
+  runtime: {fileID: 1424121523}
+  buttons:
+  - {fileID: 1596272159}
+  - {fileID: 1181195574}
+  - {fileID: 588533862}
+  cleaningTools:
+  - {fileID: 11400000, guid: b358fe580be94184888a0b09fa5c9d5c, type: 2}
+  - {fileID: 11400000, guid: cf0b6bec66b2b6648b3d2d1f9fb8daab, type: 2}
+  - {fileID: 11400000, guid: d571434c17d778c468bc08d09e6feac7, type: 2}
+  linenTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  startWithLinenSet: 0
 --- !u!1 &1112513280
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,6 +3850,7 @@ GameObject:
   - component: {fileID: 1112513284}
   - component: {fileID: 1112513283}
   - component: {fileID: 1112513282}
+  - component: {fileID: 1112513287}
   m_Layer: 5
   m_Name: PencilButton
   m_TagString: Untagged
@@ -3495,7 +3960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3521,6 +3986,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112513280}
   m_CullTransparentMesh: 1
+--- !u!114 &1112513287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112513280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1112513285}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1126134041
 GameObject:
   m_ObjectHideFlags: 0
@@ -3610,6 +4097,7 @@ GameObject:
   - component: {fileID: 1181195571}
   - component: {fileID: 1181195570}
   - component: {fileID: 1181195569}
+  - component: {fileID: 1181195574}
   m_Layer: 5
   m_Name: WaterSprayButton
   m_TagString: Untagged
@@ -3719,7 +4207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3745,6 +4233,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181195567}
   m_CullTransparentMesh: 1
+--- !u!114 &1181195574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181195567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1181195572}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1190076740
 GameObject:
   m_ObjectHideFlags: 0
@@ -3757,9 +4267,6 @@ GameObject:
   - component: {fileID: 1190076747}
   - component: {fileID: 1190076746}
   - component: {fileID: 1190076745}
-  - component: {fileID: 1190076744}
-  - component: {fileID: 1190076743}
-  - component: {fileID: 1190076742}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3786,77 +4293,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1190076742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190076740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf8c8fa098f959f4e8e64d72c11c0a12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.TutorialAnchor
-  anchorId: finishedRepair.continueButton
-  pointAt: {fileID: 0}
---- !u!114 &1190076743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190076740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88df6d41c49029047bff7f6e24ff8eeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.UI.ButtonSfx
-  sfx: 1
---- !u!114 &1190076744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190076740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1190076746}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1190076745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3884,7 +4320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3892,15 +4328,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e1b4d348fe888b458706909d3284d9e, type: 2}
+  m_sharedMaterial: {fileID: -2267463907403459343, guid: 9e1b4d348fe888b458706909d3284d9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4289905858
+  m_fontColor: {r: 0.7607844, g: 0.7686275, b: 0.69803923, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3970,6 +4406,143 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190076740}
   m_CullTransparentMesh: 1
+--- !u!1 &1216531358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1216531359}
+  - component: {fileID: 1216531361}
+  - component: {fileID: 1216531360}
+  m_Layer: 5
+  m_Name: TapHint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1216531359
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216531358}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1816533460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -50, y: -250}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1216531360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216531358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Tap to proceed
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 14
+  m_fontSizeBase: 14
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1216531361
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216531358}
+  m_CullTransparentMesh: 1
 --- !u!1 &1307487399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3984,6 +4557,7 @@ GameObject:
   - component: {fileID: 1307487403}
   - component: {fileID: 1307487402}
   - component: {fileID: 1307487401}
+  - component: {fileID: 1307487406}
   m_Layer: 5
   m_Name: SqueegeeButton
   m_TagString: Untagged
@@ -4093,7 +4667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -4119,6 +4693,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307487399}
   m_CullTransparentMesh: 1
+--- !u!114 &1307487406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307487399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1307487404}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1364240911
 GameObject:
   m_ObjectHideFlags: 0
@@ -4133,6 +4729,7 @@ GameObject:
   - component: {fileID: 1364240915}
   - component: {fileID: 1364240914}
   - component: {fileID: 1364240913}
+  - component: {fileID: 1364240918}
   m_Layer: 5
   m_Name: RollerButton
   m_TagString: Untagged
@@ -4242,7 +4839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -4268,6 +4865,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1364240911}
   m_CullTransparentMesh: 1
+--- !u!114 &1364240918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364240911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1364240916}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1399685973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4302,7 +4921,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 110, y: -69}
+  m_AnchoredPosition: {x: 110, y: -50}
   m_SizeDelta: {x: 192, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1399685975
@@ -4319,7 +4938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4327,15 +4946,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4290496711
+  m_fontColor: {r: 0.7803922, g: 0.7843138, b: 0.73333335, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4414,9 +5033,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1424121522}
+  - component: {fileID: 1424121523}
+  - component: {fileID: 1424121527}
   - component: {fileID: 1424121525}
   - component: {fileID: 1424121524}
-  - component: {fileID: 1424121523}
+  - component: {fileID: 1424121526}
+  - component: {fileID: 1424121528}
   m_Layer: 0
   m_Name: GameFlow
   m_TagString: Untagged
@@ -4461,7 +5083,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
   posterStack: {fileID: 2091914449}
   painter: {fileID: 2091914444}
-  beginOnStart: 1
+  beginOnStart: 0
   autoContinueWhenUnhandled: 1
 --- !u!114 &1424121524
 MonoBehaviour:
@@ -4476,7 +5098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Core.GameFlowController
   router: {fileID: 1424121525}
-  restorationSource: {fileID: 1424121525}
+  restorationSource: {fileID: 1424121523}
   poster: {fileID: 11400000, guid: ac4e4d2b20cfef84a9e38bb93b3fa11b, type: 2}
 --- !u!114 &1424121525
 MonoBehaviour:
@@ -4497,6 +5119,153 @@ MonoBehaviour:
   - {fileID: 494008886}
   - {fileID: 38498979}
   - {fileID: 1858057064}
+--- !u!114 &1424121526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424121521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a612955009ccbd549aca25800c312e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.TutorialController
+  steps:
+  - {fileID: 11400000, guid: cff53a1a70049ce4fb4b70d7768f7218, type: 2}
+  - {fileID: 11400000, guid: 75d7f973511150845a3b2f71b04ba668, type: 2}
+  - {fileID: 11400000, guid: 34b6caaf417b95b43af16dd6e85c0e03, type: 2}
+  - {fileID: 11400000, guid: 5303cfaf07e4aee4280fb367639337b3, type: 2}
+  - {fileID: 11400000, guid: 69a44868929f77d4ead1c28fa81a6831, type: 2}
+  - {fileID: 11400000, guid: 4b454519fcbf2e14e84b24ff3e469558, type: 2}
+  - {fileID: 11400000, guid: badff6fa4f424114ebcce0350a29660f, type: 2}
+  - {fileID: 11400000, guid: a76ad0dc85822c34097c58cc6c6f3e48, type: 2}
+  - {fileID: 11400000, guid: 01d55233f09fcfc478134786437f5048, type: 2}
+  - {fileID: 11400000, guid: 85273f8aae4ad714a820e4032709f673, type: 2}
+  - {fileID: 11400000, guid: 314639a7453b2c9439a0d93bc160693b, type: 2}
+  - {fileID: 11400000, guid: aa86a366d848f4e49bafeac176fcf026, type: 2}
+  - {fileID: 11400000, guid: 72fd14b1d5ee7c141bbc3f5d1305fc4e, type: 2}
+  - {fileID: 11400000, guid: 812b05527d20d3c4eafa3ccd8212c2f5, type: 2}
+  overlay: {fileID: 1816533461}
+  handPointer: {fileID: 2074629658}
+  inputGate: {fileID: 1424121528}
+  restorationSource: {fileID: 1424121523}
+  screenRouterSource: {fileID: 1424121525}
+  runAutomatically: 1
+  betweenStepsDelay: 0.2
+  useSafetyTimeout: 0
+  fallbackTimeout: 120
+--- !u!114 &1424121527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424121521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ceb2402568c8d4eb879b96ecd4d06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.RestorationPresenter
+  restoration: {fileID: 1424121523}
+  router: {fileID: 1424121525}
+  poster: {fileID: 2091914449}
+  posterFlip: {fileID: 2091914451}
+--- !u!114 &1424121528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424121521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b1c26c008813a49972ca906e8bc145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.TutorialInputGate
+  gatedRoots:
+  - {fileID: 1045641487}
+  - {fileID: 1107838865}
+  - {fileID: 1557627039}
+  - {fileID: 708841435}
+  - {fileID: 1051276331}
+  - {fileID: 545148236}
+  verbose: 0
+--- !u!1 &1432851960
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432851961}
+  - component: {fileID: 1432851963}
+  - component: {fileID: 1432851962}
+  m_Layer: 5
+  m_Name: TracyPortrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1432851961
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432851960}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1816533460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -20, y: 50}
+  m_SizeDelta: {x: 358, y: 534}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1432851962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432851960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -6845061647659169427, guid: 33b62148c7369e049ad807f845a9a020, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1432851963
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432851960}
+  m_CullTransparentMesh: 1
 --- !u!1 &1440341250
 GameObject:
   m_ObjectHideFlags: 0
@@ -4623,7 +5392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4631,8 +5400,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9e1b4d348fe888b458706909d3284d9e, type: 2}
+  m_sharedMaterial: {fileID: -2267463907403459343, guid: 9e1b4d348fe888b458706909d3284d9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4873,6 +5642,7 @@ GameObject:
   - component: {fileID: 1538346252}
   - component: {fileID: 1538346251}
   - component: {fileID: 1538346250}
+  - component: {fileID: 1538346255}
   m_Layer: 5
   m_Name: PencilButton
   m_TagString: Untagged
@@ -4982,7 +5752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -5008,6 +5778,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538346248}
   m_CullTransparentMesh: 1
+--- !u!114 &1538346255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538346248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1538346253}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1538490460
 GameObject:
   m_ObjectHideFlags: 0
@@ -5019,6 +5811,7 @@ GameObject:
   - component: {fileID: 1538490461}
   - component: {fileID: 1538490463}
   - component: {fileID: 1538490462}
+  - component: {fileID: 1538490464}
   m_Layer: 5
   m_Name: PosterTitle
   m_TagString: Untagged
@@ -5059,7 +5852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5145,6 +5938,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538490460}
   m_CullTransparentMesh: 1
+--- !u!114 &1538490464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538490460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aedbe8aa91f6c43bda984dcf8ad8b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocalizedText
+  key: ui.journal.titleui.journal.title
 --- !u!1 &1557627035
 GameObject:
   m_ObjectHideFlags: 0
@@ -5156,6 +5962,8 @@ GameObject:
   - component: {fileID: 1557627036}
   - component: {fileID: 1557627038}
   - component: {fileID: 1557627037}
+  - component: {fileID: 1557627039}
+  - component: {fileID: 1557627040}
   m_Layer: 5
   m_Name: ToolBarRoot
   m_TagString: Untagged
@@ -5227,6 +6035,44 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!225 &1557627039
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557627035}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1557627040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557627035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf4ff14f434a5b4f8683317d56d454e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolBarController
+  runtime: {fileID: 1424121523}
+  buttons:
+  - {fileID: 555547609}
+  - {fileID: 1036550509}
+  - {fileID: 574203371}
+  cleaningTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  linenTools:
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  startWithLinenSet: 0
 --- !u!1 &1596272152
 GameObject:
   m_ObjectHideFlags: 0
@@ -5241,6 +6087,7 @@ GameObject:
   - component: {fileID: 1596272156}
   - component: {fileID: 1596272155}
   - component: {fileID: 1596272154}
+  - component: {fileID: 1596272159}
   m_Layer: 5
   m_Name: DustRemoverButton
   m_TagString: Untagged
@@ -5350,7 +6197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -5376,6 +6223,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596272152}
   m_CullTransparentMesh: 1
+--- !u!114 &1596272159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596272152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dbbaff587421e479db921fa06ff01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.ToolButton
+  iconImage: {fileID: 1596272157}
+  button: {fileID: 0}
+  saturationMaterial: {fileID: 2100000, guid: e74310970ef673d40b1b5f91e5d9e550, type: 2}
+  shakeTarget: {fileID: 0}
+  saturationTweenSeconds: 0.2
+  dimmedSaturation: 0
+  shakeSeconds: 0.25
+  shakePixels: 8
+  selectedRisePixels: 10
+  selectedTweenSeconds: 0.12
 --- !u!1 &1667847362
 GameObject:
   m_ObjectHideFlags: 0
@@ -5476,7 +6345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5562,6 +6431,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674174139}
   m_CullTransparentMesh: 1
+--- !u!1 &1688972637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1688972638}
+  - component: {fileID: 1688972639}
+  m_Layer: 5
+  m_Name: ToolFx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1688972638
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688972637}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2107171479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1688972639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688972637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61a067d1fa23d340a11fca489ed1d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.FX.ToolFxController
+  restorationSource: {fileID: 1424121523}
+  uiCamera: {fileID: 155344216}
+  painter: {fileID: 2091914444}
+  tools:
+  - {fileID: 11400000, guid: b358fe580be94184888a0b09fa5c9d5c, type: 2}
+  - {fileID: 11400000, guid: cf0b6bec66b2b6648b3d2d1f9fb8daab, type: 2}
+  - {fileID: 11400000, guid: d571434c17d778c468bc08d09e6feac7, type: 2}
+  - {fileID: 11400000, guid: fb0a23c16cc1ef544968f02553eae29e, type: 2}
+  - {fileID: 11400000, guid: 18c4a318951d8d540965b2a80860c4fd, type: 2}
+  - {fileID: 11400000, guid: 40e9b52a3a3ae6c4ea287df6385cd8c4, type: 2}
+  poolSize: 7
+  particlesPerEmit: 8
+  minScreenDistance: 8
+  sortingLayerName: Default
+  sortingOrder: 1
+  planeDistance: 100
 --- !u!1 &1766945957
 GameObject:
   m_ObjectHideFlags: 0
@@ -5637,6 +6570,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766945957}
   m_CullTransparentMesh: 1
+--- !u!1001 &1773942609
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7790739163530944145, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_Name
+      value: Systems
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794218481909275183, guid: 40d25e8a31c259447800ff980b565458, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 40d25e8a31c259447800ff980b565458, type: 3}
 --- !u!1 &1786638639
 GameObject:
   m_ObjectHideFlags: 0
@@ -5671,7 +6661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98, y: -62}
+  m_AnchoredPosition: {x: 98, y: -30}
   m_SizeDelta: {x: 216, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1786638641
@@ -5688,7 +6678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5696,8 +6686,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
+  m_sharedMaterial: {fileID: 1004383912347078921, guid: 78c0c6813eed6f14abf284b4ad5c341e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5809,6 +6799,164 @@ RectTransform:
   m_AnchoredPosition: {x: 46, y: -177}
   m_SizeDelta: {x: 321, y: 574}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &1816533459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1816533460}
+  - component: {fileID: 1816533464}
+  - component: {fileID: 1816533463}
+  - component: {fileID: 1816533462}
+  - component: {fileID: 1816533461}
+  - component: {fileID: 1816533466}
+  - component: {fileID: 1816533465}
+  m_Layer: 5
+  m_Name: TracyHelpOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1816533460
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1432851961}
+  - {fileID: 673840083}
+  - {fileID: 1216531359}
+  m_Father: {fileID: 2107171479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1816533461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e03024ff6f3838e4fbd0bddf0a7c5399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.TracyOverlayView
+  scrimImage: {fileID: 1816533463}
+  portraitImage: {fileID: 1432851962}
+  lineLabel: {fileID: 673840084}
+  tapHintLabel: {fileID: 1216531360}
+  stillSprite: {fileID: -6845061647659169427, guid: 33b62148c7369e049ad807f845a9a020, type: 3}
+  happySprite: {fileID: -8780548819818123095, guid: 2e6b3c88bf84a8040a4b6083b25b2d19, type: 3}
+  embarrassedSprite: {fileID: -1093742230180594035, guid: 52b990968c00ab44bb011ae6f3aaca9c, type: 3}
+  tapHintKey: ui.dialogue.tapToContinue
+  useTypewriter: 1
+  charactersPerSecond: 45
+  hintDelay: 0.35
+--- !u!225 &1816533462
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1816533463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 6415065522053035525, guid: c0535d16c27f50142a5fd7c1d64b71a9, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1816533464
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_CullTransparentMesh: 1
+--- !u!114 &1816533465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!223 &1816533466
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816533459}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 10
+  m_TargetDisplay: 0
 --- !u!1 &1846300057
 GameObject:
   m_ObjectHideFlags: 0
@@ -5945,6 +7093,7 @@ MonoBehaviour:
   frontFace: {fileID: 955769820}
   backFace: {fileID: 1502392663}
   continueButton: {fileID: 545148231}
+  flipDelaySeconds: 1.2
   onShown:
     m_PersistentCalls:
       m_Calls:
@@ -6332,6 +7481,158 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907005998}
   m_CullTransparentMesh: 1
+--- !u!1 &2074629657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2074629661}
+  - component: {fileID: 2074629660}
+  - component: {fileID: 2074629659}
+  - component: {fileID: 2074629658}
+  - component: {fileID: 2074629662}
+  m_Layer: 5
+  m_Name: HelpingHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2074629658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074629657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e6eb40eef00eb4ab7825834aca7b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Tutorial.HandPointer
+  pointer: {fileID: 0}
+  canvas: {fileID: 2107171478}
+  offset: {x: 0, y: 20}
+  bobCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bobDistance: 16
+  bobPeriod: 0.9
+  tapScale: 0.08
+--- !u!114 &2074629659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074629657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 3188093492559168134, guid: 69864f43139f2404391c11b673e60631, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2074629660
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074629657}
+  m_CullTransparentMesh: 1
+--- !u!224 &2074629661
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074629657}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2107171479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 30}
+  m_SizeDelta: {x: 96, y: 96}
+  m_Pivot: {x: 0, y: 1}
+--- !u!223 &2074629662
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074629657}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 11
+  m_TargetDisplay: 0
 --- !u!1 &2091914443
 GameObject:
   m_ObjectHideFlags: 0
@@ -6345,6 +7646,7 @@ GameObject:
   - component: {fileID: 2091914446}
   - component: {fileID: 2091914449}
   - component: {fileID: 2091914444}
+  - component: {fileID: 2091914451}
   - component: {fileID: 2091914445}
   m_Layer: 5
   m_Name: Poster
@@ -6352,7 +7654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2091914444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6394,7 +7696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6462,6 +7764,47 @@ MonoBehaviour:
   coverageThreshold: 128
   brushRadiusUv: 0.12
   strokeStrength: 0.85
+--- !u!114 &2091914451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091914443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f112a73f77586d14d9e34a5108c27ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Restoration.CardFlipAnimator
+  target: {fileID: 0}
+  faceImage: {fileID: 647110190}
+  faceRect: {fileID: 0}
+  backFaceSource: {fileID: 0}
+  duration: 0.9
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2107171475
 GameObject:
   m_ObjectHideFlags: 0
@@ -6564,6 +7907,9 @@ RectTransform:
   - {fileID: 38498978}
   - {fileID: 1858057063}
   - {fileID: 2091914448}
+  - {fileID: 1816533460}
+  - {fileID: 2074629661}
+  - {fileID: 1688972638}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6577,5 +7923,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 155344217}
   - {fileID: 1846300060}
+  - {fileID: 1773942609}
   - {fileID: 2107171479}
   - {fileID: 1424121522}

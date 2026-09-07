@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 07_PickDeacidifier
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: pickDeacidifier
-  lineKey: tutorial.pickDeacidifier
+  lineKey: tutorial.useDeacidifier
   mood: 0
   targetAnchorId: toolbar.deacidifier
   gateInputToTarget: 1

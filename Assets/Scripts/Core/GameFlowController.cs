@@ -306,13 +306,17 @@ namespace RestoriumEmporium.Core
                 return;
             }
 
-            _restoration = restorationSource as IRestorationRuntime;
+            // Dropping a GameObject on a MonoBehaviour field makes Unity keep that
+            // object's FIRST component, which is rarely the intended one. Look along
+            // the whole object before calling it a mis-wiring.
+            _restoration = restorationSource as IRestorationRuntime
+                           ?? restorationSource.GetComponent<IRestorationRuntime>();
 
             if (_restoration == null)
             {
-                Debug.LogError($"[GameFlowController] '{restorationSource.GetType().Name}' was " +
-                               "assigned to Restoration Source but does not implement " +
-                               "IRestorationRuntime. Assign the RestorationController component.",
+                Debug.LogError($"[GameFlowController] The object in Restoration Source " +
+                               $"('{restorationSource.name}') has no component implementing " +
+                               "IRestorationRuntime. Add RestorationController to it.",
                                this);
             }
         }

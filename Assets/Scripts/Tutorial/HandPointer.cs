@@ -23,27 +23,33 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] In the Hierarchy, select your Canvas (the Screen Space - Camera one with
+// [x] In the Hierarchy, select your Canvas (the Screen Space - Camera one with
 //     Reference Resolution 412 x 917), right-click it and choose UI -> Image.
-// [ ] Rename that new Image to "HelpingHand" and drag it to the BOTTOM of the
+// [x] Rename that new Image to "HelpingHand" and drag it to the BOTTOM of the
 //     Canvas' list of children, so that it draws on top of everything else.
-// [ ] Select HelpingHand. In the Inspector, on the Image component, click the small
+// [x] Select HelpingHand. In the Inspector, on the Image component, click the small
 //     circle next to "Source Image" and pick "helpingHandIcon"
 //     (Assets/Art/helpingHandIcon.png).
 //     If it does not show up in that picker, click the png in the Project window,
 //     set Texture Type to "Sprite (2D and UI)" in the Inspector and press Apply.
-// [ ] Still on the Image component, UNTICK "Raycast Target". The hand must never
+// [x] Still on the Image component, UNTICK "Raycast Target". The hand must never
 //     swallow a tap meant for the button underneath it.
-// [ ] In the Rect Transform, click the Anchor Presets square (top-left of that
-//     component) and choose the top-left preset. Set Width 96 and Height 96.
-// [ ] Click "Add Component" and add this script (HandPointer).
-// [ ] Leave "Pointer" empty to use HelpingHand's own Rect Transform.
-// [ ] Drag your Canvas GameObject into the "Canvas" field. (Leaving it empty makes
+// [x] In the Rect Transform set Width 96 and Height 96. The anchor preset does
+//     not matter: Follow() converts into whatever anchor this rect uses.
+// [x] SORTING - the hand must sit above both the tool bar (Order 2) and Tracy's
+//     panel (Order 10), since it points at things on both:
+//       Add Component -> Canvas. Tick "Override Sorting".
+//       Sorting Layer = Default, Order in Layer = 11.
+//       No Graphic Raycaster here: the hand never takes a tap.
+// [x] Click "Add Component" and add this script (HandPointer).
+// [x] Leave "Pointer" empty to use HelpingHand's own Rect Transform.
+// [x] Drag your Canvas GameObject into the "Canvas" field. (Leaving it empty makes
 //     the script look for a Canvas in its parents, but filling it in is safer.)
-// [ ] "Offset" is in canvas reference pixels, measured from the target's centre.
-//     0, -40 parks the hand just below the middle of a button. Tune to taste.
-// [ ] Drag this HelpingHand GameObject into TutorialController -> "Hand Pointer".
-// [ ] Leave the HelpingHand GameObject ACTIVE (its checkbox ticked). The script
+// [x] Leave "Offset" at 0, 20 so the hand sits just ABOVE the middle of whatever
+//     it points at. A downward offset pushes it off the bottom of the screen on
+//     the tool bar, which sits near the bottom edge already.
+// [x] Drag this HelpingHand GameObject into TutorialController -> "Hand Pointer".
+// [x] Leave the HelpingHand GameObject ACTIVE (its checkbox ticked). The script
 //     hides the graphic by itself when there is nothing to point at.
 // ---------------------------------------------------------------
 
@@ -63,8 +69,11 @@ namespace RestoriumEmporium.Tutorial
         [SerializeField] private Canvas canvas;
 
         [Header("Placement")]
-        [Tooltip("Offset from the target's centre, in canvas reference pixels.")]
-        [SerializeField] private Vector2 offset = new Vector2(0f, -40f);
+        [Tooltip("Offset from the target's CENTRE, in canvas reference pixels. " +
+                 "Positive Y lifts the hand; it sits slightly above the middle so it " +
+                 "reads as pointing AT the target rather than covering it, without " +
+                 "dropping off the bottom of the screen on the tool bar.")]
+        [SerializeField] private Vector2 offset = new Vector2(0f, 20f);
 
         [Header("Animation")]
         [Tooltip("One full bob cycle. X runs 0..1 through the cycle, Y is 0..1 of Bob Distance.")]
@@ -229,6 +238,18 @@ namespace RestoriumEmporium.Tutorial
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     _parentRect, screenPoint, _uiCamera, out var local))
             {
+                // ScreenPointToLocalPointInRectangle answers relative to the PARENT's
+                // pivot, but anchoredPosition is measured from this rect's own anchor.
+                // Those agree only when the hand is centre-anchored; with the top-left
+                // preset the checklist used to ask for, the hand lands half a canvas up
+                // and to the left of its target. Shift by the gap between the two so
+                // any anchor preset is correct.
+                Rect parentBounds = _parentRect.rect;
+                Vector2 anchorCentre = (pointer.anchorMin + pointer.anchorMax) * 0.5f;
+
+                local.x -= (anchorCentre.x - _parentRect.pivot.x) * parentBounds.width;
+                local.y -= (anchorCentre.y - _parentRect.pivot.y) * parentBounds.height;
+
                 local.x += offset.x;
                 local.y += offset.y - wave * bobDistance;
                 pointer.anchoredPosition = local;

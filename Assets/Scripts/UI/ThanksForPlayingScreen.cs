@@ -25,45 +25,45 @@
 // Pos Y is NEGATIVE: type -74 where the design says y = 74.
 //
 // A) CREATE THE SCENE
-// [ ] File -> New Scene -> Basic 2D (Built-in) -> Create.
-// [ ] File -> Save As -> Assets/Scenes/ThanksForPlaying.unity
-// [ ] File -> Build Profiles -> Scene List -> Add Open Scenes, so it can be
+// [x] File -> New Scene -> Basic 2D (Built-in) -> Create.
+// [x] File -> Save As -> Assets/Scenes/ThanksForPlaying.unity
+// [x] File -> Build Profiles -> Scene List -> Add Open Scenes, so it can be
 //     loaded at runtime. Order: SampleScene = 0, Game = 1, ThanksForPlaying = 2.
 //
 // B) THE CANVAS
-// [ ] GameObject -> UI -> Canvas. Name it exactly: Canvas
+// [x] GameObject -> UI -> Canvas. Name it exactly: Canvas
 //     Render Mode = Screen Space - Camera. Drag Main Camera into Render Camera.
 //     Plane Distance = 100.
-// [ ] Canvas Scaler: UI Scale Mode = Scale With Screen Size,
+// [x] Canvas Scaler: UI Scale Mode = Scale With Screen Size,
 //     Reference Resolution X = 412, Y = 917, Match = 0.5.
-// [ ] Unity adds an EventSystem object automatically. If it did NOT,
+// [x] Unity adds an EventSystem object automatically. If it did NOT,
 //     GameObject -> UI -> Event System. Then select it and confirm the component
 //     is "Input System UI Input Module" (NOT "Standalone Input Module").
 //     If it is the wrong one, click the "Replace with InputSystemUIInputModule"
 //     button Unity shows on it. Buttons will not respond otherwise.
 //
 // C) CHILDREN, in this order (order = draw order, first is behind)
-// [ ] Right-click Canvas -> Create Empty. Name: ThanksForPlayingScreen
+// [x] Right-click Canvas -> Create Empty. Name: ThanksForPlayingScreen
 //       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
 //       Add Component -> Thanks For Playing Screen (this script).
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Image. Name: Background
+// [x] Right-click ThanksForPlayingScreen -> UI -> Image. Name: Background
 //       Anchor stretch/stretch, all offsets 0.
 //       Source Image = Assets/Art/thanksForPlaying/ThanksForPlayingBG
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Image. Name: TracyPortrait
+// [x] Right-click ThanksForPlayingScreen -> UI -> Image. Name: TracyPortrait
 //       Anchor top-left. Pos X = 141, Pos Y = -74, Width = 130, Height = 164.
 //       Source Image = Assets/Art/TracyHelpOverlay/tracy&DialogueBox(happy)
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Text - TextMeshPro. Name: Title
+// [x] Right-click ThanksForPlayingScreen -> UI -> Text - TextMeshPro. Name: Title
 //       Anchor top-left. Pos X = 100, Pos Y = -267, Width = 212, Height = 45.
 //       Alignment = Center + Middle. Font Size = 34.
 //       Add Component -> Localized Text, Key = ui.thanks.title
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Image. Name: Divider
+// [x] Right-click ThanksForPlayingScreen -> UI -> Image. Name: Divider
 //       Anchor top-left. Pos X = 161, Pos Y = -336, Width = 90, Height = 2.
 //       Source Image = None. Colour = a dark brown, alpha 255.
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Text - TextMeshPro. Name: BodyText
+// [x] Right-click ThanksForPlayingScreen -> UI -> Text - TextMeshPro. Name: BodyText
 //       Anchor top-left. Pos X = 51, Pos Y = -360, Width = 311, Height = 307.
 //       Alignment = Center + Top. Font Size = 18. Tick "Wrapping".
 //       Add Component -> Localized Text, Key = ui.thanks.body
-// [ ] Right-click ThanksForPlayingScreen -> UI -> Button - TextMeshPro.
+// [x] Right-click ThanksForPlayingScreen -> UI -> Button - TextMeshPro.
 //       Name: QuitButton
 //       Anchor top-left. Pos X = 105, Pos Y = -738, Width = 202, Height = 69.
 //       Image -> Source Image = Assets/Art/journalAssets/buttonBase
@@ -73,8 +73,8 @@
 //       Add Component -> Button Sfx on QuitButton, Sfx = Button Click.
 //
 // D) WIRE THE INSPECTOR (select ThanksForPlayingScreen and drag these in)
-// [ ] Quit Button <- the QuitButton child
-// [ ] Body Label  <- the BodyText child (informational only)
+// [x] Quit Button <- the QuitButton child
+// [x] Body Label  <- the BodyText child (informational only)
 // ---------------------------------------------------------------
 
 using TMPro;

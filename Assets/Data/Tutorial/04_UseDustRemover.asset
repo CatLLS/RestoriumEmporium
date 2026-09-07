@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 04_UseDustRemover
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
   stepId: useDustRemover
-  lineKey: tutorial.useDustRemover
+  lineKey: 
   mood: 0
   targetAnchorId: poster.surface
   gateInputToTarget: 0

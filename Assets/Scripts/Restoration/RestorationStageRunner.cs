@@ -15,8 +15,8 @@
 //     the threshold is 0.85 or the pencil's 0.6. That is the contract
 //     IRestorationRuntime.StageProgress01 promises.
 //   - Advance() moves the index but does not decide what to show. The choreo-
-//     graphy (flip, zoom, screen change) is driven by the transition event on
-//     the controller; this class knows nothing about it.
+//     graphy (flip, screen change) is driven by the transition event on the
+//     controller; this class knows nothing about it.
 //   - Every accessor tolerates a null poster and an out-of-range index, because
 //     a save file can name a stage index that a re-authored poster no longer
 //     has. That resolves to "no stage" rather than to an exception.
