@@ -22,6 +22,17 @@
 //     six stacked on top of each other.
 //   - ScreenChanged fires after Show(), so listeners that read layout get valid
 //     rects instead of last frame's.
+//   - Go() HOLDS for Screen Change Delay Seconds before it swaps anything. This
+//     is a cozy game and a screen that changes on the same frame the player lifts
+//     their finger reads as the game snatching the work away from them. The hold
+//     lives here rather than at the four call sites so there is one number to
+//     tune and no way to add a fifth call site that forgets it.
+//   - The hold is skipped when nothing is on screen yet (Current is None). That
+//     is the scene's first route, where there is no transition to soften — only a
+//     second of black.
+//   - A Go() during a pending hold REPLACES it rather than queueing. The pending
+//     screen is also what Go() compares against for its idempotence check, so the
+//     several-systems-ask-for-the-same-screen case still collapses to one change.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -41,9 +52,13 @@
 //     a CHILD of "GameFlow" — only useful if you parent the screens under it.)
 // [x] Leave all screen objects ticked/active in the Hierarchy while you author
 //     them. The router hides them all on the first frame.
+// [ ] "Screen Change Delay Seconds" is the beat before EVERY screen change (1s by
+//     default). Turn it down to 0 while you are testing a long flow; turn it up
+//     if the game still feels like it is rushing you.
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,13 +72,26 @@ namespace RestoriumEmporium.Core
                  "objects here. Leave empty to auto-find ScreenViews under this object.")]
         [SerializeField] private ScreenView[] screens = Array.Empty<ScreenView>();
 
+        [Header("Pacing")]
+        [Tooltip("Seconds the current screen is held before a Go() actually swaps " +
+                 "it. The beat is what keeps a finished stage from being whisked " +
+                 "away the instant the player lifts their finger. Set to 0 for the " +
+                 "old immediate behaviour. Not applied to the scene's first screen.")]
+        [Range(0f, 3f)]
+        [SerializeField] private float screenChangeDelaySeconds = 1f;
+
         private readonly Dictionary<GameScreen, ScreenView> _views =
             new Dictionary<GameScreen, ScreenView>();
 
         private ScreenView _currentView;
+        private Coroutine _pending;
+        private GameScreen _pendingScreen = GameScreen.None;
 
         /// <inheritdoc />
         public GameScreen Current { get; private set; } = GameScreen.None;
+
+        /// <summary>The screen a held Go() is on its way to, or Current when none is.</summary>
+        public GameScreen Requested => _pending != null ? _pendingScreen : Current;
 
         /// <inheritdoc />
         public event Action<GameScreen> ScreenChanged;
@@ -84,20 +112,65 @@ namespace RestoriumEmporium.Core
         /// <inheritdoc />
         public void Go(GameScreen screen)
         {
-            if (screen == Current)
+            if (screen == Requested)
             {
                 // Idempotent by contract: several systems can ask for the same
                 // screen in one frame and none of them should replay its entry.
                 return;
             }
 
+            if (!_views.ContainsKey(screen))
+            {
+                // Reported here rather than after the hold, so a mis-wired screen
+                // still shows up in the console on the frame it was asked for.
+                LogUnregistered(screen);
+                return;
+            }
+
+            CancelPending();
+
+            // Nothing on screen yet means this is the scene's first route: a hold
+            // there is just a second of black, not a beat.
+            if (screenChangeDelaySeconds <= 0f || Current == GameScreen.None)
+            {
+                Apply(screen);
+                return;
+            }
+
+            _pendingScreen = screen;
+            _pending = StartCoroutine(GoAfterDelay(screen));
+        }
+
+        /// <summary>
+        /// Changes screen with no hold, cancelling any pending one. For the rare
+        /// caller that must not wait — a quit or an error path.
+        /// </summary>
+        public void GoNow(GameScreen screen)
+        {
+            CancelPending();
+
+            if (screen != Current)
+            {
+                Apply(screen);
+            }
+        }
+
+        private IEnumerator GoAfterDelay(GameScreen screen)
+        {
+            // Unscaled, so the beat is the same length whether or not something
+            // has paused the game underneath it.
+            yield return new WaitForSecondsRealtime(screenChangeDelaySeconds);
+
+            _pending = null;
+            _pendingScreen = GameScreen.None;
+            Apply(screen);
+        }
+
+        private void Apply(GameScreen screen)
+        {
             if (!_views.TryGetValue(screen, out var next) || next == null)
             {
-                Debug.LogError(
-                    $"[ScreenRouter] No ScreenView registered for {screen}. Staying on {Current}. " +
-                    "Add the screen object to the 'Screens' list on this component, and make sure " +
-                    "its ScreenView subclass returns the right value from its Screen property.",
-                    this);
+                LogUnregistered(screen);
                 return;
             }
 
@@ -111,6 +184,26 @@ namespace RestoriumEmporium.Core
             next.Show();
 
             ScreenChanged?.Invoke(screen);
+        }
+
+        private void CancelPending()
+        {
+            if (_pending != null)
+            {
+                StopCoroutine(_pending);
+                _pending = null;
+            }
+
+            _pendingScreen = GameScreen.None;
+        }
+
+        private void LogUnregistered(GameScreen screen)
+        {
+            Debug.LogError(
+                $"[ScreenRouter] No ScreenView registered for {screen}. Staying on {Current}. " +
+                "Add the screen object to the 'Screens' list on this component, and make sure " +
+                "its ScreenView subclass returns the right value from its Screen property.",
+                this);
         }
 
         /// <summary>True when a view is registered for <paramref name="screen"/>.</summary>
@@ -176,6 +269,8 @@ namespace RestoriumEmporium.Core
 
         private void HideAll()
         {
+            CancelPending();
+
             foreach (var pair in _views)
             {
                 pair.Value.Hide();

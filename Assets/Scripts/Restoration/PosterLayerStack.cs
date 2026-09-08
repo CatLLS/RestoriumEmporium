@@ -13,8 +13,11 @@
 //     (posterFinal). With a normal stage the top holds 'toSprite' and fades in.
 //     SetStage picks the assignment; the shader only ever flips one lerp.
 //     revealTint is applied to whichever Image holds toSprite, because "the
-//     revealed layer" is what the tint is authored to describe (the roller's
-//     wet-adhesive sheen), and that is the top layer in every stage but one.
+//     revealed layer" is what the tint is authored to describe, and that is the
+//     top layer in every stage but one. Note it is a MULTIPLY (Image.color), so
+//     it can only ever darken: a stage that needs to reveal something LIGHTER
+//     than fromSprite — the roller's white adhesive — needs a real toSprite, not
+//     a tint. Every stage currently ships revealTint white for that reason.
 //   - _Invert is a float, not a shader keyword. A keyword would add a second
 //     shader variant and a per-stage material change for what is one lerp in
 //     the fragment shader; on a single full-screen quad the branchless version

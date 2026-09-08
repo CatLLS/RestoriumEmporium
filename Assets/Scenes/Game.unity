@@ -288,9 +288,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 65, y: -174}
+  m_AnchoredPosition: {x: 206.5, y: -427}
   m_SizeDelta: {x: 283, y: 506}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &128782467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2219,15 +2219,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8039216, g: 0.3607843, b: 0.3607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -765150924802650856, guid: b6fd1fc6a4046ff4bbe7e883205baaa0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2620,13 +2620,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695525914}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 920409384}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 330, y: -700}
@@ -2702,15 +2702,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8039216, g: 0.3607843, b: 0.3607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -765150924802650856, guid: b6fd1fc6a4046ff4bbe7e883205baaa0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2940,7 +2940,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &920409384
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5085,6 +5085,7 @@ MonoBehaviour:
   painter: {fileID: 2091914444}
   beginOnStart: 0
   autoContinueWhenUnhandled: 1
+  stageSettleSeconds: 1
 --- !u!114 &1424121524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5119,6 +5120,7 @@ MonoBehaviour:
   - {fileID: 494008886}
   - {fileID: 38498979}
   - {fileID: 1858057064}
+  screenChangeDelaySeconds: 1
 --- !u!114 &1424121526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5146,13 +5148,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa86a366d848f4e49bafeac176fcf026, type: 2}
   - {fileID: 11400000, guid: 72fd14b1d5ee7c141bbc3f5d1305fc4e, type: 2}
   - {fileID: 11400000, guid: 812b05527d20d3c4eafa3ccd8212c2f5, type: 2}
+  - {fileID: 11400000, guid: 3b0e18f8739f3cc458d8c5ab7804d875, type: 2}
   overlay: {fileID: 1816533461}
   handPointer: {fileID: 2074629658}
   inputGate: {fileID: 1424121528}
   restorationSource: {fileID: 1424121523}
   screenRouterSource: {fileID: 1424121525}
   runAutomatically: 1
-  betweenStepsDelay: 0.2
+  dialogueDelaySeconds: 0
   useSafetyTimeout: 0
   fallbackTimeout: 120
 --- !u!114 &1424121527
@@ -5352,6 +5355,7 @@ GameObject:
   - component: {fileID: 1441489237}
   - component: {fileID: 1441489239}
   - component: {fileID: 1441489238}
+  - component: {fileID: 1441489240}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -5478,6 +5482,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441489236}
   m_CullTransparentMesh: 1
+--- !u!114 &1441489240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441489236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aedbe8aa91f6c43bda984dcf8ad8b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocalizedText
+  key: ui.finishedRepair.title
 --- !u!1 &1452700301
 GameObject:
   m_ObjectHideFlags: 0
@@ -6360,8 +6377,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4282664064
+  m_fontColor: {r: 0.5018867, g: 0.26798856, b: 0.26798856, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6796,7 +6813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46, y: -177}
+  m_AnchoredPosition: {x: 45, y: -127}
   m_SizeDelta: {x: 321, y: 574}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1816533459
@@ -7365,8 +7382,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19, y: -61}
-  m_SizeDelta: {x: 375, y: 638}
+  m_AnchoredPosition: {x: 34, y: -65}
+  m_SizeDelta: {x: 340, y: 638}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1891964373
 MonoBehaviour:

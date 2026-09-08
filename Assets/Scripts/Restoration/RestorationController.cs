@@ -28,6 +28,15 @@
 //   - Progress is written to the save service with SaveSoon() on stage
 //     boundaries only, never on coverage changes. Coverage changes many times a
 //     second and disk writes do not belong on the drag path.
+//   - A finished stage SETTLES before anything is told about it. The moment
+//     coverage crosses the threshold the mask snaps full, and then the game holds
+//     still for Stage Settle Seconds. Only after that does the completion sound
+//     play, StageCompleted go out and the transition get raised — so the sound
+//     arrives over the flip rather than on the frame the player's finger came up. Firing them on the same frame the player
+//     lifted their finger meant Tracy's next line and the screen change landed on
+//     top of the work being finished, which is the opposite of cozy. Holding here
+//     rather than in each listener means one number covers dialogue, the tool bar
+//     and the flip at once.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -54,9 +63,14 @@
 // [x] Leave "Auto Continue When Unhandled" TICKED. It only matters while you are
 //     testing the poster on its own, with no tool bar and no presenter in the
 //     scene at all.
+// [ ] "Stage Settle Seconds" is the pause between a stage being finished and the
+//     game reacting to it (1s by default). Set it to 0 to burn through the poster
+//     while testing. Its companions are ScreenRouter's "Screen Change Delay
+//     Seconds" and TutorialController's "Dialogue Delay Seconds".
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -90,6 +104,14 @@ namespace RestoriumEmporium.Restoration
         [Tooltip("Advance immediately when nothing is listening to Transition Requested.")]
         [SerializeField] private bool autoContinueWhenUnhandled = true;
 
+        [Header("Pacing")]
+        [Tooltip("Seconds of stillness after a stage's coverage threshold is crossed " +
+                 "before anything else happens on screen. The mask snap and the " +
+                 "completion sound land straight away; Tracy, the tool bar and the " +
+                 "flip all wait this out. Set to 0 for the old immediate behaviour.")]
+        [Range(0f, 3f)]
+        [SerializeField] private float stageSettleSeconds = 1f;
+
         private readonly RestorationStageRunner _runner = new RestorationStageRunner();
         private readonly Dictionary<ToolId, ToolData> _toolsById = new Dictionary<ToolId, ToolData>();
 
@@ -100,6 +122,7 @@ namespace RestoriumEmporium.Restoration
         private ToolId _activeTool = ToolId.None;
         private bool _awaitingTransition;
         private bool _posterFinished;
+        private Coroutine _settle;
 
         /// <inheritdoc />
         public PosterData Poster => _runner.Poster;
@@ -140,6 +163,9 @@ namespace RestoriumEmporium.Restoration
 
         /// <summary>True while the controller is waiting for ContinueAfterTransition().</summary>
         public bool IsAwaitingTransition => _awaitingTransition;
+
+        /// <summary>True during the beat between a stage finishing and anyone being told.</summary>
+        public bool IsSettling => _settle != null;
 
         /// <summary>Looks up an authored tool by id, or null when it is not in the list.</summary>
         public ToolData GetTool(ToolId id)
@@ -190,6 +216,7 @@ namespace RestoriumEmporium.Restoration
                 painter.StrokeEnded -= OnStrokeEnded;
             }
 
+            CancelSettle();
             _audio?.StopToolLoop();
         }
 
@@ -217,6 +244,10 @@ namespace RestoriumEmporium.Restoration
             poster = posterData;
             _posterFinished = false;
             _awaitingTransition = false;
+
+            // A restart during the beat must not have the old stage's completion
+            // arrive a second later, on top of the new stage.
+            CancelSettle();
 
             _runner.Begin(posterData, startStageIndex);
             EnterCurrentStage();
@@ -361,6 +392,43 @@ namespace RestoriumEmporium.Restoration
             // Snap the mask so the stage's end state is exact, not 85%-scrubbed.
             _surface?.FillCompletely();
 
+            // Everything above is the payoff for the stroke that just landed and
+            // belongs on this frame. Everything below moves the game on, and the
+            // player gets a beat to look at what they did first.
+            if (stageSettleSeconds <= 0f || !isActiveAndEnabled)
+            {
+                AnnounceStageCompleted(stage, index);
+                return;
+            }
+
+            CancelSettle();
+            _settle = StartCoroutine(SettleThenAnnounce(stage, index));
+        }
+
+        private IEnumerator SettleThenAnnounce(RestorationStageData stage, int index)
+        {
+            // Unscaled: the beat is the same length whether or not the pause
+            // overlay is up over it.
+            yield return new WaitForSecondsRealtime(stageSettleSeconds);
+
+            _settle = null;
+            AnnounceStageCompleted(stage, index);
+        }
+
+        private void CancelSettle()
+        {
+            if (_settle != null)
+            {
+                StopCoroutine(_settle);
+                _settle = null;
+            }
+        }
+
+        private void AnnounceStageCompleted(RestorationStageData stage, int index)
+        {
+            // The completion sound rides the transition, not the last brush
+            // stroke. On the stroke it sounded like the game buzzing the player
+            // for finishing; over the flip it is the stage being put away.
             if (stage.completeSfx != SfxId.None)
             {
                 _audio?.PlaySfx(stage.completeSfx);

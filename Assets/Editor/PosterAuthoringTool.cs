@@ -489,7 +489,7 @@ namespace RestoriumEmporium.EditorTools
             Add(table, "ui.linenBacking.toolbar", "Ferramentas de reforço");
 
             // ---- Finished repair ----
-            Add(table, "ui.finishedRepair.title", "Restauração concluída!");
+            Add(table, "ui.finishedRepair.title", "Bom trabalho!");
             Add(table, "ui.finishedRepair.continue", "Continuar");
             Add(table, "ui.finishedRepair.backToWorkbench", "Voltar para a bancada");
 

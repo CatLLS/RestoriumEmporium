@@ -42,7 +42,7 @@ MonoBehaviour:
   - key: ui.linenBacking.toolbar
     value: "Ferramentas de refor\xE7o"
   - key: ui.finishedRepair.title
-    value: "Restaura\xE7\xE3o conclu\xEDda!"
+    value: Bom trabalho!
   - key: ui.finishedRepair.continue
     value: Continuar
   - key: ui.finishedRepair.backToWorkbench

@@ -41,8 +41,14 @@
 //       Anchor top-left. Pos X = 89, Pos Y = -128, Width = 235, Height = 20.
 //       Alignment = Center + Middle. Font Size = 18.
 //       Add Component -> Localized Text, Key = ui.finishedRepair.title
+//       The title does NOT change while the card turns; one steady line reads
+//       calmer than a word swapping under the player's eyes mid-flip.
 // [x] Right-click FinishedRepairScreen -> Create Empty. Name: FlipCard
-//       Anchor top-left. Pos X = 65, Pos Y = -174, Width = 283, Height = 506.
+//       Anchor top-left. Width = 283, Height = 506.
+//       PIVOT MUST BE 0.5, 0.5 — the card spins around its own Y axis, so a
+//       pivot on an edge swings it off screen instead of turning it in place.
+//       With that pivot the position is Pos X = 206.5, Pos Y = -427 (the centre
+//       of where the top-left-pivoted card used to sit).
 // [x] Right-click FlipCard -> UI -> Image. Name: FrontFace
 //       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
 //       Source Image = Assets/Art/Posters/poster1/posterBeforeDusting

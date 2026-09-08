@@ -17,6 +17,10 @@
 //     while the player was still reading, so Tracy ended up narrating a screen
 //     they had not reached. Skip() and Restart() are the escape hatches instead,
 //     and useSafetyTimeout puts the old behaviour back for a scripted test run.
+//   - There is no delay BETWEEN steps. A step that has been satisfied should end
+//     on the spot; padding the gap only made the tutorial feel sticky. The one
+//     clock left on the normal path is dialogueDelaySeconds, which sits directly
+//     in front of the panel appearing, where the abruptness actually was.
 //   - The interfaces the tutorial listens to (IRestorationRuntime, IScreenRouter)
 //     come from serialized MonoBehaviour fields cast at Awake, not from
 //     ServiceLocator. They are scene objects, so a visible Inspector reference is
@@ -58,6 +62,10 @@
 //     long as it takes, which is the point. Tick it only to march through the
 //     script while testing; "Fallback Timeout" is what it uses for steps whose
 //     Auto Advance Seconds is 0.
+// [ ] "Dialogue Delay Seconds" (1s) is the only clock in a step's normal path.
+//     There is deliberately NO gap between steps: a step ends the instant the
+//     player does what it asked, and the next one's beat is the one before its
+//     line appears.
 // [x] To watch the tutorial again while testing, right-click this component's
 //     header in the Inspector and choose "Restart Tutorial".
 // ---------------------------------------------------------------
@@ -97,10 +105,12 @@ namespace RestoriumEmporium.Tutorial
         [Tooltip("Start the tutorial automatically when the scene loads.")]
         [SerializeField] private bool runAutomatically = true;
 
-        [Tooltip("Seconds of breathing room between steps. A beat here lets a " +
-                 "finished stage land before Tracy speaks again.")]
-        [Range(0f, 2f)]
-        [SerializeField] private float betweenStepsDelay = 0.5f;
+        [Tooltip("Seconds of stillness before Tracy's panel appears. Nothing else " +
+                 "is delayed: the step is already live, the hand and the input gate " +
+                 "are unaffected. This is only so a line does not slam onto the " +
+                 "screen the instant the thing it is reacting to happened.")]
+        [Range(0f, 3f)]
+        [SerializeField] private float dialogueDelaySeconds = 1f;
 
         [Tooltip("Let steps give up and advance on their own. OFF by design: a step " +
                  "that advances while the player is still reading teaches the wrong " +
@@ -131,7 +141,6 @@ namespace RestoriumEmporium.Tutorial
         private bool _probeIsOurs;
         private bool _advanced;
         private bool _overlayDismissed;
-        private WaitForSecondsRealtime _betweenSteps;
 
         /// <summary>Index of the step currently running. -1 when the tutorial is not running.</summary>
         public int CurrentIndex { get; private set; } = -1;
@@ -147,8 +156,6 @@ namespace RestoriumEmporium.Tutorial
             // exact Inspector field name, rather than NullReferencing three screens in.
             _restoration = ResolveSource<IRestorationRuntime>(restorationSource, nameof(restorationSource));
             _router = ResolveSource<IScreenRouter>(screenRouterSource, nameof(screenRouterSource));
-
-            _betweenSteps = new WaitForSecondsRealtime(Mathf.Max(0.01f, betweenStepsDelay));
         }
 
         private void Start()
@@ -266,11 +273,6 @@ namespace RestoriumEmporium.Tutorial
                 // Persist AFTER the step, pointing at the next one, so a kill here
                 // resumes on the step the player has not done yet.
                 Persist(i + 1);
-
-                if (betweenStepsDelay > 0f)
-                {
-                    yield return _betweenSteps;
-                }
             }
 
             _loop = null;
@@ -304,6 +306,13 @@ namespace RestoriumEmporium.Tutorial
                 }
                 else
                 {
+                    // A beat before the panel, so the line reads as Tracy noticing
+                    // what just happened rather than as a pop-up interrupting it.
+                    if (dialogueDelaySeconds > 0f)
+                    {
+                        yield return new WaitForSecondsRealtime(dialogueDelaySeconds);
+                    }
+
                     _overlayDismissed = false;
                     overlay.Tapped += OnOverlayDismissed;
                     overlay.Show(step.lineKey, step.mood, true);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Audio.SfxLibrary
   entries:
   - id: 1
-    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    clip: {fileID: 8300000, guid: 723518fee7f9c1c41beb44ea541c1de0, type: 3}
     volume: 1
     pitchMin: 0.95
     pitchMax: 1.05
@@ -39,7 +39,7 @@ MonoBehaviour:
     pitchMin: 0.95
     pitchMax: 1.05
   - id: 6
-    clip: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
+    clip: {fileID: 8300000, guid: 6b990a9392dec0c4bb05ccffc2096371, type: 3}
     volume: 1
     pitchMin: 0.95
     pitchMax: 1.05
@@ -59,7 +59,7 @@ MonoBehaviour:
     pitchMin: 0.95
     pitchMax: 1.05
   - id: 13
-    clip: {fileID: 8300000, guid: f8e56dab3eeeafa438bced104948370d, type: 3}
+    clip: {fileID: 8300000, guid: f0808c3675e0ba24b8dbca8b2799b0cb, type: 3}
     volume: 1
     pitchMin: 0.95
     pitchMax: 1.05
