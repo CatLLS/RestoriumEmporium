@@ -13,6 +13,8 @@
 //     framing in the Figma design, even though they share one background.
 //   - SfxId is an enum rather than direct AudioClip fields so that designers
 //     swap sounds in one SfxLibrary asset instead of hunting through prefabs.
+//   - Batch 2 added DeskHub/Shop/StickerRemoval screens, StageKind, TracyPresentation
+//     and ShopCategory. Members are only ever APPENDED with new numbers.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -42,7 +44,48 @@ namespace RestoriumEmporium.Core
         LinenBackingFinal = 5,
 
         /// <summary>Before/after flip reveal.</summary>
-        FinishedRepair = 6
+        FinishedRepair = 6,
+
+        /// <summary>
+        /// The player's workshop desk. Edit mode and item preview are MODES of this
+        /// screen, not screens of their own, because they show the same room with
+        /// the same placed decorations underneath a different bar.
+        /// </summary>
+        DeskHub = 7,
+
+        /// <summary>Tracy's Emporium: the decoration catalogue.</summary>
+        Shop = 8,
+
+        /// <summary>Close-up of the poster; tap each sticker to peel it off.</summary>
+        StickerRemoval = 9
+    }
+
+    /// <summary>
+    /// How a restoration stage is played. Scrub is the original drag-to-reveal
+    /// stage; every other kind is a different interaction on its own screen that
+    /// completes the stage through IRestorationRuntime.ForceCompleteCurrentStage().
+    /// </summary>
+    public enum StageKind
+    {
+        Scrub = 0,
+        StickerPeel = 1
+    }
+
+    /// <summary>Which Tracy presentation a tutorial step uses.</summary>
+    public enum TracyPresentation
+    {
+        /// <summary>The original bust portrait + dialogue box overlay (restoration screens).</summary>
+        Portrait = 0,
+
+        /// <summary>Full-body Tracy standing in the desk hub, with the hub dialogue box.</summary>
+        HubFullBody = 1
+    }
+
+    /// <summary>Shop tabs. Only Decor has items in this build.</summary>
+    public enum ShopCategory
+    {
+        Decor = 0,
+        Misc = 1
     }
 
     /// <summary>
@@ -110,6 +153,18 @@ namespace RestoriumEmporium.Core
         ToolDeacidifier = 12,
         ToolSqueegee = 13,
         ToolRoller = 14,
-        ToolPencil = 15
+        ToolPencil = 15,
+
+        /// <summary>A sticker peeling off the close-up (Assets/Audio/(stickerPeel)...).</summary>
+        StickerPeel = 20,
+
+        /// <summary>Coins added to the wallet. No clip yet: silent until one is assigned.</summary>
+        CoinsGained = 21,
+
+        /// <summary>A shop purchase went through. No clip yet: silent until assigned.</summary>
+        Purchase = 22,
+
+        /// <summary>A decoration was dropped into place. No clip yet: silent until assigned.</summary>
+        ItemPlaced = 23
     }
 }
