@@ -13,6 +13,10 @@
 //     be switched without reloading the scene.
 //   - Not built on com.unity.localization: that package pulls in Addressables
 //     and a lot of setup for what is, at MVP scale, a dictionary lookup.
+//   - Batch 2: AvailableLocales / CurrentLocale drive the settings language
+//     picker; DisplayNameFor gives the picker each language's own name
+//     ("English", "Português (Brasil)") without the UI knowing about tables.
+//     CurrentLocaleCode is kept as an alias so MVP callers keep compiling.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -20,13 +24,23 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace RestoriumEmporium.Localization
 {
     public interface ILocalizationService
     {
-        /// <summary>BCP-47-ish code of the active locale, e.g. "pt-BR".</summary>
+        /// <summary>BCP-47-ish code of the active locale, e.g. "pt-BR". Same as CurrentLocale.</summary>
         string CurrentLocaleCode { get; }
+
+        /// <summary>Code of the active locale, e.g. "en".</summary>
+        string CurrentLocale { get; }
+
+        /// <summary>Codes of every shipped language, in the order the picker cycles them.</summary>
+        IReadOnlyList<string> AvailableLocales { get; }
+
+        /// <summary>The language's own name for the picker ("English"). Falls back to the code.</summary>
+        string DisplayNameFor(string localeCode);
 
         /// <summary>Resolves a key, falling back to the key itself when missing.</summary>
         string Get(string key);
@@ -39,7 +53,11 @@ namespace RestoriumEmporium.Localization
         /// </summary>
         string Format(string key, params object[] args);
 
-        /// <summary>Switches locale and raises LocaleChanged. No-op if unknown.</summary>
+        /// <summary>
+        /// Switches locale, persists the choice in SaveData.localeCode, and raises
+        /// LocaleChanged. An unknown code is a no-op; an EMPTY code means "pick from
+        /// the device language" (first launch).
+        /// </summary>
         void SetLocale(string localeCode);
 
         event Action LocaleChanged;

@@ -21,6 +21,10 @@
 //     fields it does not recognise, so a v2 save read by a v1 build would look
 //     valid while quietly discarding progress on the next write. Starting clean
 //     is honest; corrupting in place is not.
+//   - Older versions are migrated in place by SaveMigration right after the
+//     parse (plain C#, unit-tested), then EnsureCollections() replaces any null
+//     list. A migrated save is marked dirty so the upgraded file is written on
+//     the next frame through the same atomic path as every other write.
 //   - Data is lazily loaded by its getter as well as by Awake, because Unity
 //     gives no ordering guarantee between this Awake and GameBootstrap's.
 //   - ResetProgress keeps locale and volumes. Those are device preferences, not
@@ -272,9 +276,25 @@ namespace RestoriumEmporium.Core
                 return null;
             }
 
-            // Older versions would be migrated here. v1 is the first shipped
-            // format, so there is nothing to migrate yet; stamping the version
-            // keeps the file honest about which build last wrote it.
+            // Older versions are upgraded in place (v1 -> v2: per-poster progress,
+            // tutorial sequences, the MVP poster's unpaid reward). The migrated
+            // file is written on the next LateUpdate rather than here, because a
+            // load can happen from inside the Data getter at any point in a frame.
+            var fromVersion = parsed.version;
+
+            if (SaveMigration.MigrateInPlace(parsed, message => Debug.LogWarning(message, this)))
+            {
+                Debug.Log($"[SaveManager] Migrated save from version {fromVersion} to " +
+                          $"{SaveData.CurrentVersion}.", this);
+                _dirty = true;
+            }
+
+            // JsonUtility leaves a list null when the JSON omits it (an old or
+            // hand-edited file); every reader assumes they exist.
+            parsed.EnsureCollections();
+
+            // Stamping the version keeps the file honest about which build last
+            // wrote it.
             parsed.version = SaveData.CurrentVersion;
             return parsed;
         }

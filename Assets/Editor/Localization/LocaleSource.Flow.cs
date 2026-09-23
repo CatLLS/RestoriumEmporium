@@ -8,7 +8,8 @@ namespace RestoriumEmporium.EditorTools
     {
         internal static readonly LocaleEntry[] Flow =
         {
-            // E("ui.example.key", "Texto em portugues", "English text"),
+            // CutscenePlayer's optional "SkipHint" label (only on skippable videos: the book transition).
+            E("ui.cutscene.skipHint", "Toque para pular", "Tap to skip"),
         };
     }
 }

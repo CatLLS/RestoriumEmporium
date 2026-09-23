@@ -252,6 +252,95 @@ namespace RestoriumEmporium.Tests
                 "take down the screen that was showing it.");
         }
 
+        // ---------------------------------------------------------------
+        // Batch 2: available locales, persistence, saved choice
+        // ---------------------------------------------------------------
+
+        private sealed class FakeSave : ISaveService
+        {
+            public SaveData Data { get; } = new SaveData();
+            public int Saves;
+            public void Save() => Saves++;
+            public void SaveSoon() => Saves++;
+            public void Load() { }
+            public void ResetProgress() { }
+            public event System.Action Reloaded { add { } remove { } }
+        }
+
+        [Test]
+        public void Service_AvailableLocales_ListsEveryTableOnceInOrder()
+        {
+            var en = MakeTable("en", ("a", "A"));
+            var pt = MakeTable("pt-BR", ("a", "Á"));
+            var service = MakeService(new[] { en, pt, en }, "pt-BR");
+
+            Assert.That(service.AvailableLocales, Is.EqualTo(new[] { "en", "pt-BR" }));
+        }
+
+        [Test]
+        public void Service_SavedChoice_IsApplied()
+        {
+            var save = new FakeSave();
+            save.Data.localeCode = "en";
+            ServiceLocator.Register<ISaveService>(save);
+
+            var en = MakeTable("en", ("hi", "Hello"));
+            var pt = MakeTable("pt-BR", ("hi", "Olá"));
+            var service = MakeService(new[] { en, pt }, "pt-BR");
+
+            Assert.That(service.Get("hi"), Is.EqualTo("Hello"));
+            Assert.That(service.CurrentLocale, Is.EqualTo("en"));
+        }
+
+        [Test]
+        public void Service_EmptySavedChoice_IsFilledInFromTheDevice()
+        {
+            var save = new FakeSave();
+            ServiceLocator.Register<ISaveService>(save);
+
+            var en = MakeTable("en", ("hi", "Hello"));
+            var pt = MakeTable("pt-BR", ("hi", "Olá"));
+            var service = MakeService(new[] { en, pt }, "pt-BR");
+
+            service.Get("hi");
+
+            Assert.That(save.Data.localeCode, Is.EqualTo(service.CurrentLocale),
+                "The first-launch guess must be written back so it never changes later.");
+            Assert.That(save.Data.localeCode, Is.Not.Empty);
+        }
+
+        [Test]
+        public void Service_SetLocale_PersistsTheChoice()
+        {
+            var save = new FakeSave();
+            save.Data.localeCode = "pt-BR";
+            ServiceLocator.Register<ISaveService>(save);
+
+            var en = MakeTable("en", ("hi", "Hello"));
+            var pt = MakeTable("pt-BR", ("hi", "Olá"));
+            var service = MakeService(new[] { en, pt }, "pt-BR");
+            var changed = 0;
+            service.LocaleChanged += () => changed++;
+
+            service.SetLocale("en");
+
+            Assert.That(save.Data.localeCode, Is.EqualTo("en"));
+            Assert.That(save.Saves, Is.GreaterThan(0));
+            Assert.That(service.Get("hi"), Is.EqualTo("Hello"));
+            Assert.That(changed, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void Service_DisplayNameFor_UsesTheTableName()
+        {
+            var en = MakeTable("en", ("a", "A"));
+            en.displayName = "English";
+            var service = MakeService(new[] { en }, "en");
+
+            Assert.That(service.DisplayNameFor("en"), Is.EqualTo("English"));
+            Assert.That(service.DisplayNameFor("xx"), Is.EqualTo("xx"));
+        }
+
         [Test]
         public void Service_TryGet_ReportsWhetherTheKeyReallyExisted()
         {

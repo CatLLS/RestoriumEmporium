@@ -11,6 +11,8 @@
 //     and the SFX can be authored later without touching any prefab.
 //   - Volumes are 0..1 linear; the implementation converts to the mixer's dB.
 //     Callers should never have to know about logarithms.
+//   - Batch 2 adds SetMusicPaused(bool) so a cutscene with its own soundtrack
+//     can hold the music and give it back at the same position afterwards.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -36,6 +38,12 @@ namespace RestoriumEmporium.Audio
 
         void PlayMusic(AudioClip clip, bool loop = true);
         void StopMusic();
+
+        /// <summary>
+        /// Pauses (true) or resumes (false) the music without losing its position.
+        /// Used by the CutscenePlayer while a video with its own soundtrack plays.
+        /// </summary>
+        void SetMusicPaused(bool paused);
 
         /// <summary>0..1 linear. Persisted by SaveManager.</summary>
         void SetMusicVolume(float linear01);

@@ -17,6 +17,12 @@
 //     idle tutorial costs nothing.
 //   - Zero per-frame allocations: the world-corner buffer is allocated once and the
 //     loop touches only structs. No LINQ, no GetComponent, no string work in it.
+//   - Batch 2: PointAt(anchorId) FOLLOWS THE ID, not the object. The id is
+//     re-resolved every frame (a dictionary hit, no allocation), so the hand
+//     appears as soon as a runtime-spawned anchor exists (shop.item.lamp), jumps
+//     with an anchor that moves between objects (sticker.next), and hides — but
+//     keeps waiting — while its anchor is gone. SetSuspended hides it while a
+//     cutscene or a modal overlay covers the screen, without losing the target.
 //   - The animation is an AnimationCurve evaluated in code rather than an Animator
 //     asset, so there is no controller, no state machine and nothing extra for the
 //     human to wire, and the bob distance stays tweakable in the Inspector.
@@ -94,6 +100,7 @@ namespace RestoriumEmporium.Tutorial
         // Allocated once. GetWorldCorners fills this buffer instead of returning a new array.
         private readonly Vector3[] _corners = new Vector3[4];
 
+
         private RectTransform _parentRect;
         private RectTransform _target;
         private Graphic _graphic;
@@ -101,8 +108,16 @@ namespace RestoriumEmporium.Tutorial
         private float _time;
         private bool _showing;
 
+        // Batch 2: following by anchor id (re-resolved every frame, see KEY DECISIONS).
+        private string _anchorId;
+        private TutorialAnchor _anchor;
+        private bool _suspended;
+
         /// <summary>True while the hand is visible and following something.</summary>
         public bool IsPointing => _showing && _target != null;
+
+        /// <summary>The anchor id being followed, or null.</summary>
+        public string AnchorId => _anchorId;
 
         private void Awake()
         {
@@ -149,7 +164,12 @@ namespace RestoriumEmporium.Tutorial
             _uiCamera = root.renderMode == RenderMode.ScreenSpaceOverlay ? null : root.worldCamera;
         }
 
-        /// <summary>Points the hand at an anchored element. An unknown id just hides the hand.</summary>
+        /// <summary>
+        /// Points the hand at an anchored element and KEEPS following that id: if the
+        /// anchor is not there yet (a shop card still spawning) the hand appears as soon
+        /// as it is; if the anchor moves to another object (sticker.next) the hand
+        /// moves with it; if it disappears the hand hides until it comes back.
+        /// </summary>
         public void PointAt(string anchorId)
         {
             if (string.IsNullOrEmpty(anchorId))
@@ -158,19 +178,25 @@ namespace RestoriumEmporium.Tutorial
                 return;
             }
 
-            var anchor = TutorialAnchor.Find(anchorId);
+            _anchorId = anchorId;
+            _anchor = TutorialAnchor.Find(anchorId);
+            _time = 0f;
+            RefreshCamera();
 
-            if (anchor == null)
+            if (_anchor == null)
             {
                 // Fail open: a typo in a step asset costs a missing hand, never a lock-up.
-                Debug.LogWarning(
-                    $"[HandPointer] No enabled TutorialAnchor with id '{anchorId}'. The hand stays hidden.",
-                    this);
-                Clear();
+                Debug.Log(
+                    $"[HandPointer] No enabled TutorialAnchor with id '{anchorId}' yet. The hand " +
+                    "stays hidden until one is enabled.", this);
+                _target = null;
+                SetVisible(false);
                 return;
             }
 
-            PointAt(anchor.Target);
+            _target = _anchor.Target;
+            SetVisible(!_suspended && _target != null);
+            Follow();
         }
 
         /// <summary>Points the hand at a specific rect and starts the bob loop.</summary>
@@ -182,39 +208,90 @@ namespace RestoriumEmporium.Tutorial
                 return;
             }
 
+            _anchorId = null;
+            _anchor = null;
             _target = target;
             _time = 0f;
             RefreshCamera();
-            SetVisible(true);
+            SetVisible(!_suspended);
             Follow();
         }
 
         /// <summary>Stops following and hides the hand.</summary>
         public void Clear()
         {
+            _anchorId = null;
+            _anchor = null;
             _target = null;
             SetVisible(false);
         }
 
+        /// <summary>
+        /// Temporarily hides the hand without forgetting its target (a cutscene or a
+        /// pause overlay is covering the screen). False brings it back.
+        /// </summary>
+        public void SetSuspended(bool suspended)
+        {
+            _suspended = suspended;
+
+            if (suspended)
+            {
+                SetVisible(false);
+            }
+        }
+
         private void LateUpdate()
         {
-            if (!_showing)
+            var followingId = !string.IsNullOrEmpty(_anchorId);
+
+            if (!_showing && !followingId)
             {
                 return;
             }
 
-            if (_target == null || !_target.gameObject.activeInHierarchy)
+            if (followingId)
             {
-                // The screen holding the target was hidden mid-step. Hide the hand
-                // rather than leave it frozen over empty space.
-                Clear();
+                // Re-resolve every frame: a dictionary hit, no allocation. This is what
+                // makes runtime-spawned and moving anchors work.
+                if (_anchor == null || !_anchor.isActiveAndEnabled ||
+                    !string.Equals(_anchor.AnchorId, _anchorId, System.StringComparison.Ordinal))
+                {
+                    _anchor = TutorialAnchor.Find(_anchorId);
+                }
+
+                _target = _anchor != null ? _anchor.Target : null;
+            }
+
+            var available = _target != null && _target.gameObject.activeInHierarchy;
+
+            if (!available)
+            {
+                if (!followingId)
+                {
+                    // A rect target whose screen was hidden: hide rather than freeze.
+                    Clear();
+                }
+                else if (_showing)
+                {
+                    SetVisible(false);
+                }
+
                 return;
+            }
+
+            if (_suspended)
+            {
+                return;
+            }
+
+            if (!_showing)
+            {
+                SetVisible(true);
             }
 
             _time += Time.unscaledDeltaTime;
             Follow();
         }
-
         private void Follow()
         {
             if (pointer == null || _parentRect == null || _target == null)

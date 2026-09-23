@@ -24,6 +24,12 @@
 //     panel with raycasts off.
 //   - Taps arrive through IPointerClickHandler (uGUI EventSystem). Legacy
 //     UnityEngine.Input is disabled project-wide.
+//   - Batch 2: the SAME component also drives the desk-hub presentation
+//     (TracyPresentation.HubFullBody) on a second object, "HubTracyOverlay":
+//     full-body Tracy + the DialogueRect box from the Figma Desk_Hub frame. The
+//     full-body poses differ in size and position, so that instance fills the
+//     optional Mood Objects (one positioned Image per pose) instead of swapping one
+//     sprite. TutorialController picks the view per step.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -71,6 +77,19 @@
 //     the menu Restorium -> Create Poster 1 Data.
 // [x] Drag this TracyHelpOverlay GameObject into TutorialController -> "Overlay".
 // [x] Leave the TracyHelpOverlay GameObject ACTIVE. The script fades it out itself.
+//
+// SECOND INSTANCE — HubTracyOverlay (full-body Tracy, Figma Desk_Hub 91:45):
+// [ ] Right-click Canvas -> UI -> Image, name it HubTracyOverlay, stretch/stretch,
+//     colour black with Alpha about 0.25 (a light scrim), Raycast Target ticked.
+//     Add Canvas (Override Sorting, Order 10) + Graphic Raycaster + Canvas Group,
+//     then this script.
+// [ ] Children: TracyStill, TracyHappy, TracyEmbarrassed (UI Images with the
+//     full-body sprites, positioned per FigmaLayout.md, Raycast Target OFF), then
+//     DialogueRect (the dialogue box art), with LineText and TapHint (TMP) inside it.
+// [ ] Fill in: Scrim Image = HubTracyOverlay, Portrait Image = TracyStill,
+//     Line Label, Tap Hint Label, and Mood Objects Still/Happy/Embarrassed = the
+//     three Tracy images. Leave the Mood Sprites empty.
+// [ ] Drag HubTracyOverlay into TutorialController -> "Hub Overlay".
 // ---------------------------------------------------------------
 
 using System;
@@ -106,6 +125,14 @@ namespace RestoriumEmporium.Tutorial
         [SerializeField] private Sprite stillSprite;
         [SerializeField] private Sprite happySprite;
         [SerializeField] private Sprite embarrassedSprite;
+
+        [Header("Mood objects (optional, HubFullBody)")]
+        [Tooltip("When set, the mood shows/hides these objects instead of swapping the " +
+                 "Portrait Image sprite. The full-body Tracy poses have different sizes " +
+                 "and positions in Figma, so each is its own positioned Image.")]
+        [SerializeField] private GameObject stillObject;
+        [SerializeField] private GameObject happyObject;
+        [SerializeField] private GameObject embarrassedObject;
 
         [Header("Text")]
         [Tooltip("Localisation key for the tap hint. Not player-facing text - a key.")]
@@ -274,6 +301,24 @@ namespace RestoriumEmporium.Tutorial
 
         private void ApplyMood(TracyMood mood)
         {
+            if (stillObject != null || happyObject != null || embarrassedObject != null)
+            {
+                // A missing pose falls back to Still rather than showing no Tracy at all.
+                var wanted = mood == TracyMood.Happy ? happyObject
+                    : mood == TracyMood.Embarrassed ? embarrassedObject
+                    : stillObject;
+
+                if (wanted == null)
+                {
+                    wanted = stillObject;
+                }
+
+                SetPose(stillObject, wanted);
+                SetPose(happyObject, wanted);
+                SetPose(embarrassedObject, wanted);
+                return;
+            }
+
             if (portraitImage == null)
             {
                 return;
@@ -298,6 +343,14 @@ namespace RestoriumEmporium.Tutorial
             if (sprite != null)
             {
                 portraitImage.sprite = sprite;
+            }
+        }
+
+        private static void SetPose(GameObject pose, GameObject wanted)
+        {
+            if (pose != null && pose.activeSelf != (pose == wanted))
+            {
+                pose.SetActive(pose == wanted);
             }
         }
 

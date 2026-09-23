@@ -25,6 +25,11 @@
 //   - Volume conversion is untouched from the original: 0 means -80 dB, and
 //     everything else is 20*log10(linear). The mixer exposes MusicVolume and
 //     SFXVolume; those exact parameter names must stay in the mixer asset.
+//   - Batch 2: SetMusicPaused(bool) PAUSES (not stops) the music while a
+//     cutscene plays, so the track picks up where it was instead of restarting.
+//     A PlayMusic call while paused loads the new track but keeps it paused.
+//     MusicMixerGroup exposes the music source's mixer group so video
+//     soundtracks can be routed through the same Music slider.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -118,6 +123,7 @@ namespace RestoriumEmporium.Audio
         [SerializeField] private SfxLibrary sfxLibrary;
 
         private SfxId _toolLoopId = SfxId.None;
+        private bool _musicPaused;
 
         private void Awake()
         {
@@ -236,7 +242,8 @@ namespace RestoriumEmporium.Audio
                 return;
             }
 
-            if (musicSource.clip == clip && musicSource.isPlaying && musicSource.loop == loop)
+            if (musicSource.clip == clip && musicSource.loop == loop &&
+                (musicSource.isPlaying || (_musicPaused && musicSource.time > 0f)))
             {
                 return;
             }
@@ -244,6 +251,13 @@ namespace RestoriumEmporium.Audio
             musicSource.clip = clip;
             musicSource.loop = loop;
             musicSource.Play();
+
+            if (_musicPaused)
+            {
+                // A cutscene is holding the music. Start the new track in the
+                // paused state so it resumes from its beginning when released.
+                musicSource.Pause();
+            }
         }
 
         public void StopMusic()
@@ -255,6 +269,41 @@ namespace RestoriumEmporium.Audio
 
             musicSource.Stop();
         }
+
+        /// <inheritdoc />
+        public void SetMusicPaused(bool paused)
+        {
+            if (_musicPaused == paused)
+            {
+                return;
+            }
+
+            _musicPaused = paused;
+
+            if (musicSource == null)
+            {
+                return;
+            }
+
+            if (paused)
+            {
+                musicSource.Pause();
+            }
+            else
+            {
+                // UnPause only resumes a source that was paused mid-play; a
+                // stopped source stays stopped, which is the right outcome.
+                musicSource.UnPause();
+            }
+        }
+
+        /// <summary>
+        /// The mixer group the music source plays through (MainMixer/Music), or null.
+        /// CutscenePlayer routes video soundtracks here when its own AudioSource
+        /// has no group assigned, so the Music slider controls them too.
+        /// </summary>
+        public AudioMixerGroup MusicMixerGroup =>
+            musicSource != null ? musicSource.outputAudioMixerGroup : null;
 
         // Call these functions from your Settings Page Sliders
         public void SetMusicVolume(float volume)
