@@ -1,103 +1,91 @@
 // ============================================================
-// JournalScreen — the poster picker: thumbnail, title, and the Restore button.
-// WHAT & WHY: The first thing the player sees in the Game scene. It shows the
-//   poster waiting to be restored and hands the decision to start back to the
-//   GameFlowController, which owns the actual transition.
+// JournalScreen — the poster picker: one page per poster (Figma JounalPage 173:164).
+// WHAT & WHY: The player's home base for choosing what to restore. Batch 2 turns
+//   the MVP's single hard-coded page into one page per poster in
+//   GameFlowController.Posters, with Locked / Available / InProgress / Completed
+//   states decided by the plain-C# JournalPageRules (unit-tested separately) so
+//   this script only ever asks "what should THIS page look like" and draws it.
 // KEY DECISIONS:
-//   - Raises an event instead of calling the router. A screen that routes is a
-//     screen that has to know the whole flow; keeping the decision here and the
-//     consequence outside means the journal can be reused for poster #2 without
-//     touching it. Both a C# event (for code) and a UnityEvent (for the
-//     Inspector) are exposed, because Agent B wires in code and the human wires
-//     in the Inspector.
-//   - The page arrows are present but disabled, not hidden. The MVP has one
-//     poster; deleting the arrows would mean re-doing the layout for v2, and a
-//     missing control reads as a bug while a greyed-out one reads as "later".
-//   - Title text is resolved here rather than by a LocalizedText binder, because
-//     the key lives on the PosterData asset and changes per poster. Static
-//     labels (the Restore caption, the page hint) keep their binders.
-//   - Refreshes in OnShown rather than Awake. The poster can be swapped between
-//     visits, and Awake never runs again after the first Show.
+//   - The page index is local UI state, not something JournalPageRules or the
+//     flow tracks. JournalPageRules.InitialPageIndex decides where to OPEN
+//     (the poster on the bench, else the one just finished, else the first with
+//     work left), and after that arrows just move the index by one, clamped.
+//   - Raises no navigation events: it calls straight into GameFlowController
+//     (StartOrContinue / GoToDeskHub), because those calls already carry the
+//     flow's own guards (locked/completed refusal, cutscene busy-guard) and
+//     duplicating that logic here would be a second place to get it wrong.
+//   - The action button's caption AND whether it can be pressed both come from
+//     JournalPageRules for the SAME evaluated state, so the label and the
+//     enabled-ness can never disagree (no separate "is it locked" check).
+//   - Locked / disabled buttons are dimmed by hand (SetButtonEnabled), matching
+//     the MVP's page-arrow code: this project's custom-art buttons do not
+//     visibly react to Selectable.interactable on their own.
+//   - The poster art shown is: the restored (final) sprite once Completed,
+//     otherwise journalThumbnail if the poster has one, otherwise beforeSprite
+//     faded in code (PosterData's own contract: "when journalThumbnail is null
+//     the journal draws beforeSprite at ~30% alpha" — a new poster then needs
+//     no extra art).
+//   - Fades in via a CanvasGroup on OnShown, every time, not just after the book
+//     video: a cheap, harmless fade covers both the "just watched a cutscene"
+//     case and a plain screen change, with no special-casing needed here.
+//   - The back-to-workbench button is toggled by GameObject.SetActive rather
+//     than Button.interactable: contract §1.8 says it is only VISIBLE once the
+//     desk hub is unlocked, not merely disabled before that.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// All positions below are Pos X / Pos Y in the Rect Transform, with the anchor
-// preset set to top-left (click the anchor square, hold Alt+Shift, pick the
-// TOP-LEFT box). Pos Y values are NEGATIVE because Y grows downward in the
-// Figma frame but upward in Unity: type -175 where the design says y = 175.
+// Positions are Rect Transform Pos X / Pos Y, anchor preset TOP-LEFT (Alt+Shift,
+// top-left box). Pos Y is NEGATIVE: type -175 where the design says y = 175.
+// Full layout in Docs/Batch2/FigmaLayout.md (JounalPage 173:164).
 //
-// A) THE CANVAS (do this once for the whole Game scene)
-// [x] GameObject -> UI -> Canvas. Name it exactly: Canvas
-// [x] Canvas component: Render Mode = Screen Space - Camera.
-//     Drag the Main Camera into Render Camera. Plane Distance = 100.
-//     Sorting Layer = Default, Order in Layer = 0.
-// [x] Canvas Scaler component: UI Scale Mode = Scale With Screen Size,
-//     Reference Resolution X = 412, Y = 917, Screen Match Mode = Match Width
-//     Or Height, Match = 0.5.
+// A) THE SCREEN ROOT
+// [ ] Right-click Canvas -> Create Empty. Name it exactly: JournalScreen
+// [ ] Rect Transform: anchor stretch/stretch, Left/Right/Top/Bottom = 0.
+// [ ] Add Component -> Canvas Group. Name it "FadeGroup" wiring below.
+// [ ] Add Component -> Journal Screen (this script).
 //
-// B) THE SCREEN ROOT
-// [x] Right-click Canvas -> Create Empty. Name it exactly: JournalScreen
-// [x] Rect Transform: anchor preset = stretch/stretch (Alt+Shift, bottom-right
-//     box), Left/Right/Top/Bottom all 0.
-// [x] Add Component -> Journal Screen (this script).
+// B) CHILDREN, in this order (order = draw order, first is behind)
+// [ ] Background        Image, stretch/stretch, Source = Art/journalAssets/bg
+// [ ] Paper              Image, per Figma (the open-book page art).
+// [ ] PosterImage        Image, centred on the page per Figma. This is what the
+//                        script repaints every page turn.
+// [ ] TitleLabel         TMP text, per Figma. No LocalizedText: the script sets
+//                        it from the poster's own titleKey.
+// [ ] ActionButton        Button - TextMeshPro, per Figma ("Restore"/"Continue"/
+//                        "Restored" position). Its child TMP is ActionButtonLabel
+//                        (no LocalizedText: the script sets the key per state).
+//                        Add Button Sfx, Sfx = Button Click.
+//                        Add Tutorial Anchor, Anchor Id = journal.restoreButton.
+// [ ] PrevPageButton     Button - TextMeshPro, delete its Text (TMP) child (icon
+//                        only). Do NOT add Button Sfx here — the script plays
+//                        Page Flip only on an actual page change.
+//                        Add Tutorial Anchor, Anchor Id = journal.prevPage.
+// [ ] NextPageButton     Same as PrevPageButton, Anchor Id = journal.nextPage.
+// [ ] BackButton          Button - TextMeshPro (top-left "back to workbench"
+//                        arrow). Its label: Localized Text, Key =
+//                        ui.journal.back. Add Button Sfx.
+//                        Add Tutorial Anchor, Anchor Id = journal.back.
+// [ ] LockedHint (optional) TMP text shown only on a Locked page. Localized
+//                        Text, Key = ui.journal.lockedHint.
 //
-// C) CHILDREN, in this order (order = draw order, first is behind)
-// [x] Right-click JournalScreen -> UI -> Image. Name: Background
-//       Anchor preset stretch/stretch, Left/Right/Top/Bottom = 0.
-//       Source Image = Assets/Art/journalAssets/bg
-// [x] Right-click JournalScreen -> UI -> Image. Name: Paper
-//       Anchor top-left. Pos X = 0, Pos Y = -175, Width = 412, Height = 541.
-//       Source Image = Assets/Art/journalAssets/paper 1
-// [x] Right-click JournalScreen -> UI -> Image. Name: PosterThumbnail
-//       Anchor top-left. Pos X = 120, Pos Y = -270, Width = 173, Height = 309.
-//       Source Image = Assets/Art/journalAssets/
-//         posterBeforeDusting(30opacity,beforeRestoring)
-//       (This is only the placeholder look; the script overwrites it at runtime
-//        from PosterData.journalThumbnail.)
-// [x] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PosterTitle
-//       If Unity asks to import TMP Essentials, click Import TMP Essentials.
-//       Anchor top-left. Pos X = 120, Pos Y = -240, Width = 173, Height = 28.
-//       Alignment = Center + Middle. Font Size = 18.
-// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: RestoreButton
-//       Anchor top-left. Pos X = 104, Pos Y = -592, Width = 202, Height = 69.
-//       Its Image -> Source Image = Assets/Art/journalAssets/buttonBase
-//       Select its child "Text (TMP)": anchor stretch/stretch, all offsets 0,
-//       Alignment = Center + Middle, Font Size = 24.
-//       Add Component -> Localized Text on that child, Key = ui.journal.restore
-//       Add Component -> Button Sfx on RestoreButton, Sfx = Button Click.
-// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: NextPageButton
-//       Anchor top-left. Pos X = 330, Pos Y = -787, Width = 31, Height = 59.
-//       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Page Flip.
-// [x] Right-click JournalScreen -> UI -> Button - TextMeshPro. Name: PrevPageButton
-//       Anchor top-left. Pos X = 82, Pos Y = -846, Width = 31, Height = 59.
-//       Delete its child Text (TMP). Add Component -> Button Sfx, Sfx = Page Flip.
-// [x] Right-click JournalScreen -> UI -> Text - TextMeshPro. Name: PageHint
-//       Anchor top-left. Pos X = 128, Pos Y = -810, Width = 160, Height = 20.
-//       Alignment = Center + Middle. Font Size = 12.
-//       Add Component -> Localized Text, Key = ui.journal.pageHint
-//
-// D) WIRE THE INSPECTOR (select JournalScreen and drag these in)
-// [x] Poster            <- Assets/Data/Poster1/Poster01
-// [x] Thumbnail Image   <- the PosterThumbnail child
-// [x] Title Label       <- the PosterTitle child
-// [x] Restore Button    <- the RestoreButton child
-// [x] Prev Page Button  <- the PrevPageButton child
-// [x] Next Page Button  <- the NextPageButton child
-// [x] Leave Disabled Page Arrow Alpha at 0.35.
-// [x] On Restore Requested (+): drag the GameFlow object in and pick the method
-//     the GameFlowController exposes for starting the restoration.
-// [x] Add Component -> Tutorial Anchor on RestoreButton,
-//     Anchor Id = journal.restoreButton
+// C) WIRE THE INSPECTOR (select JournalScreen and drag these in)
+// [ ] Flow              <- the GameFlow object (GameFlowController)
+// [ ] Fade Group        <- JournalScreen's own Canvas Group (step A)
+// [ ] Poster Image / Title Label / Action Button / Action Button Label
+// [ ] Prev Page Button / Next Page Button
+// [ ] Back Button
+// [ ] Locked Hint (optional)
 // ---------------------------------------------------------------
 
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace RestoriumEmporium.UI
 {
+    using RestoriumEmporium.Audio;
     using RestoriumEmporium.Core;
     using RestoriumEmporium.Data;
     using RestoriumEmporium.Localization;
@@ -105,136 +93,308 @@ namespace RestoriumEmporium.UI
     [DisallowMultipleComponent]
     public class JournalScreen : ScreenView
     {
-        [Header("Content")]
-        [Tooltip("The poster this page shows. The MVP has exactly one.")]
-        [SerializeField] private PosterData poster;
+        private static readonly IReadOnlyList<string> EmptyIds = System.Array.Empty<string>();
 
-        [Header("References")]
-        [Tooltip("Image that shows PosterData.journalThumbnail.")]
-        [SerializeField] private Image thumbnailImage;
+        [Header("Flow")]
+        [Tooltip("GameFlowController on the GameFlow object. Owns the poster list and " +
+                 "every navigation decision this screen asks for.")]
+        [SerializeField] private GameFlowController flow;
 
-        [Tooltip("Label that shows the poster title, resolved from PosterData.titleKey.")]
+        [Header("Fade in")]
+        [SerializeField] private CanvasGroup fadeGroup;
+        [Range(0f, 2f)]
+        [SerializeField] private float fadeInSeconds = 0.35f;
+
+        [Header("Page content")]
+        [SerializeField] private Image posterImage;
         [SerializeField] private TMP_Text titleLabel;
 
-        [SerializeField] private Button restoreButton;
+        [Range(0f, 1f)]
+        [Tooltip("Alpha for beforeSprite when a poster has no journalThumbnail of its own.")]
+        [SerializeField] private float fallbackPreviewAlpha = 0.3f;
 
-        [Header("Page arrows (MVP: present but disabled)")]
+        [Header("Action button (Restore / Continue / Restored)")]
+        [SerializeField] private Button actionButton;
+        [SerializeField] private TMP_Text actionButtonLabel;
+
+        [Header("Page arrows")]
         [SerializeField] private Button prevPageButton;
         [SerializeField] private Button nextPageButton;
 
         [Range(0f, 1f)]
-        [Tooltip("How faded a disabled page arrow looks. 1 = no fading.")]
-        [SerializeField] private float disabledPageArrowAlpha = 0.35f;
+        [SerializeField] private float disabledButtonAlpha = 0.35f;
 
-        [Header("Events")]
-        [Tooltip("Raised when the player taps Restore. The GameFlowController listens.")]
-        [SerializeField] private UnityEvent onRestoreRequested = new UnityEvent();
+        [Header("Back to workbench")]
+        [Tooltip("Visible only once flow.DeskHubUnlocked (contract §1.8).")]
+        [SerializeField] private Button backButton;
 
-        /// <summary>Code-side twin of onRestoreRequested, for listeners wired in script.</summary>
-        public event Action RestoreRequested;
+        [Header("Optional")]
+        [Tooltip("Shown only while the current page is Locked.")]
+        [SerializeField] private GameObject lockedHint;
+
+        private IPosterProgress _progress;
+        private ILocalizationService _localization;
+        private IAudioService _audio;
+
+        private int _pageIndex;
+        private Coroutine _fade;
 
         public override GameScreen Screen => GameScreen.Journal;
 
-        /// <summary>The poster this page is showing. Null until one is assigned.</summary>
-        public PosterData Poster => poster;
+        /// <summary>The poster the current page shows, or null when the catalogue is empty.</summary>
+        public PosterData CurrentPoster => Poster(_pageIndex);
 
         private void Awake()
         {
-            if (restoreButton != null)
-            {
-                restoreButton.onClick.AddListener(RaiseRestoreRequested);
-            }
-
-            ApplyPageArrowState();
+            AddClick(actionButton, OnActionClicked);
+            AddClick(prevPageButton, OnPrevPage);
+            AddClick(nextPageButton, OnNextPage);
+            AddClick(backButton, OnBack);
         }
 
         private void OnDestroy()
         {
-            if (restoreButton != null)
-            {
-                restoreButton.onClick.RemoveListener(RaiseRestoreRequested);
-            }
+            RemoveClick(actionButton, OnActionClicked);
+            RemoveClick(prevPageButton, OnPrevPage);
+            RemoveClick(nextPageButton, OnNextPage);
+            RemoveClick(backButton, OnBack);
         }
 
         protected override void OnShown()
         {
+            ResolveServices();
+
+            var active = flow != null ? flow.ActivePoster : null;
+            var lastCompleted = flow != null ? flow.LastCompletedPoster : null;
+
+            _pageIndex = JournalPageRules.InitialPageIndex(
+                OrderedIds(), _progress,
+                active != null ? active.posterId : string.Empty,
+                lastCompleted != null ? lastCompleted.posterId : string.Empty);
+
             Refresh();
+            FadeIn();
         }
 
-        /// <summary>Swaps the poster shown on this page. Public for the v2 page turn.</summary>
-        public void SetPoster(PosterData value)
-        {
-            poster = value;
-            Refresh();
-        }
+        // ---- Navigation ---------------------------------------------------------------
 
-        /// <summary>Re-reads the poster asset and repaints thumbnail and title.</summary>
-        public void Refresh()
+        private void OnPrevPage()
         {
-            if (thumbnailImage != null)
+            if (!JournalPageRules.HasPreviousPage(_pageIndex))
             {
-                Sprite thumb = poster != null ? poster.journalThumbnail : null;
-                thumbnailImage.sprite = thumb;
-                thumbnailImage.enabled = thumb != null;
+                return;
             }
+
+            _pageIndex--;
+            _audio?.PlaySfx(SfxId.PageFlip);
+            Refresh();
+        }
+
+        private void OnNextPage()
+        {
+            if (!JournalPageRules.HasNextPage(_pageIndex, PageCount()))
+            {
+                return;
+            }
+
+            _pageIndex++;
+            _audio?.PlaySfx(SfxId.PageFlip);
+            Refresh();
+        }
+
+        private void OnActionClicked()
+        {
+            var poster = CurrentPoster;
+
+            if (poster == null || flow == null)
+            {
+                return;
+            }
+
+            var state = JournalPageRules.Evaluate(_progress, poster.posterId, OrderedIds());
+
+            if (!JournalPageRules.IsButtonInteractable(state))
+            {
+                return;
+            }
+
+            flow.StartOrContinue(poster);
+        }
+
+        private void OnBack()
+        {
+            flow?.GoToDeskHub();
+        }
+
+        // ---- Drawing --------------------------------------------------------------------
+
+        private void Refresh()
+        {
+            var count = PageCount();
+            _pageIndex = JournalPageRules.ClampPage(_pageIndex, count);
+
+            var poster = CurrentPoster;
+            var state = poster != null
+                ? JournalPageRules.Evaluate(_progress, poster.posterId, OrderedIds())
+                : JournalPageState.Locked;
+
+            DrawArt(poster, state);
 
             if (titleLabel != null)
             {
-                titleLabel.text = Localize(poster != null ? poster.titleKey : string.Empty);
+                titleLabel.text = poster != null ? Localize(poster.titleKey) : string.Empty;
             }
 
-            ApplyPageArrowState();
+            if (actionButtonLabel != null)
+            {
+                actionButtonLabel.text = Localize(JournalPageRules.ButtonLabelKey(state));
+            }
+
+            SetButtonEnabled(actionButton, poster != null && JournalPageRules.IsButtonInteractable(state));
+            SetButtonEnabled(prevPageButton, JournalPageRules.HasPreviousPage(_pageIndex));
+            SetButtonEnabled(nextPageButton, JournalPageRules.HasNextPage(_pageIndex, count));
+
+            if (backButton != null)
+            {
+                backButton.gameObject.SetActive(flow != null && flow.DeskHubUnlocked);
+            }
+
+            if (lockedHint != null)
+            {
+                lockedHint.SetActive(poster != null && state == JournalPageState.Locked);
+            }
         }
 
-        private void RaiseRestoreRequested()
+        private void DrawArt(PosterData poster, JournalPageState state)
         {
-            onRestoreRequested?.Invoke();
-            RestoreRequested?.Invoke();
-        }
-
-        /// <summary>
-        /// The MVP has a single page, so both arrows are shown greyed out. When
-        /// poster #2 arrives this becomes a real range check.
-        /// </summary>
-        private void ApplyPageArrowState()
-        {
-            SetArrowEnabled(prevPageButton, false);
-            SetArrowEnabled(nextPageButton, false);
-        }
-
-        private void SetArrowEnabled(Button arrow, bool enabledState)
-        {
-            if (arrow == null)
+            if (posterImage == null)
             {
                 return;
             }
 
-            arrow.interactable = enabledState;
+            if (poster == null)
+            {
+                posterImage.enabled = false;
+                return;
+            }
 
-            // Interactable alone leaves the sprite at full strength on a custom
-            // button image, so fade it explicitly to read as "not yet available".
-            Graphic graphic = arrow.targetGraphic;
+            var showFinal = JournalPageRules.ShowsFinalArt(state);
+            var sprite = showFinal ? poster.finalSprite
+                : (poster.journalThumbnail != null ? poster.journalThumbnail : poster.beforeSprite);
 
-            if (graphic == null)
+            posterImage.sprite = sprite;
+            posterImage.enabled = sprite != null;
+
+            var usingFallbackFade = !showFinal && poster.journalThumbnail == null;
+            var color = posterImage.color;
+            color.a = usingFallbackFade ? fallbackPreviewAlpha : 1f;
+            posterImage.color = color;
+        }
+
+        private void FadeIn()
+        {
+            if (fadeGroup == null)
             {
                 return;
             }
 
-            Color color = graphic.color;
-            color.a = enabledState ? 1f : disabledPageArrowAlpha;
-            graphic.color = color;
+            if (_fade != null)
+            {
+                StopCoroutine(_fade);
+            }
+
+            fadeGroup.alpha = 0f;
+            _fade = StartCoroutine(FadeRoutine());
         }
 
-        private static string Localize(string key)
+        private IEnumerator FadeRoutine()
+        {
+            var t = 0f;
+
+            while (fadeInSeconds > 0f && t < fadeInSeconds)
+            {
+                t += Time.unscaledDeltaTime;
+                fadeGroup.alpha = Mathf.Clamp01(t / fadeInSeconds);
+                yield return null;
+            }
+
+            fadeGroup.alpha = 1f;
+            _fade = null;
+        }
+
+        // ---- Helpers ----------------------------------------------------------------
+
+        private void ResolveServices()
+        {
+            if (_progress == null)
+            {
+                _progress = ServiceLocator.Get<IPosterProgress>();
+            }
+
+            if (_localization == null)
+            {
+                _localization = ServiceLocator.Get<ILocalizationService>();
+            }
+
+            if (_audio == null)
+            {
+                _audio = ServiceLocator.Get<IAudioService>();
+            }
+        }
+
+        private int PageCount() => flow != null && flow.Posters != null ? flow.Posters.Count : 0;
+
+        private PosterData Poster(int index) =>
+            flow != null && flow.Posters != null ? flow.Posters.Get(index) : null;
+
+        private IReadOnlyList<string> OrderedIds() =>
+            flow != null && flow.Posters != null ? flow.Posters.OrderedIds : EmptyIds;
+
+        private string Localize(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 return string.Empty;
             }
 
-            // Degrades to the raw key when the scene is opened without the
-            // Systems object, which is exactly what ILocalizationService promises.
-            return ServiceLocator.TryGet(out ILocalizationService loc) ? loc.Get(key) : key;
+            return _localization != null ? _localization.Get(key) : key;
+        }
+
+        private void SetButtonEnabled(Button button, bool enabledState)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            button.interactable = enabledState;
+
+            var graphic = button.targetGraphic;
+
+            if (graphic == null)
+            {
+                return;
+            }
+
+            var color = graphic.color;
+            color.a = enabledState ? 1f : disabledButtonAlpha;
+            graphic.color = color;
+        }
+
+        private static void AddClick(Button button, UnityEngine.Events.UnityAction action)
+        {
+            if (button != null)
+            {
+                button.onClick.AddListener(action);
+            }
+        }
+
+        private static void RemoveClick(Button button, UnityEngine.Events.UnityAction action)
+        {
+            if (button != null)
+            {
+                button.onClick.RemoveListener(action);
+            }
         }
     }
 }

@@ -141,3 +141,12 @@ Write `Docs/Batch2/handoff/<AGENT>.md` containing:
 6. Tests you wrote and how they run.
 7. Needs from others / open questions / anything you drafted that the human must review.
 8. Optimisation ideas you noticed.
+
+## 11. Amendments (approved by the lead after the CORE agent finished — these override the sections above)
+
+- **A1** `GameSignals.Clear()` runs in `SceneLoader` just before the new scene activates (not on `sceneLoaded`, which fires after the new scene's Awake/OnEnable). Subscribe in `OnEnable` as normal.
+- **A2** `IAudioService` gained `void SetMusicPaused(bool paused)` (AudioManager implements it; also exposes `MusicMixerGroup`). Any test fake of IAudioService must implement it.
+- **A3** `CutscenePlayer` has two extra optional fields: `videoAudioSource`, `overlayCanvas` (+ timing settings). Video audio routes into the mixer's Music group.
+- **A4** `GameFlowController` has an extra field `bool bookCutsceneSkippable` (default true). Intro and completion cutscenes are always forced.
+- **A5** `RestorationController.beginOnStart` must be false in the scene (the flow starts posters). `Poster01.completionCutscene = Assets/videos/tracysc2.mp4` (set by the poster recipe).
+- **A6** Pure-logic code lives in `Assets/Scripts/Logic/**` or next to its feature; every pure file used by a test in `Tests/EditMode/Logic/` must also be listed in `Tools/logictests/LogicTests.csproj` (the checker maintains that file).
