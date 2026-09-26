@@ -24,8 +24,14 @@
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [ ] Every screen's hamburger icon (top-left, every restoration screen, the
-//     journal) already has a Button. Select it -> Add Component -> Pause Button.
+// [ ] Every restoration screen (Cleaning, the three LinenBacking variants,
+//     StickerRemoval) and the desk hub needs a hamburger icon Button in its
+//     top-left (Pos X ~14, Pos Y ~-38, Width 53, Height 57, Source Image =
+//     Assets/Art/UI/hamburgerIcon.png, last child so nothing covers it). NONE
+//     of these exist yet in Game.unity (verified: no such object is in the
+//     scene) — create the Button first, THEN Add Component -> Pause Button.
+//     The journal has NO hamburger by design (contract: no pause access from
+//     the journal) — do not add one there.
 // [ ] Drag the "Overlays" object (its OverlayController) into "Overlays".
 // [ ] Leave "Opens" at "Pause" for every hamburger EXCEPT the desk hub's, which
 //     the flow sends straight to Settings: set the desk hub's hamburger to

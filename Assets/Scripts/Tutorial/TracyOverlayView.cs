@@ -83,8 +83,15 @@
 //     colour black with Alpha about 0.25 (a light scrim), Raycast Target ticked.
 //     Add Canvas (Override Sorting, Order 10) + Graphic Raycaster + Canvas Group,
 //     then this script.
-// [ ] Children: TracyStill, TracyHappy, TracyEmbarrassed (UI Images with the
-//     full-body sprites, positioned per FigmaLayout.md, Raycast Target OFF), then
+// [ ] Children, in this order (order = draw order, first is behind): CatBoard
+//     (Image, Assets/Art/DeskHub/catBoard.png, Raycast Target OFF, top-left anchor
+//     Pos X 261 / Pos Y -67, Width 146 / Height 249 — Figma Desk_Hub 91:45 node
+//     132:2. Purely decorative room-corkboard art; it is NOT part of DeskHubScreen
+//     because Desk_Hub is the only one of the five Figma desk-hub frames that shows
+//     it — enteredEditMode/PreviewMode (the DeskHubScreen states) do not — so it
+//     only ever appears while HubTracyOverlay itself is on screen), then
+//     TracyStill, TracyHappy, TracyEmbarrassed (UI Images with the full-body
+//     sprites, positioned per FigmaLayout.md, Raycast Target OFF), then
 //     DialogueRect (the dialogue box art), with LineText and TapHint (TMP) inside it.
 // [ ] Fill in: Scrim Image = HubTracyOverlay, Portrait Image = TracyStill,
 //     Line Label, Tap Hint Label, and Mood Objects Still/Happy/Embarrassed = the
