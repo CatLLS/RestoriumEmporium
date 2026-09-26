@@ -3,6 +3,7 @@
     "rootNamespace": "RestoriumEmporium.Tests",
     "references": [
         "RestoriumEmporium.Runtime",
+        "RestoriumEmporium.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "UnityEngine.UI",
