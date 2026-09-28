@@ -77,6 +77,18 @@
 //       Tool Bar Root      <- ToolBarRoot
 //       Header Label       <- Header
 //       Linen Frame        <- leave EMPTY
+// [ ] HAMBURGER (Batch 2 — pause access from this screen, contract §1.7):
+//       Right-click LinenBackingFrontScreen -> UI -> Button - TextMeshPro.
+//       Name: PauseButtonObject. Anchor top-left. Pos X = 14, Pos Y = -38,
+//       Width = 53, Height = 57. Image -> Source Image =
+//       Assets/Art/UI/hamburgerIcon.png. Delete its child Text (TMP). Must be
+//       the LAST child so nothing covers it.
+//       Add Component -> Pause Button (UI/PauseButton.cs), Overlays <- the
+//       "Overlays" object, Opens = Pause.
+//       Add Component -> Button Sfx, Sfx = Button Click.
+//       Add Component -> Tutorial Anchor, Anchor Id = pause.button.
+//       No field on LinenBackingScreen itself references this object; it
+//       duplicates along with everything else in steps B and C below.
 //
 // B) LinenBackingBackScreen
 // [x] Select LinenBackingFrontScreen -> Ctrl+D to duplicate.

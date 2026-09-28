@@ -20,9 +20,9 @@
 // [x] Right-click in Project -> Create -> Restorium -> Locale Table.
 // [x] Name it "pt-BR" and put it in Assets/Data/Localization/.
 // [x] Set Locale Code to "pt-BR" and Display Name to "Portugues (Brasil)".
-// [x] Menu Restorium -> Create Poster 1 Data fills in every entry for you;
-//     run that instead of typing the rows by hand.
-// [x] Drag the asset into LocalizationService.tables on the Systems prefab.
+// [x] Menu Restorium -> Localization -> Rebuild Locale Tables fills in every entry
+//     (and creates the "en" table too); run that instead of typing rows by hand.
+// [x] Drag BOTH tables (en, pt-BR) into LocalizationService.tables on the Systems object.
 // ---------------------------------------------------------------
 
 using System;

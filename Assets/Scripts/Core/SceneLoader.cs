@@ -24,6 +24,10 @@
 //   - IsLoading rejects re-entry. Two taps on a Continue button would otherwise
 //     start two loads, and the second one's fade-in would fight the first.
 //   - No Addressables. Three scenes in the build settings is the entire need.
+//   - GameSignals.Clear() runs right BEFORE the new scene is activated (both
+//     load paths). That drops any listener a destroyed object forgot to remove,
+//     while the new scene's objects — which subscribe in their Awake/OnEnable,
+//     before Unity's sceneLoaded callback — keep their subscriptions.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -121,6 +125,7 @@ namespace RestoriumEmporium.Core
             Debug.LogWarning($"[SceneLoader] No SceneLoader in the running game; loading " +
                              $"'{sceneName}' without a fade. This is expected when a scene is " +
                              "opened directly in the Editor.");
+            GameSignals.Clear();
             SceneManager.LoadScene(sceneName);
         }
 
@@ -179,6 +184,9 @@ namespace RestoriumEmporium.Core
                 yield return null;
             }
 
+            // Leak safety net: drop listeners before the old scene is torn down
+            // and before the new one subscribes (see KEY DECISIONS).
+            GameSignals.Clear();
             operation.allowSceneActivation = true;
 
             while (!operation.isDone)

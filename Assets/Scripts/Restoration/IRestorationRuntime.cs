@@ -69,5 +69,12 @@ namespace RestoriumEmporium.Restoration
         /// Pass 0 for a fresh restoration.
         /// </summary>
         void BeginPoster(PosterData poster, int startStageIndex);
+
+        /// <summary>
+        /// Completes the current stage regardless of coverage or tool. Used by
+        /// non-scrub stages (StageKind.StickerPeel) when their own interaction is
+        /// done. No-op when no stage is running or it is already complete.
+        /// </summary>
+        void ForceCompleteCurrentStage();
     }
 }

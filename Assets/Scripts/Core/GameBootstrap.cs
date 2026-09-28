@@ -1,15 +1,33 @@
 // ============================================================
-// GameBootstrap — brings the three process-lifetime services online, once.
+// GameBootstrap — brings the process-lifetime services online, once.
 // WHAT & WHY: SaveManager, LocalizationService and AudioManager all live on one
 //   persistent "Systems" object and must be reachable from scenes loaded later.
-//   This component owns that object's lifetime, publishes those three into
-//   ServiceLocator, restores the player's saved settings, and applies the
-//   device-level settings a mobile game needs.
+//   Batch 2 adds four more services that live exactly as long: poster progress,
+//   the coin wallet, the decoration inventory and the rewarded ad. This
+//   component owns that object's lifetime, publishes every service into
+//   ServiceLocator in a fixed order, restores the player's saved settings, and
+//   applies the device-level settings a mobile game needs.
 // KEY DECISIONS:
 //   - Registration happens here rather than in each service's own Awake, so
 //     there is exactly one place that decides what is registered and in what
-//     order. The save must be readable before the locale and volumes are
-//     applied, and that ordering is only obvious when it is written out.
+//     order: ISaveService -> ILocalizationService -> IAudioService ->
+//     IPosterProgress -> IWallet -> IDecorationInventory -> IRewardedAd. Each
+//     later service is built from the earlier ones (the inventory spends
+//     through the wallet, everything saves through the save service), and that
+//     dependency order is only obvious when it is written out.
+//   - The three rule services (PosterProgressService, PlayerWallet,
+//     DecorationInventory) are plain C# objects created with 'new' — no
+//     component, no Inspector field — and receive Debug.LogWarning as their
+//     warning sink. That is what keeps them unit-testable outside Unity.
+//   - The rewarded ad is a component because it needs a coroutine. If the
+//     Systems object has no IRewardedAd component, a SimulatedRewardedAd is
+//     added at runtime, so nothing new has to be wired in the Inspector. When
+//     the AdMob wrapper exists it is simply put on Systems and found instead.
+//   - GameSignals (the static tutorial notification hub) is cleared on every
+//     scene change as a leak safety net — but by SceneLoader just BEFORE the new
+//     scene activates, not here on SceneManager.sceneLoaded. Unity runs the new
+//     scene's Awake/OnEnable before sceneLoaded fires, so a Clear() at that
+//     point would wipe the subscriptions the new scene had just made.
 //   - The duplicate guard destroys the NEWCOMER, not the incumbent. Destroying
 //     the incumbent would tear down the services other objects already hold
 //     references to. It also returns from Awake before registering anything, so
@@ -59,6 +77,10 @@
 //     [DefaultExecutionOrder(-100)] attribute so it runs before everything else.
 //     Just do not add GameBootstrap to Edit -> Project Settings -> Script
 //     Execution Order with a number above 0, which would override that.
+// [ ] Batch 2: NOTHING new to wire. Poster progress, the wallet and the
+//     decoration inventory are created in code, and the rewarded-ad placeholder
+//     ("Simulated Rewarded Ad") is added to "Systems" automatically when you
+//     press Play. You may add it by hand instead if you want to tweak it.
 // ---------------------------------------------------------------
 
 using UnityEngine;
@@ -66,6 +88,7 @@ using UnityEngine;
 namespace RestoriumEmporium.Core
 {
     using RestoriumEmporium.Audio;
+    using RestoriumEmporium.Economy;
     using RestoriumEmporium.Localization;
 
     [DisallowMultipleComponent]
@@ -93,6 +116,10 @@ namespace RestoriumEmporium.Core
         [SerializeField] private bool keepScreenAwake = true;
 
         private IAudioService _audio;
+        private IPosterProgress _progress;
+        private IWallet _wallet;
+        private IDecorationInventory _inventory;
+        private IRewardedAd _rewardedAd;
         private bool _registered;
 
         /// <summary>The live bootstrap, or null before the first scene loads.</summary>
@@ -131,10 +158,14 @@ namespace RestoriumEmporium.Core
             }
 
             // Identity-checked, so a duplicate that never registered cannot
-            // unregister the survivor's services.
-            ServiceLocator.Unregister<ISaveService>(saveManager);
-            ServiceLocator.Unregister<ILocalizationService>(localization);
+            // unregister the survivor's services. Reverse order of registration.
+            ServiceLocator.Unregister(_rewardedAd);
+            ServiceLocator.Unregister(_inventory);
+            ServiceLocator.Unregister(_wallet);
+            ServiceLocator.Unregister(_progress);
             ServiceLocator.Unregister<IAudioService>(_audio);
+            ServiceLocator.Unregister<ILocalizationService>(localization);
+            ServiceLocator.Unregister<ISaveService>(saveManager);
 
             _registered = false;
         }
@@ -190,6 +221,7 @@ namespace RestoriumEmporium.Core
 
         private void RegisterServices()
         {
+            // Order matters: every service below is built from the ones above it.
             if (saveManager != null)
             {
                 ServiceLocator.Register<ISaveService>(saveManager);
@@ -204,6 +236,20 @@ namespace RestoriumEmporium.Core
             {
                 ServiceLocator.Register<IAudioService>(_audio);
             }
+
+            System.Action<string> warn = message => Debug.LogWarning(message);
+
+            _progress = new PosterProgressService(saveManager, warn);
+            ServiceLocator.Register(_progress);
+
+            _wallet = new PlayerWallet(saveManager, warn);
+            ServiceLocator.Register(_wallet);
+
+            _inventory = new DecorationInventory(saveManager, _wallet, warn);
+            ServiceLocator.Register(_inventory);
+
+            _rewardedAd = GetComponent<IRewardedAd>() ?? gameObject.AddComponent<SimulatedRewardedAd>();
+            ServiceLocator.Register(_rewardedAd);
 
             _registered = true;
         }

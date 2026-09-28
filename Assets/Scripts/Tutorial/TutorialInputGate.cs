@@ -6,47 +6,51 @@
 //   guided path. This component is the one place that restriction is implemented.
 // KEY DECISIONS:
 //   - IMPLEMENTATION CHOSEN: toggling CanvasGroup.blocksRaycasts on an authored list
-//     of gated roots (the tool bar, the poster, the button rows...). The alternative
-//     - a full-screen transparent Image sorted under the target - was rejected.
-//     TRADE-OFF: the blocker-Image approach needs no authored list, but to let the
-//     target through it must temporarily add a Canvas + GraphicRaycaster override to
-//     an object owned by another system and bump its sortingOrder, then put it back.
-//     That mutates other people's hierarchies at runtime, fights every other
-//     sortingOrder in the scene, and breaks the moment a screen reparents its tool
-//     bar mid-flip - which this game does twice. The CanvasGroup approach touches
-//     nothing it was not handed, is visible and debuggable in the Inspector, and
-//     restores itself with one call. Its cost is that the human must populate the
-//     list, and anything NOT in the list is never blocked. That is the safe
-//     direction to fail for a tutorial that must never soft-lock.
+//     of gated roots (the tool bar, the poster, the journal page, the desk hub top
+//     bar, the shop grid...). The alternative - a full-screen transparent Image
+//     sorted under the target - was rejected: to let the target through it must
+//     add a Canvas override to an object owned by another system and bump its
+//     sortingOrder, which fights every other sortingOrder in the scene and breaks
+//     the moment a screen reparents its tool bar mid-flip. The CanvasGroup approach
+//     touches nothing it was not handed and restores itself with one call. Its cost
+//     is that the list must be populated, and anything NOT in the list is never
+//     blocked — the safe direction to fail for a tutorial that must never soft-lock.
+//   - Batch 2: the gate REMEMBERS each root's blocksRaycasts before gating and puts
+//     THAT value back on release, instead of forcing true. Other systems now own
+//     that flag too (a screen blocking input during a flip, the desk hub in edit
+//     mode), and forcing it back on would break them. Release with nothing gated is
+//     a no-op for the same reason.
+//   - Modal overlays (Pause / Settings) and the CutscenePlayer must NOT be in the
+//     list: they sit above the gate on their own canvases, so the player can always
+//     pause and videos can always be skipped.
 //   - FAILS OPEN, three ways: an unknown anchor id releases everything, an anchor
 //     that lives outside every gated root releases everything, and OnDisable
-//     releases everything. A typo in an asset costs a warning in the Console, never
-//     a player who cannot touch anything.
+//     releases everything. A typo in an asset costs a warning, never a player who
+//     cannot touch anything.
 //   - Only blocksRaycasts is toggled, never 'interactable'. Turning interactable off
-//     would push Buttons into their greyed-out disabled tint, which reads as "this
-//     is broken" rather than "not yet".
+//     would grey the Buttons out, which reads as "this is broken", not "not yet".
 //   - The ancestor test walks parents with a plain while loop. No LINQ, no
 //     allocation, and it runs once per step, not per frame.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// [x] Select the "GameFlow" GameObject (the one that also holds
-//     TutorialController). If it does not exist yet: right-click in the
-//     Hierarchy -> Create Empty, and rename it "GameFlow".
-// [x] Click "Add Component" and add this script (TutorialInputGate).
-// [x] Now give every group of buttons you want to be gate-able a Canvas Group:
-//     select each of the GameObjects below, click "Add Component" -> Canvas Group.
-//       - the Journal screen's page/button area
-//       - the tool bar (the object holding the six tool buttons)
-//       - the poster object the player drags on
-//       - the FinishedRepair screen's button row
-// [x] On EVERY one of those Canvas Groups leave "Blocks Raycasts" TICKED. This
-//     script unticks and re-ticks it at runtime; ticked is the normal state.
-// [x] Back on GameFlow, set "Gated Roots" Size to the number of Canvas Groups you
-//     just made, and drag each of those GameObjects into a slot.
-// [x] IMPORTANT: every element a tutorial step points at must be a CHILD of one of
-//     those gated roots, or the gate will (safely) turn itself off for that step
-//     and log a warning telling you which anchor was outside.
+// [x] Select the "GameFlow" GameObject (the one that also holds TutorialController).
+// [x] Add Component -> Tutorial Input Gate (this script).
+// [ ] Give every group of buttons you want to be gate-able a Canvas Group
+//     (select it -> Add Component -> Canvas Group), leaving "Blocks Raycasts" ticked:
+//       - JournalScreen/Page and JournalScreen's top bar (back button)
+//       - each restoration screen's tool bar and its poster object
+//       - FinishedRepairScreen/Buttons
+//       - DeskHubScreen's top bar, room and preview/edit bars
+//       - ShopScreen's grid and top bar
+//       - StickerRemovalScreen's sticker root (optional: sticker steps are not gated)
+//     Keep each screen's hamburger (PauseButton) OUTSIDE these groups so the
+//     player can always pause.
+// [ ] Back on GameFlow, set "Gated Roots" Size to the number of Canvas Groups and
+//     drag each of those GameObjects into a slot.
+// [x] IMPORTANT: every element a gated tutorial step points at must be a CHILD of
+//     one of those roots, or the gate (safely) turns itself off for that step and
+//     logs which anchor was outside.
 // [x] Drag this GameFlow GameObject into TutorialController -> "Input Gate".
 // ---------------------------------------------------------------
 
@@ -64,6 +68,9 @@ namespace RestoriumEmporium.Tutorial
         [Tooltip("Log which roots were blocked for each step. Handy while authoring.")]
         [SerializeField] private bool verbose;
 
+        // blocksRaycasts of each root before the current gate, restored on release.
+        private bool[] _saved = new bool[0];
+
         /// <summary>True while at least one root is currently blocked.</summary>
         public bool IsGating { get; private set; }
 
@@ -71,6 +78,14 @@ namespace RestoriumEmporium.Tutorial
         {
             // Never leave the scene with raycasts switched off behind us.
             ReleaseAll();
+        }
+
+        /// <summary>True when an enabled anchor with this id exists and lies inside a gated root.</summary>
+        public bool CanGate(string anchorId)
+        {
+            var anchor = TutorialAnchor.Find(anchorId);
+            var target = anchor != null ? anchor.Target : null;
+            return target != null && IsCovered(target);
         }
 
         /// <summary>
@@ -121,22 +136,9 @@ namespace RestoriumEmporium.Tutorial
                 return;
             }
 
-            // First pass: is the target inside anything we are able to gate? If it is
-            // not, blocking everything would leave the player with nothing to touch.
-            var covered = false;
-
-            for (var i = 0; i < gatedRoots.Length; i++)
-            {
-                var root = gatedRoots[i];
-
-                if (root != null && IsAncestorOf(root.transform, target))
-                {
-                    covered = true;
-                    break;
-                }
-            }
-
-            if (!covered)
+            // Is the target inside anything we are able to gate? If not, blocking
+            // everything would leave the player with nothing to touch.
+            if (!IsCovered(target))
             {
                 Debug.LogWarning(
                     $"[TutorialInputGate] '{label}' is not inside any of the Gated Roots, " +
@@ -144,6 +146,12 @@ namespace RestoriumEmporium.Tutorial
                     "if you want the rest of the screen blocked.", this);
                 ReleaseAll();
                 return;
+            }
+
+            // Re-gating while gated keeps the ORIGINAL saved values.
+            if (!IsGating)
+            {
+                SaveState();
             }
 
             for (var i = 0; i < gatedRoots.Length; i++)
@@ -156,37 +164,68 @@ namespace RestoriumEmporium.Tutorial
                 }
 
                 var allow = IsAncestorOf(root.transform, target);
-                root.blocksRaycasts = allow;
+
+                // Allowing never turns ON raycasts that the root's owner had switched off.
+                root.blocksRaycasts = allow ? _saved[i] : false;
 
                 if (verbose)
                 {
-                    Debug.Log($"[TutorialInputGate] '{root.name}' blocksRaycasts = {allow} (target '{label}').", root);
+                    Debug.Log($"[TutorialInputGate] '{root.name}' blocksRaycasts = {root.blocksRaycasts} (target '{label}').", root);
                 }
             }
 
             IsGating = true;
         }
 
-        /// <summary>Re-enables raycasts on every gated root. Safe to call at any time.</summary>
+        /// <summary>Puts every gated root back the way it was. No-op when nothing is gated.</summary>
         public void ReleaseAll()
         {
-            if (gatedRoots == null)
+            if (!IsGating || gatedRoots == null)
             {
                 IsGating = false;
                 return;
             }
 
-            for (var i = 0; i < gatedRoots.Length; i++)
+            for (var i = 0; i < gatedRoots.Length && i < _saved.Length; i++)
             {
-                var root = gatedRoots[i];
-
-                if (root != null)
+                if (gatedRoots[i] != null)
                 {
-                    root.blocksRaycasts = true;
+                    gatedRoots[i].blocksRaycasts = _saved[i];
                 }
             }
 
             IsGating = false;
+        }
+
+        private void SaveState()
+        {
+            if (_saved.Length != gatedRoots.Length)
+            {
+                _saved = new bool[gatedRoots.Length];
+            }
+
+            for (var i = 0; i < gatedRoots.Length; i++)
+            {
+                _saved[i] = gatedRoots[i] == null || gatedRoots[i].blocksRaycasts;
+            }
+        }
+
+        private bool IsCovered(Transform target)
+        {
+            if (gatedRoots == null)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < gatedRoots.Length; i++)
+            {
+                if (gatedRoots[i] != null && IsAncestorOf(gatedRoots[i].transform, target))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool IsAncestorOf(Transform candidate, Transform child)

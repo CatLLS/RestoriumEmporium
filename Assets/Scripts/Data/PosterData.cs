@@ -11,6 +11,9 @@
 //   - Stages are an array in play order. Order is the only sequencing rule:
 //     there is no graph, no branching, and no per-stage "next" pointer that
 //     could fall out of sync with the list.
+//   - Batch 2: journalOrder (unlock order), chapterKey, completionCutscene and a
+//     live coinReward. journalThumbnail is optional now — when empty the journal
+//     draws beforeSprite at reduced opacity, so a new poster needs no extra art.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -40,6 +43,12 @@ namespace RestoriumEmporium.Data
         [Tooltip("Stable id written into the save file. Never change it once shipped.")]
         public string posterId = "poster01";
 
+        [Tooltip("Journal page / unlock order. Poster 1 = 1, poster 2 = 2, ...")]
+        public int journalOrder = 1;
+
+        [Tooltip("Localisation key for the chapter line on Finished Repair, e.g. \"Ch1 - ...\". Blank hides it.")]
+        public string chapterKey = string.Empty;
+
         [Tooltip("Localisation key for the poster's title in the journal.")]
         public string titleKey = string.Empty;
 
@@ -59,12 +68,17 @@ namespace RestoriumEmporium.Data
         [Tooltip("The framed linen the poster is mounted on.")]
         public Sprite linenBackingSprite;
 
+        [Header("Cutscenes")]
+        [Tooltip("Plays once, after the last stage and BEFORE Finished Repair (poster 1: tracysc2). Optional.")]
+        public UnityEngine.Video.VideoClip completionCutscene;
+
         [Header("Sequence")]
         [Tooltip("The restoration stages, in play order.")]
         public RestorationStageData[] stages = new RestorationStageData[0];
 
-        [Header("Economy (unused in the MVP, kept for Part 5)")]
-        public int coinReward = 50;
+        [Header("Economy")]
+        [Tooltip("Coins paid once, the first time this poster is completed. Doubled once by the rewarded ad.")]
+        [Min(0)] public int coinReward = 100;
 
         public int StageCount => stages != null ? stages.Length : 0;
 

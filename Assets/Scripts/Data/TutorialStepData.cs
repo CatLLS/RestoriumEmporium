@@ -52,7 +52,16 @@ namespace RestoriumEmporium.Data
         ScreenEntered = 4,
 
         /// <summary>The player selected requiredTool in the tool bar.</summary>
-        ToolSelected = 5
+        ToolSelected = 5,
+
+        /// <summary>The player bought requiredItemId (or any item when it is blank).</summary>
+        ItemPurchased = 6,
+
+        /// <summary>The player peeled a sticker off the close-up.</summary>
+        StickerPeeled = 7,
+
+        /// <summary>The desk hub entered preview mode for requiredItemId (or any item when blank).</summary>
+        PreviewOpened = 8
     }
 
     [CreateAssetMenu(menuName = "Restorium/Tutorial Step", fileName = "TutorialStep")]
@@ -69,6 +78,10 @@ namespace RestoriumEmporium.Data
 
         [Tooltip("Which Tracy portrait to show.")]
         public TracyMood mood = TracyMood.Still;
+
+        [Tooltip("Portrait = bust + dialogue box (restoration screens). HubFullBody = " +
+                 "full-body Tracy with the desk-hub dialogue box.")]
+        public TracyPresentation presentation = TracyPresentation.Portrait;
 
         [Header("Where the hand points")]
         [Tooltip("Anchor Id of the TutorialAnchor to point at. Blank means no hand.")]
@@ -89,6 +102,9 @@ namespace RestoriumEmporium.Data
 
         [Tooltip("Used when Advance is Tool Selected.")]
         public ToolId requiredTool = ToolId.None;
+
+        [Tooltip("Used when Advance is Item Purchased / Preview Opened. Blank = any item.")]
+        public string requiredItemId = string.Empty;
 
         [Tooltip("Safety valve: advance anyway after this many seconds. " +
                  "Zero disables it. Never leave a gated step without one.")]

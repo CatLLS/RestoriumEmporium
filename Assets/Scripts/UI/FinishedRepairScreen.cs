@@ -1,92 +1,90 @@
 // ============================================================
-// FinishedRepairScreen — the before/after reveal and the Continue button.
-// WHAT & WHY: The payoff screen. It owns the card that flips from the ruined
-//   poster to the restored one, and the button that leaves the restoration.
-//   It supplies the pieces; it does not animate them.
+// FinishedRepairScreen — the before/after reveal, the coin payout and Double Reward
+// (Figma FinishedRepairBG 342:497).
+// WHAT & WHY: The payoff screen after every poster. It shows the linen-framed
+//   reveal card (before -> final), the coins just earned, an optional Double
+//   Reward (rewarded ad) button, and Continue back to the desk hub. It owns the
+//   content; the actual card-flip animation stays a separate component wired
+//   through a UnityEvent (see KEY DECISIONS), same as the MVP.
 // KEY DECISIONS:
-//   - The flip itself belongs to Agent B CardFlipAnimator, and this screen does
-//     NOT hold a reference to it. Instead it raises onShown when the screen
-//     appears and the human wires that UnityEvent to the animator Play method in
-//     the Inspector. A serialised MonoBehaviour cast to some local interface
-//     would compile today and break the moment either side renamed a method;
-//     a UnityEvent keeps the two halves genuinely independent and lets the human
-//     re-point the animation without a recompile.
-//   - Front and back faces are filled from PosterData.beforeSprite and
-//     finalSprite, not from the first and last stage sprites. PosterData already
-//     promises those two are the authored bookends; reaching into the stage list
-//     would break the moment a stage is reordered.
-//   - Continue raises an event rather than routing. Whether Continue goes to the
-//     journal or to the ThanksForPlaying scene is a flow decision, and the flow
-//     controller owns it.
-//   - Refresh happens in OnShown, so a second poster shows the right art without
-//     any extra call from outside.
+//   - Reads flow.LastCompletedPoster rather than holding its own poster
+//     reference: GameFlowController is the only writer of poster progress, so
+//     it is also the only correct source for "which poster just finished",
+//     including after a relaunch where this screen's own field would be stale.
+//   - The flip stays Agent B's CardFlipAnimator, referenced only by NAME through
+//     onShown (a UnityEvent wired in the Inspector), never by type. A serialized
+//     MonoBehaviour cast to some local interface would compile today and break
+//     the moment either side renamed a method; the UnityEvent keeps the two
+//     halves independent.
+//   - onShown fires after Flip Delay Seconds, once the BEFORE artwork has been
+//     on screen long enough to register as a reveal rather than a jump-cut.
+//   - The coins label always shows the TOTAL paid on this screen (base, or base
+//     x2 once doubled), not just the base reward, so a doubled payout does not
+//     read as "+100" twice.
+//   - Double Reward / the "or" separator are shown ONLY while
+//     flow.CanDoubleReward is true, and re-checked after RequestDoubleReward's
+//     callback returns: CORE's own notes call this out explicitly
+//     (CanDoubleReward goes false while the ad is in flight AND after a
+//     successful double), so refreshing on the callback is not optional polish,
+//     it is what stops a second tap from double-paying.
+//   - Continue calls flow.GoToDeskHub() directly rather than raising an event:
+//     unlike the MVP there is no longer a choice of destination to defer to
+//     another owner (Batch 2 always goes to the desk hub from here).
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
-// Positions are Rect Transform Pos X / Pos Y with the anchor preset set to
-// TOP-LEFT (click the anchor square, hold Alt+Shift, pick the top-left box).
-// Pos Y is NEGATIVE: type -174 where the design says y = 174.
+// Positions are Rect Transform Pos X / Pos Y, anchor preset TOP-LEFT (Alt+Shift,
+// top-left box). Pos Y is NEGATIVE: type -174 where the design says y = 174.
+// Full layout in Docs/Batch2/FigmaLayout.md (FinishedRepairBG 342:497).
 //
 // A) THE SCREEN ROOT
-// [x] Right-click Canvas -> Create Empty. Name it exactly: FinishedRepairScreen
-// [x] Rect Transform: anchor stretch/stretch, Left/Right/Top/Bottom = 0.
-// [x] Add Component -> Finished Repair Screen (this script).
-// [x] Start it DISABLED (untick the box at the top-left of the Inspector).
+// [ ] Right-click Canvas -> Create Empty. Name it exactly: FinishedRepairScreen
+// [ ] Rect Transform: anchor stretch/stretch, Left/Right/Top/Bottom = 0.
+// [ ] Add Component -> Finished Repair Screen (this script).
 //
 // B) CHILDREN, in this order (order = draw order, first is behind)
-// [x] Right-click FinishedRepairScreen -> UI -> Image. Name: Background
-//       Anchor stretch/stretch, all offsets 0.
-//       Source Image = Assets/Art/FinishedRepairBG
-// [x] Right-click FinishedRepairScreen -> UI -> Text - TextMeshPro. Name: Title
-//       Anchor top-left. Pos X = 89, Pos Y = -128, Width = 235, Height = 20.
-//       Alignment = Center + Middle. Font Size = 18.
-//       Add Component -> Localized Text, Key = ui.finishedRepair.title
-//       The title does NOT change while the card turns; one steady line reads
-//       calmer than a word swapping under the player's eyes mid-flip.
-// [x] Right-click FinishedRepairScreen -> Create Empty. Name: FlipCard
-//       Anchor top-left. Width = 283, Height = 506.
-//       PIVOT MUST BE 0.5, 0.5 — the card spins around its own Y axis, so a
-//       pivot on an edge swings it off screen instead of turning it in place.
-//       With that pivot the position is Pos X = 206.5, Pos Y = -427 (the centre
-//       of where the top-left-pivoted card used to sit).
-// [x] Right-click FlipCard -> UI -> Image. Name: FrontFace
-//       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
-//       Source Image = Assets/Art/Posters/poster1/posterBeforeDusting
-//       (Overwritten at runtime from PosterData.beforeSprite.)
-// [x] Right-click FlipCard -> UI -> Image. Name: BackFace
-//       Anchor stretch/stretch, Left/Right/Top/Bottom = 0.
-//       Source Image = Assets/Art/Posters/poster1/posterFinal
-//       Set its Rect Transform Rotation Y = 180 so it reads correctly once the
-//       card has flipped. Untick the checkbox at the top of the Inspector so it
-//       starts hidden; the flip animator turns it on halfway through.
-// [x] Right-click FinishedRepairScreen -> UI -> Button - TextMeshPro.
-//       Name: ContinueButton
-//       Anchor top-left. Pos X = 105, Pos Y = -734, Width = 202, Height = 69.
-//       Image -> Source Image = Assets/Art/journalAssets/buttonBase
-//       Its child Text (TMP): anchor stretch/stretch, all offsets 0,
-//       Alignment = Center + Middle, Font Size = 24.
-//       Add Component -> Localized Text on that child,
-//       Key = ui.finishedRepair.continue
-//       Add Component -> Button Sfx on ContinueButton, Sfx = Button Click.
-//       Add Component -> Tutorial Anchor on ContinueButton,
-//       Anchor Id = finishedRepair.continueButton
+// [ ] Background       Image, stretch/stretch, Source = Art/FinishedRepairBG
+// [ ] Title             TMP text. Localized Text, Key = ui.finishedRepair.title
+//                       (a steady line: it does not change while the card turns).
+// [ ] ChapterLabel      TMP text, per Figma, below the title. No LocalizedText:
+//                       the script sets it from the poster's own chapterKey and
+//                       hides the object when a poster has none.
+// [ ] FlipCard          Create Empty, per Figma size, PIVOT 0.5/0.5 (the card
+//                       spins around its own Y axis; an edge pivot swings it off
+//                       screen). Put the linen-frame + stars art here or as its
+//                       background child, per Figma.
+//     - FrontFace       Image, stretch/stretch inside FlipCard.
+//                       Source = a poster's beforeSprite placeholder.
+//     - BackFace        Image, stretch/stretch inside FlipCard. Rotation Y = 180.
+//                       Start INACTIVE (the flip animator turns it on halfway).
+// [ ] CoinsLabel        TMP text, near the reveal, per Figma ("+100" style). No
+//                       LocalizedText: the script formats ui.finishedRepair.coins.
+// [ ] DoubleButton       Button - TextMeshPro. Label: Localized Text,
+//                       Key = ui.finishedRepair.double. Add Button Sfx.
+//                       Add Tutorial Anchor, Anchor Id = finishedRepair.doubleButton.
+// [ ] OrLabel            TMP text between the two buttons. Localized Text,
+//                       Key = ui.finishedRepair.or. Hidden together with
+//                       DoubleButton — drag the SAME object (or a shared parent
+//                       holding both) into "Or Label Object" below, OR its own
+//                       object if it should hide independently.
+// [ ] ContinueButton     Button - TextMeshPro. Label: Localized Text,
+//                       Key = ui.finishedRepair.continue. Add Button Sfx.
+//                       Add Tutorial Anchor, Anchor Id = finishedRepair.continueButton.
 //
 // C) WIRE THE INSPECTOR (select FinishedRepairScreen and drag these in)
-// [x] Poster          <- Assets/Data/Poster1/Poster01
-// [x] Flip Card Root  <- the FlipCard child
-// [x] Front Face      <- the FrontFace child
-// [x] Back Face       <- the BackFace child
-// [x] Continue Button <- the ContinueButton child
-// [x] On Shown (+): drag the FlipCard object in and pick
-//     CardFlipAnimator -> Play(). THIS is what starts the flip; without it the
-//     card just sits there. (Agent B provides CardFlipAnimator; add that
-//     component to the FlipCard object first.)
-// [x] On Continue Requested (+): drag the GameFlow object in and pick the method
-//     the GameFlowController exposes for leaving the finished repair.
+// [ ] Flow             <- the GameFlow object (GameFlowController)
+// [ ] Chapter Label / Coins Label
+// [ ] Flip Card Root   <- the FlipCard child
+// [ ] Front Face / Back Face
+// [ ] Double Button / Or Label Object / Continue Button
+// [ ] On Shown (+): drag the FlipCard object in and pick
+//     CardFlipAnimator -> Play() (RESTORATION/FX agent's component; add it to
+//     FlipCard first). This is what starts the flip.
 // ---------------------------------------------------------------
 
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -95,76 +93,82 @@ namespace RestoriumEmporium.UI
 {
     using RestoriumEmporium.Core;
     using RestoriumEmporium.Data;
+    using RestoriumEmporium.Localization;
 
     [DisallowMultipleComponent]
     public class FinishedRepairScreen : ScreenView
     {
+        [Header("Flow")]
+        [Tooltip("GameFlowController on the GameFlow object. Supplies LastCompletedPoster " +
+                 "and CanDoubleReward, and owns Continue / RequestDoubleReward.")]
+        [SerializeField] private GameFlowController flow;
+
         [Header("Content")]
-        [Tooltip("Supplies the before and after sprites for the flip card.")]
-        [SerializeField] private PosterData poster;
+        [Tooltip("Poster.chapterKey. Hidden automatically when a poster has none.")]
+        [SerializeField] private TMP_Text chapterLabel;
 
-        [Header("References")]
-        [Tooltip("The card that flips. Put Agent B CardFlipAnimator on this object.")]
+        [Tooltip("Formats ui.finishedRepair.coins ('+{0}') with the total paid on this screen.")]
+        [SerializeField] private TMP_Text coinsLabel;
+
+        [Header("Reveal card")]
+        [Tooltip("The card that flips. Put the FX agent's CardFlipAnimator on this object.")]
         [SerializeField] private RectTransform flipCardRoot;
-
-        [Tooltip("Face shown first: the poster before restoration.")]
         [SerializeField] private Image frontFace;
-
-        [Tooltip("Face revealed by the flip: the restored poster.")]
         [SerializeField] private Image backFace;
 
+        [Header("Buttons")]
         [SerializeField] private Button continueButton;
 
+        [Tooltip("Shown only while flow.CanDoubleReward is true.")]
+        [SerializeField] private Button doubleButton;
+
+        [Tooltip("The 'or' separator between Double Reward and Continue. Shown/hidden " +
+                 "together with Double Button.")]
+        [SerializeField] private GameObject orLabelObject;
+
         [Header("Pacing")]
-        [Tooltip("Seconds the BEFORE artwork is held before the card turns. The " +
-                 "reveal only reads as a reveal if the player had time to take in " +
-                 "what is being turned over.")]
+        [Tooltip("Seconds the BEFORE artwork is held before the card turns.")]
         [Range(0f, 5f)]
         [SerializeField] private float flipDelaySeconds = 1.2f;
 
         [Header("Events")]
-        [Tooltip("Raised after this screen becomes visible and its faces are set, " +
-                 "once Flip Delay Seconds has passed. Wire the flip animation here.")]
+        [Tooltip("Raised after this screen's content is set, once Flip Delay Seconds has " +
+                 "passed. Wire the flip animation here.")]
         [SerializeField] private UnityEvent onShown = new UnityEvent();
 
-        [Tooltip("Raised when the player taps Continue. The GameFlowController listens.")]
-        [SerializeField] private UnityEvent onContinueRequested = new UnityEvent();
-
-        /// <summary>Code-side twin of onContinueRequested.</summary>
-        public event Action ContinueRequested;
+        private PosterData _poster;
+        private ILocalizationService _localization;
+        private bool _doubling;
+        private bool _doubledPaid;
 
         public override GameScreen Screen => GameScreen.FinishedRepair;
 
-        /// <summary>The card object, for whoever animates it.</summary>
         public RectTransform FlipCardRoot => flipCardRoot;
-
         public Image FrontFace => frontFace;
-
         public Image BackFace => backFace;
 
         private void Awake()
         {
-            if (continueButton != null)
-            {
-                continueButton.onClick.AddListener(RaiseContinueRequested);
-            }
+            AddClick(continueButton, OnContinue);
+            AddClick(doubleButton, OnDouble);
         }
 
         private void OnDestroy()
         {
-            if (continueButton != null)
-            {
-                continueButton.onClick.RemoveListener(RaiseContinueRequested);
-            }
+            RemoveClick(continueButton, OnContinue);
+            RemoveClick(doubleButton, OnDouble);
         }
 
         protected override void OnShown()
         {
-            ApplyFaces();
+            ResolveServices();
 
-            // Raised last, so anything listening (the flip) starts from a card
-            // that already shows the right art, and only after the before artwork
-            // has been on screen long enough to register.
+            _poster = flow != null ? flow.LastCompletedPoster : null;
+            _doubling = false;
+            _doubledPaid = false;
+
+            ApplyContent();
+
             if (flipDelaySeconds <= 0f)
             {
                 onShown?.Invoke();
@@ -178,43 +182,159 @@ namespace RestoriumEmporium.UI
         {
             yield return new WaitForSecondsRealtime(flipDelaySeconds);
 
-            // The screen can be hidden again inside the delay; firing the flip at
-            // a card nobody is looking at would leave it mid-turn on the way back.
+            // The screen can be hidden again inside the delay; firing the flip at a
+            // card nobody is looking at would leave it mid-turn on the way back.
             if (IsVisible)
             {
                 onShown?.Invoke();
             }
         }
 
-        /// <summary>Swaps the poster whose before/after this screen reveals.</summary>
+        /// <summary>Swaps the poster this screen reveals. Public for a direct call/test.</summary>
         public void SetPoster(PosterData value)
         {
-            poster = value;
-            ApplyFaces();
+            _poster = value;
+            ApplyContent();
         }
 
-        private void ApplyFaces()
+        // ---- Buttons ----------------------------------------------------------------
+
+        private void OnContinue()
         {
-            if (poster == null)
+            flow?.GoToDeskHub();
+        }
+
+        private void OnDouble()
+        {
+            if (_doubling || flow == null || !flow.CanDoubleReward)
             {
                 return;
             }
 
-            if (frontFace != null && poster.beforeSprite != null)
+            _doubling = true;
+            SetInteractable(doubleButton, false);
+
+            flow.RequestDoubleReward(OnDoubleRewardFinished);
+        }
+
+        private void OnDoubleRewardFinished(bool paid)
+        {
+            // flow can be torn down (scene change) by the time an ad callback returns.
+            if (this == null)
             {
-                frontFace.sprite = poster.beforeSprite;
+                return;
             }
 
-            if (backFace != null && poster.finalSprite != null)
+            _doubling = false;
+
+            if (paid)
             {
-                backFace.sprite = poster.finalSprite;
+                _doubledPaid = true;
+                RefreshCoinsLabel();
+            }
+
+            RefreshDoubleButton();
+        }
+
+        // ---- Drawing --------------------------------------------------------------------
+
+        private void ApplyContent()
+        {
+            if (frontFace != null && _poster != null && _poster.beforeSprite != null)
+            {
+                frontFace.sprite = _poster.beforeSprite;
+            }
+
+            if (backFace != null && _poster != null && _poster.finalSprite != null)
+            {
+                backFace.sprite = _poster.finalSprite;
+            }
+
+            if (chapterLabel != null)
+            {
+                var hasChapter = _poster != null && !string.IsNullOrEmpty(_poster.chapterKey);
+                chapterLabel.gameObject.SetActive(hasChapter);
+                chapterLabel.text = hasChapter ? Localize(_poster.chapterKey) : string.Empty;
+            }
+
+            RefreshCoinsLabel();
+            RefreshDoubleButton();
+        }
+
+        private void RefreshCoinsLabel()
+        {
+            if (coinsLabel == null || _poster == null)
+            {
+                return;
+            }
+
+            var total = _poster.coinReward * (_doubledPaid ? 2 : 1);
+            coinsLabel.text = Format("ui.finishedRepair.coins", total.ToString());
+        }
+
+        private void RefreshDoubleButton()
+        {
+            var canDouble = !_doubling && flow != null && flow.CanDoubleReward;
+
+            if (doubleButton != null)
+            {
+                doubleButton.gameObject.SetActive(canDouble);
+                SetInteractable(doubleButton, canDouble);
+            }
+
+            if (orLabelObject != null)
+            {
+                orLabelObject.SetActive(canDouble);
             }
         }
 
-        private void RaiseContinueRequested()
+        // ---- Helpers ----------------------------------------------------------------
+
+        private void ResolveServices()
         {
-            onContinueRequested?.Invoke();
-            ContinueRequested?.Invoke();
+            if (_localization == null)
+            {
+                _localization = ServiceLocator.Get<ILocalizationService>();
+            }
+        }
+
+        private string Localize(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
+
+            return _localization != null ? _localization.Get(key) : key;
+        }
+
+        private string Format(string key, string arg)
+        {
+            return _localization != null ? _localization.Format(key, arg) : key + " " + arg;
+        }
+
+        private static void SetInteractable(Button button, bool value)
+        {
+            if (button != null)
+            {
+                button.interactable = value;
+            }
+        }
+
+        private static void AddClick(Button button, UnityAction action)
+        {
+            if (button != null)
+            {
+                button.onClick.AddListener(action);
+            }
+        }
+
+        private static void RemoveClick(Button button, UnityAction action)
+        {
+            if (button != null)
+            {
+                button.onClick.RemoveListener(action);
+            }
         }
     }
 }

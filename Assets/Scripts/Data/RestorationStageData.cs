@@ -16,6 +16,10 @@
 //   - requiredCoverage is per stage because the pencil stage deliberately
 //     auto-completes early (60%) so a missed spot cannot strand the player,
 //     while the cleaning stages want a thorough 85%.
+//   - Batch 2: 'kind' selects the interaction. StickerPeel stages ignore the
+//     reveal mask; their from/to sprites still define what the poster looks like
+//     before and after (posterNoDust -> posterNoSticker), so the next stage and the
+//     resume path see a consistent poster.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -50,6 +54,10 @@ namespace RestoriumEmporium.Data
         [Tooltip("Only this tool can paint during this stage.")]
         public ToolId requiredTool = ToolId.None;
 
+        [Tooltip("Scrub = drag a tool to reveal (the original stages). StickerPeel = tap " +
+                 "stickers off a close-up; set Screen to StickerRemoval and Required Tool to None.")]
+        public StageKind kind = StageKind.Scrub;
+
         [Header("Layers")]
         [Tooltip("The state the poster starts this stage in (bottom layer).")]
         public Sprite fromSprite;
@@ -77,6 +85,13 @@ namespace RestoriumEmporium.Data
         [Tooltip("What happens once requiredCoverage is reached.")]
         public StageTransition onComplete = StageTransition.None;
 
+        [Header("Sticker peel (only when Kind = StickerPeel)")]
+        [Tooltip("The zoomed-in view of the poster the stickers sit on.")]
+        public Sprite closeUpSprite;
+
+        [Tooltip("Every sticker on the close-up. The stage completes when all are peeled.")]
+        public StickerDefinition[] stickers = new StickerDefinition[0];
+
         [Header("Text and sound")]
         [Tooltip("Localisation key for the header shown during this stage.")]
         public string titleKey = string.Empty;
@@ -86,6 +101,8 @@ namespace RestoriumEmporium.Data
 
         [Tooltip("Played once when the stage completes.")]
         public SfxId completeSfx = SfxId.StageComplete;
+
+        public int StickerCount => stickers != null ? stickers.Length : 0;
 
         /// <summary>Effective brush radius for this stage, given its tool.</summary>
         public float ResolveBrushRadius(ToolData tool)
@@ -97,5 +114,21 @@ namespace RestoriumEmporium.Data
 
             return tool != null ? tool.brushRadiusUv : 0.12f;
         }
+    }
+
+    /// <summary>One peelable sticker, positioned on the stage's close-up image.</summary>
+    [System.Serializable]
+    public class StickerDefinition
+    {
+        public Sprite sprite;
+
+        [Tooltip("Centre of the sticker, 0..1 across the close-up image, (0,0) = bottom-left.")]
+        public Vector2 normalizedCenter = new Vector2(0.5f, 0.5f);
+
+        [Tooltip("Size of the sticker as a fraction of the close-up image's width/height.")]
+        public Vector2 normalizedSize = new Vector2(0.3f, 0.15f);
+
+        [Tooltip("Degrees, counter-clockwise.")]
+        public float rotation;
     }
 }

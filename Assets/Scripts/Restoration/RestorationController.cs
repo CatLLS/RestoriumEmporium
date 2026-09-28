@@ -24,10 +24,17 @@
 //   - Coverage arrives as an event from IRevealSurface rather than being polled
 //     in Update. This component has no Update at all.
 //   - Per-stage bookkeeping lives in RestorationStageRunner so that this file
-//     stays scene glue: components, events, audio, save.
-//   - Progress is written to the save service with SaveSoon() on stage
-//     boundaries only, never on coverage changes. Coverage changes many times a
-//     second and disk writes do not belong on the drag path.
+//     stays scene glue: components, events, audio.
+//   - Batch 2: this component NO LONGER TOUCHES THE SAVE. GameFlowController is
+//     the single writer of poster progress (through IPosterProgress) and reacts
+//     to StageStarted / StageCompleted / PosterCompleted. Two writers of the same
+//     progress is how a resume ends up on the wrong stage.
+//   - Batch 2: StageKind.StickerPeel stages are driven by their own screen
+//     (StickerRemovalScreen). Here they get no tool, no painter and no coverage
+//     completion; they finish only through ForceCompleteCurrentStage(). The
+//     poster layer stack is STILL loaded with the stage's from/to sprites and
+//     snapped full on completion, so the (hidden) poster ends on toSprite
+//     (posterNoSticker) and the next stage and the flip art stay consistent.
 //   - A finished stage SETTLES before anything is told about it. The moment
 //     coverage crosses the threshold the mask snaps full, and then the game holds
 //     still for Stage Settle Seconds. Only after that does the completion sound
@@ -44,16 +51,23 @@
 //     Hierarchy -> Create Empty, name it "GameFlow".
 // [x] Select GameFlow -> Add Component -> Restoration Controller.
 // [x] Wire its fields:
-//       Poster        <- Assets/Data/Poster1/Poster01 (the PosterData asset)
+//       Poster        <- Assets/Data/Poster1/Poster01. Only used when Begin On
+//                        Start is ticked; GameFlowController normally hands
+//                        the poster in through BeginPoster.
 //       Poster Stack  <- the "Poster" object under the Canvas
 //       Painter       <- the same "Poster" object (its Reveal Mask Painter)
 //       Tools         <- set Size to 6 and drag in, in any order, the six
 //                        ToolData assets from Assets/Data/Tools/:
 //                        ToolDustRemover, ToolWaterSpray, ToolDeacidifier,
 //                        ToolSqueegee, ToolRoller, ToolPencil
-// [x] Leave "Begin On Start" TICKED while you are testing a single poster on
-//     its own. UNTICK it once the Journal screen exists, because the journal's
-//     Restore button is what should call BeginPoster.
+// [ ] "Begin On Start" must be UNTICKED in the real Game scene: the journal's
+//     Restore/Continue button goes through GameFlowController, which calls
+//     BeginPoster with the saved stage index. Tick it only to test one poster on
+//     its own (it then always starts at stage 0, because this component no
+//     longer reads the save).
+// [ ] Nothing extra is needed for sticker stages: they need no tool and no
+//     painter. Their screen (StickerRemovalScreen) calls
+//     ForceCompleteCurrentStage() once the last sticker is off.
 // [x] Add a Restoration Presenter to the same GameFlow object. It is what
 //     listens to Transition Requested, plays the flips, and calls
 //     ContinueAfterTransition(). WITHOUT IT THE RESTORATION FREEZES at the end
@@ -98,7 +112,8 @@ namespace RestoriumEmporium.Restoration
         [SerializeField] private RevealMaskPainter painter;
 
         [Header("Behaviour")]
-        [Tooltip("Start the poster automatically in Start(). Untick once the journal drives it.")]
+        [Tooltip("Start the poster automatically in Start(), at stage 0. Untick in the " +
+                 "real scene: GameFlowController starts and resumes posters.")]
         [SerializeField] private bool beginOnStart = true;
 
         [Tooltip("Advance immediately when nothing is listening to Transition Requested.")]
@@ -117,7 +132,6 @@ namespace RestoriumEmporium.Restoration
 
         private IRevealSurface _surface;
         private IAudioService _audio;
-        private ISaveService _save;
 
         private ToolId _activeTool = ToolId.None;
         private bool _awaitingTransition;
@@ -166,6 +180,9 @@ namespace RestoriumEmporium.Restoration
 
         /// <summary>True during the beat between a stage finishing and anyone being told.</summary>
         public bool IsSettling => _settle != null;
+
+        /// <summary>How the current stage is played. Scrub when no stage is running.</summary>
+        public StageKind CurrentStageKind => _runner.Stage != null ? _runner.Stage.kind : StageKind.Scrub;
 
         /// <summary>Looks up an authored tool by id, or null when it is not in the list.</summary>
         public ToolData GetTool(ToolId id)
@@ -223,12 +240,12 @@ namespace RestoriumEmporium.Restoration
         private void Start()
         {
             _audio = ServiceLocator.Get<IAudioService>();
-            _save = ServiceLocator.Get<ISaveService>();
 
             if (beginOnStart && poster != null)
             {
-                int startIndex = ResolveResumeIndex();
-                BeginPoster(poster, startIndex);
+                // Standalone testing only. The real flow resumes through
+                // GameFlowController, which owns the saved stage index.
+                BeginPoster(poster, 0);
             }
         }
 
@@ -263,7 +280,9 @@ namespace RestoriumEmporium.Restoration
                 return false;
             }
 
-            if (tool != stage.requiredTool || tool == ToolId.None)
+            // Non-scrub stages (sticker peel) are played on their own screen and
+            // never take a tool, whatever requiredTool says.
+            if (stage.kind != StageKind.Scrub || tool != stage.requiredTool || tool == ToolId.None)
             {
                 // A normal thing a player does, not an error. The tool bar turns
                 // this false into a soft nudge.
@@ -306,7 +325,11 @@ namespace RestoriumEmporium.Restoration
             AdvanceOrFinish();
         }
 
-        /// <summary>Test and debug hook: forces the current stage to complete.</summary>
+        /// <inheritdoc />
+        /// <remarks>
+        /// The ONLY way a StickerPeel stage completes (StickerRemovalScreen calls it
+        /// after the last sticker). Also a debug hook for scrub stages.
+        /// </remarks>
         public void ForceCompleteCurrentStage()
         {
             if (_runner.Stage == null || _runner.IsStageComplete || _awaitingTransition)
@@ -346,8 +369,6 @@ namespace RestoriumEmporium.Restoration
                 _surface.ResetMask();
             }
 
-            WriteProgressToSave(stage);
-
             StageStarted?.Invoke(stage, _runner.Index);
             ToolSelected?.Invoke(ToolId.None);
             StageProgressChanged?.Invoke(0f);
@@ -360,7 +381,9 @@ namespace RestoriumEmporium.Restoration
                 return;
             }
 
-            if (!_runner.IsRunning)
+            // Belt and braces: a sticker stage can never be finished by the mask,
+            // even if something paints on the (hidden) poster.
+            if (!_runner.IsRunning || _runner.Stage.kind != StageKind.Scrub)
             {
                 return;
             }
@@ -483,14 +506,8 @@ namespace RestoriumEmporium.Restoration
             _posterFinished = true;
             SetPaintingEnabled(false);
 
-            if (_save != null)
-            {
-                _save.Data.posterCompleted = true;
-                _save.Data.currentStageIndex = _runner.Poster != null ? _runner.Poster.StageCount - 1 : -1;
-                _save.Data.lastScreen = GameScreen.FinishedRepair;
-                _save.Save();
-            }
-
+            // Persisting completion is GameFlowController's job: it listens to
+            // PosterCompleted and writes through IPosterProgress.
             _audio?.PlaySfx(SfxId.RestorationComplete);
             PosterCompleted?.Invoke();
         }
@@ -523,37 +540,6 @@ namespace RestoriumEmporium.Restoration
             {
                 painter.enabled = value;
             }
-        }
-
-        private void WriteProgressToSave(RestorationStageData stage)
-        {
-            if (_save == null || _runner.Poster == null)
-            {
-                return;
-            }
-
-            SaveData data = _save.Data;
-            data.currentPosterId = _runner.Poster.posterId;
-            data.currentStageIndex = _runner.Index;
-            data.posterCompleted = false;
-            data.lastScreen = stage.screen;
-            _save.SaveSoon();
-        }
-
-        private int ResolveResumeIndex()
-        {
-            if (_save == null || poster == null)
-            {
-                return 0;
-            }
-
-            SaveData data = _save.Data;
-            if (!data.IsRestorationInProgress || data.currentPosterId != poster.posterId)
-            {
-                return 0;
-            }
-
-            return Mathf.Clamp(data.currentStageIndex, 0, poster.StageCount - 1);
         }
     }
 }
