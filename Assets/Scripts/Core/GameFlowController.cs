@@ -550,6 +550,7 @@ namespace RestoriumEmporium.Core
 
             if (poster == null)
             {
+                _audio?.PlaySfx(SfxId.RestorationComplete);
                 Route(GameScreen.FinishedRepair, immediate: false);
                 return;
             }
@@ -571,6 +572,8 @@ namespace RestoriumEmporium.Core
 
             if (poster.completionCutscene != null && _cutscenes != null && !HasSeen(cutsceneId))
             {
+                // No completion sound here: the video is the payoff, and a chime
+                // over its first frames only muddies the transition.
                 PlayCutscene(poster.completionCutscene, false, () =>
                 {
                     MarkSeen(cutsceneId);
@@ -579,6 +582,7 @@ namespace RestoriumEmporium.Core
                 return;
             }
 
+            _audio?.PlaySfx(SfxId.RestorationComplete);
             Route(GameScreen.FinishedRepair, immediate: false);
         }
 

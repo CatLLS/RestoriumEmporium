@@ -35,10 +35,14 @@ namespace RestoriumEmporium.Core
         /// <summary>A modal overlay (pause, settings) opened (true) or closed (false).</summary>
         public static event Action<bool> ModalChanged;
 
+        /// <summary>The player let go of a decoration they were dragging in the desk-hub room.</summary>
+        public static event Action<string> ItemDragged;
+
         public static void RaiseStickerPeeled(int remaining) => StickerPeeled?.Invoke(remaining);
         public static void RaisePreviewOpened(string itemId) => PreviewOpened?.Invoke(itemId);
         public static void RaiseEditModeChanged(bool on) => EditModeChanged?.Invoke(on);
         public static void RaiseModalChanged(bool open) => ModalChanged?.Invoke(open);
+        public static void RaiseItemDragged(string itemId) => ItemDragged?.Invoke(itemId);
 
         /// <summary>Drops every listener. Called by GameBootstrap when a scene loads.</summary>
         public static void Clear()
@@ -47,6 +51,7 @@ namespace RestoriumEmporium.Core
             PreviewOpened = null;
             EditModeChanged = null;
             ModalChanged = null;
+            ItemDragged = null;
         }
     }
 }

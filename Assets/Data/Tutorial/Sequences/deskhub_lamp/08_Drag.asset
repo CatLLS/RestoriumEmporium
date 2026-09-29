@@ -19,8 +19,8 @@ MonoBehaviour:
   targetAnchorId: preview.item
   gateInputToTarget: 0
   pointerDelay: 0.4
-  advance: 0
+  advance: 9
   requiredScreen: 0
   requiredTool: 0
-  requiredItemId: 
+  requiredItemId: lamp
   autoAdvanceSeconds: 20

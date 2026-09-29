@@ -18,8 +18,11 @@
 //   - Drag and click are only honoured when the room says so (DragEnabled /
 //     Selectable). In Normal mode the Image doesn't even take raycasts, so the
 //     decorations never block the book or the buttons underneath.
-//   - Selected highlight = a UI Outline (tinted copy of the sprite's silhouette)
-//     plus a slight scale-up. It works with any art without an extra sprite.
+//   - Selected / previewed look = the item's shopIcon instead of its placedSprite
+//     (Figma "item being previewed (outlined)" reuses icon.png). The icon art has
+//     the white outline baked in. The old UI Outline effect drew four offset
+//     tinted copies of the sprite, which read as a doubled item, not an outline.
+//     An item with no shopIcon keeps its placedSprite when selected.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -42,7 +45,6 @@ namespace RestoriumEmporium.Decor
     {
         private RectTransform _rect;
         private Image _image;
-        private Outline _outline;
         private DecorationRoom _room;
         private ShopItemData _item;
 
@@ -67,25 +69,13 @@ namespace RestoriumEmporium.Decor
         public bool IsPreview { get; internal set; }
 
         /// <summary>Called once by DecorationRoom right after AddComponent.</summary>
-        internal void Init(DecorationRoom room, Color highlightColor, Vector2 highlightDistance)
+        internal void Init(DecorationRoom room)
         {
             _room = room;
             _rect = (RectTransform)transform;
             _image = GetComponent<Image>();
             _image.preserveAspect = true;
             _image.raycastTarget = false;
-
-            _outline = GetComponent<Outline>();
-
-            if (_outline == null)
-            {
-                _outline = gameObject.AddComponent<Outline>();
-            }
-
-            _outline.effectColor = highlightColor;
-            _outline.effectDistance = highlightDistance;
-            _outline.useGraphicAlpha = true;
-            _outline.enabled = false;
 
             // Centre anchors + centre pivot: localPosition is then exactly the
             // room-local point RoomCoordinates works in.
@@ -98,8 +88,14 @@ namespace RestoriumEmporium.Decor
         {
             _item = item;
             gameObject.name = "Decoration_" + (item != null ? item.itemId : "none");
-            _image.sprite = item != null ? item.placedSprite : null;
-            _image.enabled = _image.sprite != null;
+            ApplySprite();
+
+            // "room.item.<id>" lets the tutorial point at a placed item (edit mode).
+            // Views are pooled, so a re-bind simply re-ids the same anchor.
+            if (item != null)
+            {
+                RuntimeTutorialAnchor.Attach(gameObject, "room.item." + item.itemId);
+            }
             _rect.sizeDelta = item != null ? item.placedSize : new Vector2(100f, 100f);
             _rect.localScale = Vector3.one;
             SetNormalized(nx, ny);
@@ -144,8 +140,21 @@ namespace RestoriumEmporium.Decor
         internal void SetSelected(bool selected)
         {
             _selected = selected;
-            _outline.enabled = selected;
-            _rect.localScale = selected ? new Vector3(1.05f, 1.05f, 1f) : Vector3.one;
+            ApplySprite();
+        }
+
+        /// <summary>placedSprite normally; shopIcon (outlined art) while selected.</summary>
+        private void ApplySprite()
+        {
+            Sprite sprite = null;
+
+            if (_item != null)
+            {
+                sprite = _selected && _item.shopIcon != null ? _item.shopIcon : _item.placedSprite;
+            }
+
+            _image.sprite = sprite;
+            _image.enabled = sprite != null;
         }
 
         // ---- Input ----

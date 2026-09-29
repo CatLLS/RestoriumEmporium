@@ -27,4 +27,4 @@ MonoBehaviour:
   stickers: []
   titleKey: stage.mend.title
   tutorialKey: stage.mend.prompt
-  completeSfx: 4
+  completeSfx: 0

@@ -507,8 +507,9 @@ namespace RestoriumEmporium.Restoration
             SetPaintingEnabled(false);
 
             // Persisting completion is GameFlowController's job: it listens to
-            // PosterCompleted and writes through IPosterProgress.
-            _audio?.PlaySfx(SfxId.RestorationComplete);
+            // PosterCompleted and writes through IPosterProgress. It also plays
+            // the RestorationComplete sound, because only it knows whether a
+            // completion video is about to start (and then the sound stays off).
             PosterCompleted?.Invoke();
         }
 

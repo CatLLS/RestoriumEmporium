@@ -20,7 +20,7 @@
 //     the SAME screen the player already had a sequence running on (no new
 //     ScreenChanged/StageStarted event would ever fire).
 //   - Per-step advance conditions (ScreenEntered, StageStarted, StageCompleted,
-//     ToolSelected, ItemPurchased, PreviewOpened, StickerPeeled) are each a
+//     ToolSelected, ItemPurchased, PreviewOpened, StickerPeeled, ItemDragged) are each a
 //     small ALWAYS-ON handler that only acts when it matches the currently
 //     open step (_activeStep). This is simpler than the MVP's per-step
 //     Subscribe/Unsubscribe switch AND lets the very same handlers double as
@@ -209,6 +209,7 @@ namespace RestoriumEmporium.Tutorial
             // in OnEnable can never pick up a stale listener from the last scene.
             GameSignals.StickerPeeled += OnStickerPeeled;
             GameSignals.PreviewOpened += OnPreviewOpened;
+            GameSignals.ItemDragged += OnItemDragged;
         }
 
         private void Start()
@@ -261,6 +262,7 @@ namespace RestoriumEmporium.Tutorial
 
             GameSignals.StickerPeeled -= OnStickerPeeled;
             GameSignals.PreviewOpened -= OnPreviewOpened;
+            GameSignals.ItemDragged -= OnItemDragged;
 
             if (_inventorySubscribed && _inventory != null)
             {
@@ -578,11 +580,31 @@ namespace RestoriumEmporium.Tutorial
 
                     var reading = 0f;
 
+                    // A TapAnywhere step is over the moment its line is tapped away,
+                    // so it never reaches the act phase below. If it names a target
+                    // ("tap this button..."), the hand must point WHILE the line shows.
+                    var handDuringLine = step.advance == TutorialAdvance.TapAnywhere
+                                         && !string.IsNullOrEmpty(step.targetAnchorId);
+                    var lineHandShown = false;
+
                     while (!_overlayDismissed && (!useSafetyTimeout || reading < fallbackTimeout))
                     {
-                        if (!IsSuspended)
+                        var suspended = IsSuspended;
+
+                        if (!suspended)
                         {
                             reading += Time.unscaledDeltaTime;
+                        }
+
+                        if (handDuringLine)
+                        {
+                            handPointer?.SetSuspended(suspended);
+
+                            if (!lineHandShown && reading >= step.pointerDelay)
+                            {
+                                lineHandShown = true;
+                                handPointer?.PointAt(step.targetAnchorId);
+                            }
                         }
 
                         yield return null;
@@ -858,6 +880,15 @@ namespace RestoriumEmporium.Tutorial
         private void OnPreviewOpened(string itemId)
         {
             if (_activeStep != null && _activeStep.advance == TutorialAdvance.PreviewOpened &&
+                TutorialTriggerRules.ItemMatches(_activeStep.requiredItemId, itemId))
+            {
+                _advanced = true;
+            }
+        }
+
+        private void OnItemDragged(string itemId)
+        {
+            if (_activeStep != null && _activeStep.advance == TutorialAdvance.ItemDragged &&
                 TutorialTriggerRules.ItemMatches(_activeStep.requiredItemId, itemId))
             {
                 _advanced = true;

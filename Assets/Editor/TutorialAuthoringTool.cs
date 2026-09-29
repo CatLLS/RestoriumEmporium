@@ -1,15 +1,15 @@
 // ============================================================
 // TutorialAuthoringTool — builds the four Batch 2 tutorial sequence assets.
 // WHAT & WHY: Contract §6 lists four TutorialSequenceData the game needs:
-//   first_restoration (the MVP's existing 16 steps, reused as-is), deskhub_lamp,
+//   first_restoration (the MVP's existing steps 01-14, reused as-is), deskhub_lamp,
 //   journal_page2 and stickers. Authoring twelve-plus ScriptableObjects by hand
 //   in the Inspector is slow and easy to get subtly wrong (a mistyped anchor id
 //   is invisible until playtesting); this tool is the single, re-runnable
 //   source of truth for their content, matching the LocaleSource/
 //   LocaleTableBuilder pattern already used for strings.
 // KEY DECISIONS:
-//   - first_restoration's 16 step assets are FOUND, not created: they already
-//     exist at Assets/Data/Tutorial/01_Welcome.asset .. 16_TapContinue.asset
+//   - first_restoration's step assets are FOUND, not created: they already
+//     exist at Assets/Data/Tutorial/01_Welcome.asset .. 14_UsePencil.asset
 //     from the MVP, and their GUIDs must not change (nothing else references
 //     them by path, but re-creating them would be needless churn on assets that
 //     are already correct — their TEXT already picked up the Batch 2 rewording
@@ -19,11 +19,11 @@
 //     item after a design tweak (a different line key, a retimed safety valve)
 //     is exactly as safe as the first run — this mirrors CatalogBuilder's own
 //     "re-runnable, updates in place" rule.
-//   - Two steps per sequence carry NO line and NO hand (blank lineKey,
-//     gateInputToTarget = false): a silent "wait for the screen / wait for
-//     preview to open" beat between a tap and the line that reacts to it. A
-//     silent step needs no anchor and is never gated, so it can never be the
-//     thing that strands a playtester.
+//   - Some steps carry NO line (blank lineKey, gateInputToTarget = false): a
+//     silent "wait for the screen / wait for preview to open" beat between a tap
+//     and the line that reacts to it, or a hand-only beat in the edit-mode tour.
+//     A silent step is never gated, so it can never be the thing that strands
+//     a playtester.
 //   - Steps whose whole point is a drag or a purchase (deskhub_lamp's "drag"
 //     and "buy") are NOT gated (gateInputToTarget = false): gating would only
 //     allow taps on the pointed-at anchor, but placing the lamp needs the whole
@@ -44,8 +44,8 @@
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
 // [ ] Run Restorium -> Tutorial -> Rebuild Tutorial Sequences. It requires the
-//     16 MVP step assets (Assets/Data/Tutorial/01_Welcome.asset ..
-//     16_TapContinue.asset) to already exist; if any are missing the Console
+//     MVP step assets (Assets/Data/Tutorial/01_Welcome.asset ..
+//     14_UsePencil.asset) to already exist; if any are missing the Console
 //     lists exactly which ones.
 // [ ] It creates/updates:
 //       Assets/Data/Tutorial/Sequences/first_restoration.asset
@@ -105,7 +105,11 @@ namespace RestoriumEmporium.EditorTools
                 "01_Welcome", "02_TapRestore", "03_PickDustRemover", "04_UseDustRemover",
                 "05_PickWaterSpray", "06_UseWaterSpray", "07_PickDeacidifier", "08_UseDeacidifier",
                 "09_PickSqueegee", "10_UseSqueegee", "11_PickRoller", "12_UseRoller",
-                "13_PickPencil", "14_UsePencil", "15_Congrats", "16_TapContinue"
+                "13_PickPencil", "14_UsePencil"
+
+                // 15_Congrats and 16_TapContinue are deliberately left out: the
+                // poster-1 completion video leads straight into a quiet Finished
+                // Repair screen, with no Tracy line and no hand on Continue.
             };
 
             var steps = new TutorialStepData[stepNames.Length];
@@ -181,9 +185,11 @@ namespace RestoriumEmporium.EditorTools
                     string.Empty, false, TutorialAdvance.PreviewOpened, 20f, requiredItemId: "lamp")),
 
                 // Not gated: the player must be able to drag anywhere in the room.
+                // Ends on the drag itself, so the hand stays on the lamp until the
+                // player has actually moved it (TapAnywhere ended with the line).
                 UpsertStep(folder, "08_Drag", s => Configure(s, "drag",
                     "tutorial.deskhub_lamp.drag", TracyMood.Happy, TracyPresentation.HubFullBody,
-                    "preview.item", false, TutorialAdvance.TapAnywhere, 20f)),
+                    "preview.item", false, TutorialAdvance.ItemDragged, 20f, requiredItemId: "lamp")),
 
                 // Not gated for the same reason; hand points at Buy Item while waiting
                 // for the purchase itself (any drag in between is fine).
@@ -195,11 +201,26 @@ namespace RestoriumEmporium.EditorTools
                     "tutorial.deskhub_lamp.happy", TracyMood.Happy, TracyPresentation.HubFullBody,
                     "", false, TutorialAdvance.TapAnywhere, 20f)),
 
+                // Guided tour of edit mode: tap Edit, move the lamp, Place Item,
+                // Back to workshop. Only the first beat has a line; the others are
+                // hand-only and not gated, so a wrong tap can never strand anyone.
                 UpsertStep(folder, "11_EditMode", s => Configure(s, "editMode",
                     "tutorial.deskhub_lamp.editMode", TracyMood.Still, TracyPresentation.HubFullBody,
-                    "desk.edit", false, TutorialAdvance.TapAnywhere, 20f)),
+                    "desk.edit", true, TutorialAdvance.TapTarget, 25f)),
 
-                UpsertStep(folder, "12_TapBook", s => Configure(s, "tapBook",
+                UpsertStep(folder, "12_MoveItem", s => Configure(s, "moveItem",
+                    string.Empty, TracyMood.Still, TracyPresentation.HubFullBody,
+                    "room.item.lamp", false, TutorialAdvance.ItemDragged, 30f, requiredItemId: "lamp")),
+
+                UpsertStep(folder, "13_PlaceItem", s => Configure(s, "placeItem",
+                    string.Empty, TracyMood.Still, TracyPresentation.HubFullBody,
+                    "edit.place", false, TutorialAdvance.TapTarget, 25f)),
+
+                UpsertStep(folder, "14_ExitEdit", s => Configure(s, "exitEdit",
+                    string.Empty, TracyMood.Still, TracyPresentation.HubFullBody,
+                    "edit.done", false, TutorialAdvance.TapTarget, 25f)),
+
+                UpsertStep(folder, "15_TapBook", s => Configure(s, "tapBook",
                     "tutorial.deskhub_lamp.tapBook", TracyMood.Happy, TracyPresentation.HubFullBody,
                     "desk.book", true, TutorialAdvance.TapTarget, 30f)),
             };

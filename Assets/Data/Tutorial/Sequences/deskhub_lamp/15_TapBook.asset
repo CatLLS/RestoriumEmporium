@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2bcf88f9d1e6b342bb9dd052c53cf66, type: 3}
-  m_Name: 11_EditMode
+  m_Name: 15_TapBook
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialStepData
-  stepId: editMode
-  lineKey: tutorial.deskhub_lamp.editMode
-  mood: 0
+  stepId: tapBook
+  lineKey: tutorial.deskhub_lamp.tapBook
+  mood: 1
   presentation: 1
-  targetAnchorId: desk.edit
+  targetAnchorId: desk.book
   gateInputToTarget: 1
   pointerDelay: 0.4
   advance: 1
   requiredScreen: 0
   requiredTool: 0
   requiredItemId: 
-  autoAdvanceSeconds: 25
+  autoAdvanceSeconds: 30

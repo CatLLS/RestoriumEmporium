@@ -61,7 +61,10 @@ namespace RestoriumEmporium.Data
         StickerPeeled = 7,
 
         /// <summary>The desk hub entered preview mode for requiredItemId (or any item when blank).</summary>
-        PreviewOpened = 8
+        PreviewOpened = 8,
+
+        /// <summary>The player finished dragging requiredItemId (or any item when blank) in the desk-hub room.</summary>
+        ItemDragged = 9
     }
 
     [CreateAssetMenu(menuName = "Restorium/Tutorial Step", fileName = "TutorialStep")]
@@ -103,7 +106,7 @@ namespace RestoriumEmporium.Data
         [Tooltip("Used when Advance is Tool Selected.")]
         public ToolId requiredTool = ToolId.None;
 
-        [Tooltip("Used when Advance is Item Purchased / Preview Opened. Blank = any item.")]
+        [Tooltip("Used when Advance is Item Purchased / Preview Opened / Item Dragged. Blank = any item.")]
         public string requiredItemId = string.Empty;
 
         [Tooltip("Safety valve: advance anyway after this many seconds. " +

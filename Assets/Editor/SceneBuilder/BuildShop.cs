@@ -168,6 +168,9 @@ namespace RestoriumEmporium.EditorTools
             var gridLayout = SceneBuilderCore.AddOrGet<GridLayoutGroup>(content);
             gridLayout.cellSize = new Vector2(82f, 110f);
             gridLayout.spacing = new Vector2(14f, 14f);
+            // The grid rect starts under the tab row; the padding drops the first
+            // row of cards clear of the tabs.
+            gridLayout.padding = new RectOffset(0, 0, 20, 0);
             gridLayout.childAlignment = TextAnchor.UpperCenter;
             var fitter = SceneBuilderCore.AddOrGet<ContentSizeFitter>(content);
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -200,7 +203,7 @@ namespace RestoriumEmporium.EditorTools
             var cardGo = SceneBuilderCore.FindOrCreateChild(content, "CardTemplate");
             var cardRect = SceneBuilderCore.Rect(cardGo);
             cardRect.sizeDelta = new Vector2(82f, 107f);
-            SceneBuilderCore.SetColorShape(cardGo, Color.white);
+            SceneBuilderCore.SetImage(cardGo, "Assets/Art/Shop/itemBG.png", raycastTarget: true);
             var cardButton = SceneBuilderCore.SetupButton(cardGo);
 
             var icon = SceneBuilderCore.FindOrCreateChild(cardGo.transform, "Icon");

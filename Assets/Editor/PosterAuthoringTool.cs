@@ -323,7 +323,11 @@ namespace RestoriumEmporium.EditorTools
             asset.onComplete = def.onComplete;
             asset.titleKey = def.titleKey;
             asset.tutorialKey = def.tutorialKey ?? string.Empty;
-            asset.completeSfx = SfxId.StageComplete;
+            // The last stage of a poster with a completion video stays silent: its
+            // chime would land on the video's first frames.
+            bool leadsIntoVideo = def.onComplete == StageTransition.GoToFinishedRepair
+                                  && !string.IsNullOrEmpty(poster.completionCutscenePath);
+            asset.completeSfx = leadsIntoVideo ? SfxId.None : SfxId.StageComplete;
 
             if (def.kind == StageKind.StickerPeel)
             {

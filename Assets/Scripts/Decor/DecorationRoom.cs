@@ -34,8 +34,6 @@
 //     invisible. (It must stay an Image: it catches drags on empty floor.)
 // [ ] Add Component -> Decoration Room.
 // [ ] Catalog <- Assets/Data/Catalogs/ShopCatalog.asset
-// [ ] Leave Highlight Color / Highlight Distance at their defaults unless the
-//     selection outline looks wrong on the art.
 // [ ] Do NOT put any children under Room: decorations are created at runtime.
 // ---------------------------------------------------------------
 
@@ -61,13 +59,6 @@ namespace RestoriumEmporium.Decor
         [Header("Data")]
         [Tooltip("Assets/Data/Catalogs/ShopCatalog.asset — what each owned item looks like.")]
         [SerializeField] private ShopCatalog catalog;
-
-        [Header("Selection look")]
-        [Tooltip("Outline colour of the selected / previewed item.")]
-        [SerializeField] private Color highlightColor = new Color(1f, 0.92f, 0.55f, 0.95f);
-
-        [Tooltip("Outline thickness in reference pixels.")]
-        [SerializeField] private Vector2 highlightDistance = new Vector2(3f, -3f);
 
         [Header("Optional")]
         [Tooltip("Transparent Image on this object that catches drags on empty floor. " +
@@ -413,7 +404,15 @@ namespace RestoriumEmporium.Decor
 
         internal void NotifyDragStarted(DecorationView view) => ViewDragStarted?.Invoke(view);
 
-        internal void NotifyDragEnded(DecorationView view) => ViewDragEnded?.Invoke(view);
+        internal void NotifyDragEnded(DecorationView view)
+        {
+            ViewDragEnded?.Invoke(view);
+
+            if (view != null)
+            {
+                GameSignals.RaiseItemDragged(view.ItemId);
+            }
+        }
 
         // ---- Drags / taps that start on empty floor ----
 
@@ -546,7 +545,7 @@ namespace RestoriumEmporium.Decor
                 go.layer = gameObject.layer;
                 go.transform.SetParent(transform, false);
                 view = go.AddComponent<DecorationView>();
-                view.Init(this, highlightColor, highlightDistance);
+                view.Init(this);
             }
 
             view.IsPreview = false;

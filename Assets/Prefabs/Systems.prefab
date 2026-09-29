@@ -443,7 +443,7 @@ MonoBehaviour:
   musicSource: {fileID: 3367069664974079042}
   toolLoopSource: {fileID: 9151422270892588558}
   buttonClickSound: {fileID: 8300000, guid: 013426b2b1f3c254f903888314b484d6, type: 3}
-  startupMusic: {fileID: 8300000, guid: 798d11d7e1f64c546a257438249a84d1, type: 3}
+  startupMusic: {fileID: 8300000, guid: 74ecc2f0aaf76904abbdee7e2d62bc20, type: 3}
   sfxLibrary: {fileID: 11400000, guid: 540dbf5e2b97f334ca7ba55c5de3e6e1, type: 2}
 --- !u!114 &3818476142950332032
 MonoBehaviour:
