@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 58209db516794d54dba7f01ba510e668
+guid: 97dc6ce3732616f46bd79e87c3bbd19b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1595667430261628770
-    second: bookshelfBG_0
+      213: 1882583841014531077
+    second: SettingsSceneBg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 51
+    textureFormat: 50
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bookshelfBG_0
+      name: SettingsSceneBg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 824
-        height: 1316
+        width: 412
+        height: 917
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 26f9768d213f42610800000000000000
-      internalID: 1595667430261628770
+      spriteID: 504cf8f6708402a10800000000000000
+      internalID: 1882583841014531077
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bookshelfBG_0: 1595667430261628770
+      SettingsSceneBg_0: 1882583841014531077
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

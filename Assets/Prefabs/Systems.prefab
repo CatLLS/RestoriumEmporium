@@ -490,6 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocalizationService
   tables:
+  - {fileID: 11400000, guid: ec600896a13253e4cae65c88414e6145, type: 2}
   - {fileID: 11400000, guid: a3109cfbf156e244bbb5b6647ba959e0, type: 2}
   fallbackLocaleCode: pt-BR
 --- !u!114 &4657009770638215487

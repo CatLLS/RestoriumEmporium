@@ -222,7 +222,9 @@ namespace RestoriumEmporium.EditorTools
 
             var track = SceneBuilderCore.FindOrCreateChildOrdered(go.transform, "Track", 0);
             SceneBuilderCore.Stretch(track);
-            SceneBuilderCore.SetColorShape(track, Color.black);
+            // Track and Handle must be raycast targets: a Slider only receives
+            // pointer down / drag through a graphic on itself or a child.
+            SceneBuilderCore.SetColorShape(track, Color.black, raycastTarget: true);
 
             var fillArea = SceneBuilderCore.FindOrCreateChildOrdered(go.transform, "Fill Area", 1);
             SceneBuilderCore.Stretch(fillArea);
@@ -236,7 +238,7 @@ namespace RestoriumEmporium.EditorTools
             var handle = SceneBuilderCore.FindOrCreateChildOrdered(handleArea.transform, "Handle", 0);
             var handleRect = SceneBuilderCore.Rect(handle);
             handleRect.sizeDelta = new Vector2(20f, 20f);
-            SceneBuilderCore.SetColorShape(handle, SceneBuilderCore.Hex("d9d9d9"));
+            SceneBuilderCore.SetColorShape(handle, SceneBuilderCore.Hex("d9d9d9"), raycastTarget: true);
             slider.handleRect = handleRect;
             slider.targetGraphic = handle.GetComponent<Image>();
 
