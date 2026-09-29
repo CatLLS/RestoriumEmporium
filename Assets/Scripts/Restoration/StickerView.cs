@@ -16,9 +16,11 @@
 //     overlay) does not freeze a sticker in mid-air, and the fall reads the same
 //     at any frame rate because the pose is sampled from elapsed time, not
 //     integrated.
-//   - No allocations per frame: the callback is stored once at Bind, Update only
-//     writes three transform values, and Update is disabled (enabled = false)
-//     whenever the sticker is not falling, so idle stickers cost nothing.
+//   - No allocations per frame: the callback is stored once at Bind and Update
+//     only writes three transform values. An idle sticker's Update is a single
+//     bool test. The component is NEVER disabled to skip Update: uGUI's
+//     ExecuteEvents only delivers pointer events to isActiveAndEnabled
+//     behaviours, so a disabled StickerView silently ignores every tap.
 //   - The fall distance is measured once, at the tap, from the sticker's current
 //     position to the bottom edge of the ROOT canvas (plus the sticker's own
 //     size), so "off the bottom of the screen" is true on every phone shape.
@@ -95,9 +97,6 @@ namespace RestoriumEmporium.Restoration
             {
                 image = GetComponent<Image>();
             }
-
-            // Idle stickers need no Update at all.
-            enabled = _falling;
         }
 
         /// <summary>
@@ -118,7 +117,6 @@ namespace RestoriumEmporium.Restoration
             _onFallen = onFallen;
             _falling = false;
             _interactable = true;
-            enabled = false;
 
             if (image != null)
             {
@@ -159,7 +157,6 @@ namespace RestoriumEmporium.Restoration
             _onFallen = null;
             _falling = false;
             _interactable = false;
-            enabled = false;
             SetVisible(false);
             ApplyRestPose();
         }
@@ -199,7 +196,6 @@ namespace RestoriumEmporium.Restoration
             }
 
             Rect.SetAsLastSibling();
-            enabled = true;
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -216,7 +212,6 @@ namespace RestoriumEmporium.Restoration
         {
             if (!_falling)
             {
-                enabled = false;
                 return;
             }
 
@@ -234,7 +229,6 @@ namespace RestoriumEmporium.Restoration
             }
 
             _falling = false;
-            enabled = false;
             SetVisible(false);
 
             Action<StickerView> fallen = _onFallen;

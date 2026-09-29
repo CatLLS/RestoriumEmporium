@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f096ee0dfb2e3554d8b3e5e9c374e186
+guid: 6fedc82e963ac4d47b538382a11d9de9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3415944762895925054
-    second: shopBookshelfBG_0
+      213: -1137606999962773677
+    second: CurrentBallance_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,12 +100,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 51
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shopBookshelfBG_0
+      name: CurrentBallance_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 760
-        height: 672
+        width: 173
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e3f74c4d9afd76f20800000000000000
-      internalID: 3415944762895925054
+      spriteID: 3579839f5786630f0800000000000000
+      internalID: -1137606999962773677
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shopBookshelfBG_0: 3415944762895925054
+      CurrentBallance_0: -1137606999962773677
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

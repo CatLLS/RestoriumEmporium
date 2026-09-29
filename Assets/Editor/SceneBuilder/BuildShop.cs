@@ -72,9 +72,11 @@ namespace RestoriumEmporium.EditorTools
                 "Emporium Shop");
 
             var backGo = SceneBuilderCore.FindOrCreateChildOrdered(root.transform, "BackButton", 4);
-            SceneBuilderCore.FigmaRect(backGo, -4f, 21f, 58.6f, 55f);
+            // Same arrow as the Journal's back button: backArrowIcon.png already points left,
+            // so no rotation (a 180° turn about the top-left pivot threw it off-screen).
+            SceneBuilderCore.FigmaRect(backGo, 24.6f, 40.2f, 21.4f, 29f);
             SceneBuilderCore.SetImage(backGo, "Assets/Art/UI/backArrowIcon.png");
-            backGo.transform.localEulerAngles = new Vector3(0f, 0f, 180f);
+            backGo.transform.localEulerAngles = Vector3.zero;
             var backButton = SceneBuilderCore.SetupButton(backGo);
             SceneBuilderCore.SetupAnchor(backGo, "shop.back");
             var backLabelGo = SceneBuilderCore.FindOrCreateChild(backGo.transform, "Label");
@@ -82,10 +84,10 @@ namespace RestoriumEmporium.EditorTools
             backLabelRect.anchorMin = new Vector2(1f, 0.5f);
             backLabelRect.anchorMax = new Vector2(1f, 0.5f);
             backLabelRect.pivot = new Vector2(0f, 0.5f);
-            backLabelRect.sizeDelta = new Vector2(152f, 20f);
-            backLabelRect.anchoredPosition = new Vector2(4f, 0f);
-            backLabelGo.transform.localEulerAngles = new Vector3(0f, 0f, -180f); // undo the parent's flip
-            SceneBuilderCore.SetupText(backLabelGo, SceneBuilderCore.FontChoice.SpecialElite, 14f,
+            backLabelRect.sizeDelta = new Vector2(224.9f, 20f);
+            backLabelRect.anchoredPosition = new Vector2(16.25f, 1.37f);
+            backLabelGo.transform.localEulerAngles = Vector3.zero;
+            SceneBuilderCore.SetupText(backLabelGo, SceneBuilderCore.FontChoice.SpecialElite, 18f,
                 new Color(0.78f, 0.784f, 0.737f, 0.74f), TextAlignmentOptions.Left, "ui.shop.back",
                 "Go back to workbench");
 

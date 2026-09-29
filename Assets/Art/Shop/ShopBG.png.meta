@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d616c38ed0bab9140944c36ddd361f0a
+guid: 05254db98a7b4024da59a2e319881d82
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7710812863242466859
-    second: leatherBG_0
+      213: 8257090493112367204
+    second: ShopBG_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: leatherBG_0
+      name: ShopBG_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 824
-        height: 1123
+        width: 412
+        height: 917
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d98be4fd80bdf490800000000000000
-      internalID: -7710812863242466859
+      spriteID: 468b7383e04179270800000000000000
+      internalID: 8257090493112367204
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      leatherBG_0: -7710812863242466859
+      ShopBG_0: 8257090493112367204
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

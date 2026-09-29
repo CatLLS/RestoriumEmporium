@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fc49521e27c884b49b2a6309b2bbd4c3
+guid: 7e17fa2e03943ac46a1f61ea32b5fdca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4450731248206980196
-    second: tracyShop_0
+      213: -8557466468630148873
+    second: redButton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,12 +100,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 50
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tracyShop_0
+      name: redButton_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
         y: 0
-        width: 402
-        height: 506
+        width: 289
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 464ab104d7c24cd30800000000000000
-      internalID: 4450731248206980196
+      spriteID: 7f8cbff0695cd3980800000000000000
+      internalID: -8557466468630148873
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tracyShop_0: 4450731248206980196
+      redButton_0: -8557466468630148873
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

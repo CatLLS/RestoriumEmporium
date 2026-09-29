@@ -21,6 +21,9 @@
 //     texture already imported as Multiple (e.g. the journal thumbnail and
 //     linnenBacking) keeps its mode, because switching it changes the sprite's id
 //     and silently breaks every scene and asset reference to it.
+//   - A Multiple texture re-exported at a new size gets its lone sprite rect
+//     resized to the image (id kept); sprite sheets with out-of-bounds rects are
+//     reported, not guessed.
 //   - Art/Particles is skipped: those are particle textures, not UI sprites.
 //   - Mipmaps off everywhere: UI is never seen at an angle or a distance, and
 //     mips add a third to the texture memory.
@@ -44,6 +47,7 @@
 
 using System.IO;
 using UnityEditor;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 namespace RestoriumEmporium.EditorTools
@@ -137,6 +141,61 @@ namespace RestoriumEmporium.EditorTools
             return ArtGroup.Ui;
         }
 
+        /// <summary>
+        /// A re-export at a different size leaves a Multiple sprite's rect pointing past
+        /// the image, and Unity silently drops that sprite along with every reference to
+        /// it. A lone sprite is resized to the full image through the sprite data
+        /// provider, which keeps its id so references survive. Real sprite sheets are
+        /// only reported: guessing their new rects would be worse than asking.
+        /// </summary>
+        private static bool FitSpriteRectsToImage(TextureImporter importer)
+        {
+            var factory = new SpriteDataProviderFactories();
+            factory.Init();
+            var provider = factory.GetSpriteEditorDataProviderFromObject(importer);
+
+            if (provider == null)
+            {
+                return false;
+            }
+
+            provider.InitSpriteEditorDataProvider();
+            var rects = provider.GetSpriteRects();
+            importer.GetSourceTextureWidthAndHeight(out var width, out var height);
+            var bounds = new Rect(0f, 0f, width, height);
+
+            var outOfBounds = 0;
+
+            foreach (var sprite in rects)
+            {
+                var r = sprite.rect;
+
+                if (r.xMin < 0f || r.yMin < 0f || r.xMax > bounds.xMax || r.yMax > bounds.yMax)
+                {
+                    outOfBounds++;
+                }
+            }
+
+            if (outOfBounds == 0)
+            {
+                return false;
+            }
+
+            if (rects.Length != 1)
+            {
+                Debug.LogWarning($"[ArtImportSettingsTool] '{importer.assetPath}' has {outOfBounds} sprite(s) " +
+                                 $"outside its {width}x{height} image. Fix them in the Sprite Editor.", importer);
+                return false;
+            }
+
+            rects[0].rect = bounds;
+            provider.SetSpriteRects(rects);
+            provider.Apply();
+            Debug.Log($"[ArtImportSettingsTool] '{importer.assetPath}': sprite rect resized to the new " +
+                      $"{width}x{height} image (sprite id kept, references intact).", importer);
+            return true;
+        }
+
         /// <summary>Applies the group's rules. Returns true when anything changed.</summary>
         private static bool Apply(TextureImporter importer, ArtGroup group)
         {
@@ -151,6 +210,10 @@ namespace RestoriumEmporium.EditorTools
             else if (importer.spriteImportMode == SpriteImportMode.None)
             {
                 importer.spriteImportMode = SpriteImportMode.Single;
+                dirty = true;
+            }
+            else if (importer.spriteImportMode == SpriteImportMode.Multiple && FitSpriteRectsToImage(importer))
+            {
                 dirty = true;
             }
 

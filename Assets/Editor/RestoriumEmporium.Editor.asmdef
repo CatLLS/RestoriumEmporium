@@ -4,7 +4,8 @@
     "references": [
         "RestoriumEmporium.Runtime",
         "UnityEngine.UI",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.2D.Sprite.Editor"
     ],
     "includePlatforms": [
         "Editor"

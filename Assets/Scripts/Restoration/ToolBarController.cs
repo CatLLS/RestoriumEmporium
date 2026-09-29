@@ -21,6 +21,10 @@
 //     Without them a per-screen linen bar would have to duplicate its tools into
 //     both lists to survive Awake and the swap, which is data lying to dodge
 //     a code path.
+//   - The swap only ever goes cleaning -> linen, so the bar also re-picks its set
+//     from CurrentStage.requiredTool whenever it is enabled or a stage starts.
+//     That is what puts the cleaning tools back when the NEXT poster starts on a
+//     bar that swapped during the previous one, and it also covers a resumed save.
 //   - Highlighting keys off CurrentStage.requiredTool, not off ActiveTool. The
 //     bar must show what the player SHOULD pick up before they have picked
 //     anything up, which is the whole point of the greyed-out row.
@@ -123,6 +127,7 @@ namespace RestoriumEmporium.Restoration
         private void OnEnable()
         {
             Subscribe();
+            MatchSetToStage(true);
             RefreshHighlight(true);
         }
 
@@ -193,7 +198,57 @@ namespace RestoriumEmporium.Restoration
 
         private void OnStageStarted(RestorationStageData stage, int index)
         {
+            MatchSetToStage(false);
             RefreshHighlight(false);
+        }
+
+        /// <summary>
+        /// Shows the set that holds the current stage's required tool when only one
+        /// set holds it. A swap to linen is one-way within a poster, so without this
+        /// a bar that swapped during poster 1 would still show linen tools when
+        /// poster 2 starts back on the cleaning screen. No stage, no required tool,
+        /// or a tool in both sets (or neither) leaves the row as it is.
+        /// </summary>
+        private void MatchSetToStage(bool instant)
+        {
+            RestorationStageData stage = runtime != null ? runtime.CurrentStage : null;
+            ToolId required = stage != null ? stage.requiredTool : ToolId.None;
+
+            if (required == ToolId.None)
+            {
+                return;
+            }
+
+            bool inCleaning = Contains(cleaningTools, required);
+            bool inLinen = Contains(linenTools, required);
+
+            if (inCleaning == inLinen)
+            {
+                return;
+            }
+
+            if (inLinen != _showingLinenSet)
+            {
+                ShowSet(inLinen, instant);
+            }
+        }
+
+        private static bool Contains(List<ToolData> set, ToolId tool)
+        {
+            if (set == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < set.Count; i++)
+            {
+                if (set[i] != null && set[i].id == tool)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
