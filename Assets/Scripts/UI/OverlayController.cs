@@ -4,8 +4,9 @@
 //   is showing (a half-scrubbed poster, the desk hub) and must leave it exactly as
 //   it was. This component owns which overlays are open, in what order, and what
 //   the Android back button / Escape does. Screens, the hamburger buttons and the
-//   tutorial only ever talk to it through OpenPause / OpenSettings / CloseTop /
-//   AnyOpen.
+//   tutorial only ever talk to it through OpenPause / OpenSettings /
+//   OpenBuyCoins / CloseTop / AnyOpen. The coin store (BuyCoinsOverlay, "The
+//   Golden Vault") is a modal too, opened from the Shop's Buy More Coins button.
 // KEY DECISIONS:
 //   - A STACK, not a single "current overlay": Settings opened from Pause returns
 //     to Pause on back, while Settings opened from the desk hub closes straight to
@@ -66,6 +67,9 @@ namespace RestoriumEmporium.UI
         [SerializeField] private PauseMenuOverlay pauseMenu;
         [SerializeField] private SettingsOverlay settings;
 
+        [Tooltip("The Golden Vault coin store. Built by Restorium/Scene/Build Coin Shop.")]
+        [SerializeField] private BuyCoinsOverlay buyCoins;
+
         [Header("Flow")]
         [Tooltip("The GameFlowController on the GameFlow object. The pause menu's " +
                  "Journal and Quit buttons call into it.")]
@@ -98,6 +102,12 @@ namespace RestoriumEmporium.UI
             {
                 settings.Bind(this);
                 settings.HideImmediate();
+            }
+
+            if (buyCoins != null)
+            {
+                buyCoins.Bind(this);
+                buyCoins.HideImmediate();
             }
         }
 
@@ -139,6 +149,24 @@ namespace RestoriumEmporium.UI
             }
 
             Push(settings);
+        }
+
+        /// <summary>Opens The Golden Vault coin store. No-op when it is already on top.</summary>
+        public void OpenBuyCoins()
+        {
+            if (buyCoins == null)
+            {
+                Debug.LogWarning("[OverlayController] 'Buy Coins' is empty; run Restorium/Scene/Build Coin Shop.",
+                    this);
+                return;
+            }
+
+            if (Top == buyCoins)
+            {
+                return;
+            }
+
+            Push(buyCoins);
         }
 
         /// <summary>Closes the top overlay. Safe when nothing is open.</summary>

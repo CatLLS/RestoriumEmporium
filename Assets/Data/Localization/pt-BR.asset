@@ -308,3 +308,19 @@ MonoBehaviour:
     value: Isso mesmo! Agora os outros.
   - key: ui.pause.continue
     value: Continuar
+  - key: ui.coins.title
+    value: O Cofre Dourado
+  - key: ui.coins.pack
+    value: '{0} moedas | {1}'
+  - key: ui.coins.finePrint
+    value: "cobrado na sua conta. Restaure compras quando quiser nas Configura\xE7\xF5es"
+  - key: ui.coins.terms
+    value: Termos
+  - key: ui.coins.privacy
+    value: Privacidade
+  - key: ui.coins.removeAds
+    value: "Remover an\xFAncios"
+  - key: ui.coins.failed
+    value: "A compra n\xE3o foi conclu\xEDda. Tente novamente."
+  - key: ui.coins.unavailable
+    value: "A loja n\xE3o est\xE1 dispon\xEDvel agora."

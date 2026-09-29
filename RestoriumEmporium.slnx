@@ -2,4 +2,8 @@
   <Project Path="RestoriumEmporium.EditTests.csproj" />
   <Project Path="RestoriumEmporium.Runtime.csproj" />
   <Project Path="RestoriumEmporium.Editor.csproj" />
+  <Project Path="revenuecat.purchases-unity.csproj" />
+  <Project Path="RestoriumEmporium.RevenueCat.Editor.csproj" />
+  <Project Path="revenuecat.purchases-unity.Editor.csproj" />
+  <Project Path="RestoriumEmporium.RevenueCat.csproj" />
 </Solution>

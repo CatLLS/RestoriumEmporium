@@ -47,7 +47,7 @@ namespace RestoriumEmporium.EditorTools
         /// <summary>Every entry from every area file, in a stable order.</summary>
         public static IEnumerable<LocaleEntry> All()
         {
-            foreach (var group in new[] { Legacy, Flow, Restoration, Shop, UI, Tutorial })
+            foreach (var group in new[] { Legacy, Flow, Restoration, Shop, Store, UI, Tutorial })
             {
                 foreach (var entry in group)
                 {

@@ -57,9 +57,12 @@ namespace RestoriumEmporium.EditorTools
             "Assets/Art/journalAssets/buttonBase.png",
             "Assets/Art/journalAssets/paper 1.png",
             "Assets/Art/LinnenAssets/LinnenBackingBG(all).png",
+            "Assets/Art/Monetization/bookshelfBG.png",
+            "Assets/Art/Monetization/tracyCoins.png",
             "Assets/Art/newGameButton.png",
             "Assets/Art/Posters/poster2/close-upForStickerRemoval.png",
             "Assets/Art/Settings/bookshelfBG.png",
+            "Assets/Art/ShopItems/plant/placed.png",
             "Assets/Art/Settings/tracyPortrait.png",
             "Assets/Art/Shop/categoryTab.png",
             "Assets/Art/Shop/leatherBG.png",
@@ -75,6 +78,8 @@ namespace RestoriumEmporium.EditorTools
             "Assets/Art/UI/hamburgerIcon.png",
             "Assets/Art/UI/moveIcon.png",
             "Assets/Art/UI/moveIconLight.png",
+            "Assets/Art/UI/redButton.png",
+            "Assets/Art/UI/starGold.png",
         };
 
         /// <summary>Every key a Build*.cs file assigns via SceneBuilderCore.SetupText's localizedKey.</summary>
@@ -116,6 +121,11 @@ namespace RestoriumEmporium.EditorTools
             "ui.shop.tabMisc",
             "ui.shop.titleMain",
             "ui.shop.titleTop",
+            "ui.coins.title",
+            "ui.coins.finePrint",
+            "ui.coins.terms",
+            "ui.coins.privacy",
+            "ui.coins.removeAds",
         };
     }
 }

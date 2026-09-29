@@ -78,6 +78,13 @@ namespace RestoriumEmporium.Core
         /// <summary>Every decoration the player owns, with where it sits in the room.</summary>
         public List<OwnedDecoration> decorations = new List<OwnedDecoration>();
 
+        /// <summary>
+        /// Store transaction ids whose coin pack has been credited (CoinPurchaseService).
+        /// Kept across ResetProgress so old purchases can never be granted twice. Added
+        /// without a version bump: an older file simply has none, which EnsureCollections fixes.
+        /// </summary>
+        public List<string> grantedIapTransactions = new List<string>();
+
         // ---- Tutorial ----
         /// <summary>Sequence ids that have finished (or been skipped).</summary>
         public List<string> completedTutorialSequences = new List<string>();
@@ -145,6 +152,7 @@ namespace RestoriumEmporium.Core
             seenCutscenes ??= new List<string>();
             posters ??= new List<PosterProgressEntry>();
             decorations ??= new List<OwnedDecoration>();
+            grantedIapTransactions ??= new List<string>();
             completedTutorialSequences ??= new List<string>();
             localeCode ??= string.Empty;
             activePosterId ??= string.Empty;

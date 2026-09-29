@@ -24,6 +24,14 @@
 //   - The Tracy flavour line (ui.settings.tracyLine) and every static caption
 //     are LocalizedText components wired in the Inspector, matching the rest
 //     of the codebase.
+//   - Reset progress (red button) asks first: it only opens an in-overlay
+//     confirm panel, and only that panel's Erase button wipes. Erase calls
+//     ISaveService.ResetProgress (keeps language, volumes and the IAP ledger —
+//     see SaveManager) and then reloads the Title scene, because the Game
+//     scene's screens, placed decorations and tutorial all hold state read from
+//     the old save; a fresh load is the only way every one of them starts clean.
+//   - The confirm panel is always hidden again on open AND on close, so back
+//     (which closes the whole overlay) doubles as Cancel.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -58,6 +66,9 @@
 // [ ] Select SettingsOverlay and drag: Back Button, Language Button, Language
 //     Value Label (the button's TMP child), Sfx Slider, Music Slider.
 // [ ] Drag this SettingsOverlay object into OverlayController -> "Settings".
+// [ ] Reset progress button + its confirm panel: open Game.unity and run
+//     Restorium -> Scene -> Build Settings Reset (BuildSettingsReset.cs). It
+//     adds only those children and fills the four "Reset Progress" fields.
 // ---------------------------------------------------------------
 
 using TMPro;
@@ -88,6 +99,16 @@ namespace RestoriumEmporium.UI
         [SerializeField] private Slider sfxSlider;
         [SerializeField] private Slider musicSlider;
 
+        [Header("Reset Progress")]
+        [Tooltip("The red button. Only opens the confirm panel; never wipes by itself.")]
+        [SerializeField] private Button resetButton;
+
+        [Tooltip("Hidden until Reset is tapped. Holds the warning text and the two buttons below.")]
+        [SerializeField] private GameObject resetConfirmPanel;
+
+        [SerializeField] private Button resetYesButton;
+        [SerializeField] private Button resetNoButton;
+
         private ILocalizationService _loc;
         private IAudioService _audio;
         private ISaveService _save;
@@ -97,6 +118,9 @@ namespace RestoriumEmporium.UI
         {
             AddClick(backButton, OnBack);
             AddClick(languageButton, OnCycleLanguage);
+            AddClick(resetButton, OnResetPressed);
+            AddClick(resetYesButton, OnResetConfirmed);
+            AddClick(resetNoButton, HideResetConfirm);
 
             if (sfxSlider != null)
             {
@@ -113,6 +137,9 @@ namespace RestoriumEmporium.UI
         {
             RemoveClick(backButton, OnBack);
             RemoveClick(languageButton, OnCycleLanguage);
+            RemoveClick(resetButton, OnResetPressed);
+            RemoveClick(resetYesButton, OnResetConfirmed);
+            RemoveClick(resetNoButton, HideResetConfirm);
 
             if (sfxSlider != null)
             {
@@ -130,6 +157,12 @@ namespace RestoriumEmporium.UI
             ResolveServices();
             RefreshLanguageLabel();
             RefreshSliders();
+            HideResetConfirm();
+        }
+
+        protected override void OnClosed()
+        {
+            HideResetConfirm();
         }
 
         private void ResolveServices()
@@ -233,6 +266,36 @@ namespace RestoriumEmporium.UI
                 _save.Data.musicVolume = value;
                 _save.SaveSoon();
             }
+        }
+
+        private void OnResetPressed()
+        {
+            if (resetConfirmPanel != null)
+            {
+                resetConfirmPanel.SetActive(true);
+            }
+        }
+
+        private void HideResetConfirm()
+        {
+            if (resetConfirmPanel != null)
+            {
+                resetConfirmPanel.SetActive(false);
+            }
+        }
+
+        private void OnResetConfirmed()
+        {
+            if (_save == null)
+            {
+                Debug.LogWarning("[SettingsOverlay] No ISaveService registered; cannot reset progress.", this);
+                HideResetConfirm();
+                return;
+            }
+
+            _save.ResetProgress();
+            Controller?.CloseAll();
+            SceneLoader.LoadTitle();
         }
 
         private static void AddClick(Button button, UnityEngine.Events.UnityAction action)

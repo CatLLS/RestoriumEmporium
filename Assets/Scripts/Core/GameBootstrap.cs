@@ -3,7 +3,8 @@
 // WHAT & WHY: SaveManager, LocalizationService and AudioManager all live on one
 //   persistent "Systems" object and must be reachable from scenes loaded later.
 //   Batch 2 adds four more services that live exactly as long: poster progress,
-//   the coin wallet, the decoration inventory and the rewarded ad. This
+//   the coin wallet, the decoration inventory and the rewarded ad; the coin
+//   shop adds the coin-pack store and the purchase service on top. This
 //   component owns that object's lifetime, publishes every service into
 //   ServiceLocator in a fixed order, restores the player's saved settings, and
 //   applies the device-level settings a mobile game needs.
@@ -11,7 +12,8 @@
 //   - Registration happens here rather than in each service's own Awake, so
 //     there is exactly one place that decides what is registered and in what
 //     order: ISaveService -> ILocalizationService -> IAudioService ->
-//     IPosterProgress -> IWallet -> IDecorationInventory -> IRewardedAd. Each
+//     IPosterProgress -> IWallet -> IDecorationInventory -> IRewardedAd ->
+//     ICoinPurchaseService. Each
 //     later service is built from the earlier ones (the inventory spends
 //     through the wallet, everything saves through the save service), and that
 //     dependency order is only obvious when it is written out.
@@ -23,6 +25,12 @@
 //     Systems object has no IRewardedAd component, a SimulatedRewardedAd is
 //     added at runtime, so nothing new has to be wired in the Inspector. When
 //     the AdMob wrapper exists it is simply put on Systems and found instead.
+//   - The coin-pack store follows the rewarded-ad pattern. The RevenueCat bridge
+//     (RevenueCatCoinStore, its own assembly) is a component on Systems and is
+//     found through ICoinStore. In the Editor, where the RevenueCat SDK cannot
+//     run, or when the bridge is missing, a SimulatedCoinStore is added instead;
+//     it only sells in Development builds. The store itself is not registered:
+//     everything goes through ICoinPurchaseService, which owns the grant rules.
 //   - GameSignals (the static tutorial notification hub) is cleared on every
 //     scene change as a leak safety net — but by SceneLoader just BEFORE the new
 //     scene activates, not here on SceneManager.sceneLoaded. Unity runs the new
@@ -81,6 +89,9 @@
 //     decoration inventory are created in code, and the rewarded-ad placeholder
 //     ("Simulated Rewarded Ad") is added to "Systems" automatically when you
 //     press Play. You may add it by hand instead if you want to tweak it.
+// [ ] Coin shop: run Restorium -> Store -> Add RevenueCat to Systems prefab. It
+//     adds the RevenueCat components and fills "Coin Pack Catalog" below with
+//     Assets/Data/Catalogs/CoinPackCatalog.asset. See Docs/RevenueCat.md.
 // ---------------------------------------------------------------
 
 using UnityEngine;
@@ -107,6 +118,10 @@ namespace RestoriumEmporium.Core
                  "concrete class. Leave empty until that component exists.")]
         [SerializeField] private MonoBehaviour audioServiceSource;
 
+        [Header("Coin shop")]
+        [Tooltip("The coin packs on sale (Assets/Data/Catalogs/CoinPackCatalog.asset).")]
+        [SerializeField] private CoinPackCatalog coinPackCatalog;
+
         [Header("Device")]
         [Tooltip("Frame cap while playing. 60 on a cosy 2D game keeps the phone cool.")]
         [Range(30, 120)]
@@ -120,6 +135,7 @@ namespace RestoriumEmporium.Core
         private IWallet _wallet;
         private IDecorationInventory _inventory;
         private IRewardedAd _rewardedAd;
+        private ICoinPurchaseService _coinPurchases;
         private bool _registered;
 
         /// <summary>The live bootstrap, or null before the first scene loads.</summary>
@@ -159,6 +175,7 @@ namespace RestoriumEmporium.Core
 
             // Identity-checked, so a duplicate that never registered cannot
             // unregister the survivor's services. Reverse order of registration.
+            ServiceLocator.Unregister(_coinPurchases);
             ServiceLocator.Unregister(_rewardedAd);
             ServiceLocator.Unregister(_inventory);
             ServiceLocator.Unregister(_wallet);
@@ -250,6 +267,27 @@ namespace RestoriumEmporium.Core
 
             _rewardedAd = GetComponent<IRewardedAd>() ?? gameObject.AddComponent<SimulatedRewardedAd>();
             ServiceLocator.Register(_rewardedAd);
+
+            // The RevenueCat SDK does not run in the Editor: simulate there. Explicit
+            // Unity null checks, not ??: in the Editor a missing GetComponent result
+            // is a "fake null" object that ?? would happily return.
+            var coinStore = Application.isEditor ? null : GetComponent<ICoinStore>();
+
+            if (!(coinStore is UnityEngine.Object storeObject) || storeObject == null)
+            {
+                var simulated = GetComponent<SimulatedCoinStore>();
+                coinStore = simulated != null ? simulated : gameObject.AddComponent<SimulatedCoinStore>();
+            }
+
+            if (coinPackCatalog == null)
+            {
+                Debug.LogWarning("[GameBootstrap] 'Coin Pack Catalog' is empty; the coin shop has nothing to " +
+                                 "sell. Run Restorium -> Store -> Add RevenueCat to Systems prefab.", this);
+            }
+
+            _coinPurchases = new CoinPurchaseService(coinStore, _wallet, saveManager,
+                coinPackCatalog != null ? coinPackCatalog.Packs : null, warn);
+            ServiceLocator.Register(_coinPurchases);
 
             _registered = true;
         }

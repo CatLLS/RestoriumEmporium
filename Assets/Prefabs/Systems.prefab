@@ -401,6 +401,8 @@ GameObject:
   - component: {fileID: 6323290704355416548}
   - component: {fileID: 8041827775256693508}
   - component: {fileID: 4657009770638215487}
+  - component: {fileID: 2487935329372182042}
+  - component: {fileID: 5391195515179086798}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -460,6 +462,7 @@ MonoBehaviour:
   saveManager: {fileID: 6323290704355416548}
   localization: {fileID: 8041827775256693508}
   audioServiceSource: {fileID: 1008562315495144941}
+  coinPackCatalog: {fileID: 11400000, guid: 335efaeafa9548c2a6d1c89fde78e07e, type: 2}
   targetFrameRate: 60
   keepScreenAwake: 1
 --- !u!114 &6323290704355416548
@@ -507,3 +510,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Core.SceneLoader
   fadeSeconds: 0.25
+--- !u!114 &2487935329372182042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790739163530944145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e401cc5a2ed4a7ba02f2e6ef35c6f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: revenuecat.purchases-unity::Purchases
+  useRuntimeSetup: 1
+  revenueCatAPIKeyApple: 
+  revenueCatAPIKeyGoogle: 
+  revenueCatAPIKeyAmazon: 
+  useAmazon: 0
+  autoSyncPurchases: 1
+  appUserID: 
+  productIdentifiers: []
+  listener: {fileID: 0}
+  userDefaultsSuiteName: 
+  purchasesAreCompletedBy: 0
+  storeKitVersion: 2
+  shouldShowInAppMessagesAutomatically: 1
+  entitlementVerificationMode: 1
+  pendingTransactionsForPrepaidPlansEnabled: 0
+  proxyURL: 
+--- !u!114 &5391195515179086798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7790739163530944145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa47076ebb941c4ebd1c95f47bfeb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RestoriumEmporium.RevenueCat::RestoriumEmporium.Economy.RevenueCatCoinStore
+  config: {fileID: 11400000, guid: c4eda6addc264821a24e31090efa3ecf, type: 2}

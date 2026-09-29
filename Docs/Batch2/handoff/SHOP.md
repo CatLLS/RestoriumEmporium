@@ -115,7 +115,7 @@ Behaviour notes the scene builder / other agents need:
 - **Edit flow:** tapping an owned item selects it (`room.ViewClicked`); dragging moves the `DecorationView` only (nothing saved). "Place Item" -> `IDecorationInventory.SetPlacement` + `SfxId.ItemPlaced`. "Undo" (or selecting a different item, or leaving the screen) reverts to the position recorded at selection time. Nothing is saved by drag alone.
 - **GameSignals:** `RaisePreviewOpened(itemId)` on entering Preview (after the view/labels are ready, so `TutorialAnchor.Find("preview.item")` already resolves). `RaiseEditModeChanged(true/false)` on entering/leaving Edit mode (button and "Back to workshop"/leaving the screen while in Edit both raise `false`).
 - **Leaving the screen for any reason** (Give up, or `Hide()` because another screen routed in) is handled once in `OnHidden`: unplaced edit moves are reverted, the preview item is removed from the room, `EditModeChanged(false)` fires if Edit was active. `RequestPreview` called while the screen is already visible applies immediately; called before showing it, it is applied in `OnShown` on the very next frame the screen appears.
-- **ShopScreen** never spends coins or touches the router directly: `OnCardClicked` calls `deskHub.RequestPreview(item)` **then** `flow.GoToDeskHub()` (preview must be queued before the screen shows, per contract). "Remove ads" / "Buy More Coins" are forced `interactable = false` in `Awake()` regardless of what the scene has wired, so nobody can accidentally ship a dead button that looks live.
+- **ShopScreen** never spends coins or touches the router directly: `OnCardClicked` calls `deskHub.RequestPreview(item)` **then** `flow.GoToDeskHub()` (preview must be queued before the screen shows, per contract). "Remove ads" is forced `interactable = false` in `Awake()` regardless of what the scene has wired, so nobody can accidentally ship a dead button that looks live. "Buy More Coins" opens The Golden Vault (`OverlayController.OpenBuyCoins`, see `Docs/RevenueCat.md`).
 - **Grid growth:** the card template lives disabled under `Grid/Viewport/Content`; `ShopScreen` clones it once per `ShopItemData` (lazily, on first tab show) and just shows/hides clones on tab switches, so a brand-new `ShopItemData` asset appears with **zero scene edits** — this is the whole point of `ShopItemWizard`.
 
 ## 3. Scene wiring for the builder
@@ -242,7 +242,7 @@ ShopScreen                                 (Shop 455:42)
 │   └── BalanceLabel       TMP_Text + CoinBalanceLabel, centred where Figma's "100" sits
 ├── RemoveAdsButton        Button (interactable = false, forced in code), x=27 y=245 w=163 h=33
 │                         text LocalizedText(ui.shop.removeAds)
-├── BuyMoreCoinsButton     Button (interactable = false, forced in code), x=27 y=299 w=163 h=33
+├── BuyMoreCoinsButton     Button -> OverlayController.OpenBuyCoins (The Golden Vault), x=27 y=299 w=163 h=33
 │                         text LocalizedText(ui.shop.buyMoreCoins)
 ├── EmptyLabel             TMP_Text + LocalizedText(ui.shop.empty), centred in the grid area, INACTIVE
 │                         by default (ShopScreen shows it only when a tab has 0 items — the Misc tab)

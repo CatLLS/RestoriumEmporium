@@ -15,9 +15,10 @@
 //   - The layout is rebuilt immediately after (re)building the grid so the
 //     tutorial hand, which looks the lamp card up on this same frame, gets the
 //     right position instead of (0,0).
-//   - "Remove ads" and "Buy More Coins" are visible but non-interactable this
-//     build (IAP/ads come next build); this script forces that in Awake so a
-//     scene edit can't accidentally enable a button that does nothing.
+//   - "Remove ads" is visible but non-interactable this build (ads come later);
+//     this script forces that in Awake so a scene edit can't accidentally enable
+//     a button that does nothing. "Buy More Coins" opens The Golden Vault
+//     (BuyCoinsOverlay) through OverlayController.OpenBuyCoins.
 //   - Routing goes through GameFlowController (GoToDeskHub), and the item to
 //     preview is handed to DeskHubScreen.RequestPreview BEFORE routing, as the
 //     contract requires. Screens never call the router directly.
@@ -38,6 +39,8 @@
 //       Card Template   <- Grid/Viewport/Content/CardTemplate (keep it UNTICKED)
 //       Scroll          <- Grid (ScrollRect)
 //       Decor Tab / Misc Tab, Back Button, Remove Ads Button, Buy More Coins Button
+//       Overlays        <- Canvas/Overlays (OverlayController); set by
+//                          Restorium/Scene/Build Coin Shop
 //       Empty Label     <- EmptyLabel (text "More items coming soon!")
 // [ ] Add ShopScreen to the ScreenRouter "Screens" list on GameFlow.
 // [ ] Tutorial Anchor on BackButton: shop.back (cards add theirs by themselves).
@@ -93,8 +96,11 @@ namespace RestoriumEmporium.UI
         [Tooltip("Visible but disabled this build.")]
         [SerializeField] private Button removeAdsButton;
 
-        [Tooltip("Visible but disabled this build.")]
+        [Tooltip("Opens The Golden Vault coin store.")]
         [SerializeField] private Button buyMoreCoinsButton;
+
+        [Tooltip("Canvas/Overlays (OverlayController). Opens the coin store.")]
+        [SerializeField] private OverlayController overlays;
 
         private readonly Dictionary<string, ShopItemCard> _cards = new Dictionary<string, ShopItemCard>();
         private IDecorationInventory _inventory;
@@ -127,7 +133,7 @@ namespace RestoriumEmporium.UI
                 backButton.onClick.AddListener(GoBack);
             }
 
-            // Store features arrive next build: visible, not clickable.
+            // Remove Ads arrives in a later build: visible, not clickable.
             if (removeAdsButton != null)
             {
                 removeAdsButton.interactable = false;
@@ -135,7 +141,8 @@ namespace RestoriumEmporium.UI
 
             if (buyMoreCoinsButton != null)
             {
-                buyMoreCoinsButton.interactable = false;
+                buyMoreCoinsButton.interactable = true;
+                buyMoreCoinsButton.onClick.AddListener(OpenBuyCoins);
             }
 
             if (cardTemplate != null && cardTemplate.gameObject.activeSelf)
@@ -159,6 +166,11 @@ namespace RestoriumEmporium.UI
             if (backButton != null)
             {
                 backButton.onClick.RemoveListener(GoBack);
+            }
+
+            if (buyMoreCoinsButton != null)
+            {
+                buyMoreCoinsButton.onClick.RemoveListener(OpenBuyCoins);
             }
 
             foreach (var pair in _cards)
@@ -313,6 +325,19 @@ namespace RestoriumEmporium.UI
 
             deskHub.RequestPreview(item);
             flow.GoToDeskHub();
+        }
+
+        private void OpenBuyCoins()
+        {
+            if (overlays != null)
+            {
+                overlays.OpenBuyCoins();
+            }
+            else
+            {
+                Debug.LogWarning("[ShopScreen] 'Overlays' is not assigned; run Restorium/Scene/Build Coin Shop.",
+                    this);
+            }
         }
 
         private void GoBack()

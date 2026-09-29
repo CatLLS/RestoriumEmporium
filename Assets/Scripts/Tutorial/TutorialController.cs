@@ -619,7 +619,12 @@ namespace RestoriumEmporium.Tutorial
             // A gated step only gates while its target is on screen. Leaving mid-step
             // (pause -> Journal) must not carry the block to a screen that has no
             // target on it, or every button there goes dead.
-            var gated = false;
+            // Tracked by TARGET, not by "is the id available": the linen screens are
+            // duplicates, so each has its own toolbar.pencil etc. A step that opens
+            // on Linen Back and lands on Linen Final keeps the id available across
+            // the swap (the router hides and shows in one frame), and a bool here
+            // would leave the gate aimed at Back's bar — Final's whole tool bar dead.
+            RectTransform gatedTarget = null;
             inputGate?.ReleaseAll();
 
             if (_restoration != null)
@@ -634,10 +639,12 @@ namespace RestoriumEmporium.Tutorial
             while (!_advanced && (!useSafetyTimeout || elapsed < timeout))
             {
                 var targetOnScreen = TutorialAnchor.IsAvailable(step.targetAnchorId);
+                var anchor = targetOnScreen ? TutorialAnchor.Find(step.targetAnchorId) : null;
+                var currentTarget = anchor != null ? anchor.Target : null;
 
-                if (inputGate != null && step.gateInputToTarget && targetOnScreen != gated)
+                if (inputGate != null && step.gateInputToTarget && currentTarget != gatedTarget)
                 {
-                    if (targetOnScreen)
+                    if (currentTarget != null)
                     {
                         inputGate.GateTo(step.targetAnchorId);
                     }
@@ -646,10 +653,13 @@ namespace RestoriumEmporium.Tutorial
                         inputGate.ReleaseAll();
                     }
 
-                    gated = targetOnScreen;
+                    gatedTarget = currentTarget;
                 }
 
-                if (step.advance == TutorialAdvance.TapTarget && _probe == null && targetOnScreen)
+                // Same duplicate-anchor case: a probe left on the previous screen's
+                // copy would wait for a tap that can no longer happen.
+                if (step.advance == TutorialAdvance.TapTarget && anchor != null &&
+                    (_probe == null || _probe.gameObject != anchor.gameObject))
                 {
                     AttachProbe(step.targetAnchorId);
                 }

@@ -29,7 +29,9 @@
 //     gives no ordering guarantee between this Awake and GameBootstrap's.
 //   - ResetProgress keeps locale and volumes. Those are device preferences, not
 //     progress; flipping a player's language back because they restarted the
-//     poster would read as a bug.
+//     poster would read as a bug. It also keeps grantedIapTransactions (the
+//     coin-pack purchase ledger): wiping progress must never let an old paid
+//     purchase be credited a second time.
 // ============================================================
 
 // ---- UNITY EDITOR SETUP (required for this script to work) ----
@@ -161,7 +163,9 @@ namespace RestoriumEmporium.Core
                 localeCode = previous.localeCode,
                 musicVolume = previous.musicVolume,
                 sfxVolume = previous.sfxVolume,
-                hasPlayedBefore = previous.hasPlayedBefore
+                hasPlayedBefore = previous.hasPlayedBefore,
+                // Paid-purchase ledger: never forgotten, or Reconcile would re-grant.
+                grantedIapTransactions = previous.grantedIapTransactions ?? new System.Collections.Generic.List<string>()
             };
 
             Save();

@@ -1,0 +1,20 @@
+{
+    "name": "RestoriumEmporium.RevenueCat.Editor",
+    "rootNamespace": "RestoriumEmporium",
+    "references": [
+        "RestoriumEmporium.Runtime",
+        "RestoriumEmporium.RevenueCat",
+        "revenuecat.purchases-unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

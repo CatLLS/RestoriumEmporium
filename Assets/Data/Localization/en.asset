@@ -300,3 +300,19 @@ MonoBehaviour:
     value: Just like that! Now the rest of them.
   - key: ui.pause.continue
     value: Continue
+  - key: ui.coins.title
+    value: The Golden Vault
+  - key: ui.coins.pack
+    value: '{0} coins | {1}'
+  - key: ui.coins.finePrint
+    value: charged to your account. Restore purchases any time from Settings
+  - key: ui.coins.terms
+    value: Terms
+  - key: ui.coins.privacy
+    value: Privacy
+  - key: ui.coins.removeAds
+    value: Remove Ads
+  - key: ui.coins.failed
+    value: The purchase didn't go through. Please try again.
+  - key: ui.coins.unavailable
+    value: The store isn't available right now.
