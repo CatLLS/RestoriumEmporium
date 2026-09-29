@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3731f3de20dae469718a311ca5d0ac, type: 3}
+  m_Name: stickers
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialSequenceData
+  sequenceId: stickers
+  trigger: 1
+  triggerScreen: 0
+  triggerStageKind: 1
+  requiresSequence: 
+  requiresPosterCompleted: 
+  steps:
+  - {fileID: 11400000, guid: ec17584a9fb4c854e821beb5642f43b3, type: 2}
+  - {fileID: 11400000, guid: 198b5afb72746cc43b132fc7fc90e6ba, type: 2}
+  - {fileID: 11400000, guid: 0376d270a926cc54b8337866d90639aa, type: 2}

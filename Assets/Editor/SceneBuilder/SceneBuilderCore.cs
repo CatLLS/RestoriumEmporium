@@ -448,6 +448,9 @@ namespace RestoriumEmporium.EditorTools
             RestoriumEmporium.Core.SfxId sfx = RestoriumEmporium.Core.SfxId.ButtonClick)
         {
             var img = AddOrGet<Image>(go);
+            // SetImage defaults raycastTarget off for decorative art; a button's own
+            // Image is its hit area, so without this the button never receives a tap.
+            img.raycastTarget = true;
             var btn = AddOrGet<Button>(go);
 
             if (btn.targetGraphic == null)
@@ -464,6 +467,33 @@ namespace RestoriumEmporium.EditorTools
             }
 
             return btn;
+        }
+
+        /// <summary>
+        /// Removes MVP-era On Click entries by method name. The Batch 2 screens wire
+        /// their buttons in code, so a leftover Inspector entry runs IN ADDITION and
+        /// can reroute the flow (Continue -> GoToThanksForPlaying).
+        /// </summary>
+        public static void RemoveLegacyClicks(Button button, params string[] methodNames)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            for (var i = button.onClick.GetPersistentEventCount() - 1; i >= 0; i--)
+            {
+                var method = button.onClick.GetPersistentMethodName(i);
+
+                if (Array.IndexOf(methodNames, method) < 0)
+                {
+                    continue;
+                }
+
+                UnityEditor.Events.UnityEventTools.RemovePersistentListener(button.onClick, i);
+                EditorUtility.SetDirty(button);
+                NoteUpdated($"{PathOf(button.gameObject)}: removed legacy On Click -> {method}");
+            }
         }
 
         // ---- Tutorial anchors -----------------------------------------------------------

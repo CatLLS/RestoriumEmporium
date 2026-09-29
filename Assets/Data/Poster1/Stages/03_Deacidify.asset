@@ -15,6 +15,7 @@ MonoBehaviour:
   stageId: deacidify
   screen: 2
   requiredTool: 3
+  kind: 0
   fromSprite: {fileID: 21300000, guid: 6afe2b8cc22722b4ca9d6cd48c52a725, type: 3}
   toSprite: {fileID: 21300000, guid: f56a9061125636942a79664ee06a0b02, type: 3}
   revealTint: {r: 1, g: 1, b: 1, a: 1}
@@ -22,6 +23,8 @@ MonoBehaviour:
   requiredCoverage: 0.85
   brushRadiusOverride: 0
   onComplete: 1
+  closeUpSprite: {fileID: 0}
+  stickers: []
   titleKey: stage.deacidify.title
   tutorialKey: stage.deacidify.prompt
   completeSfx: 4

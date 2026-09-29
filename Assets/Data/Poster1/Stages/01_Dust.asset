@@ -15,6 +15,7 @@ MonoBehaviour:
   stageId: dust
   screen: 2
   requiredTool: 1
+  kind: 0
   fromSprite: {fileID: 21300000, guid: 8e2ed91d0fd3a1b4a82268927731e651, type: 3}
   toSprite: {fileID: 21300000, guid: 19dc89f2f4b92414aae10db8646fb78f, type: 3}
   revealTint: {r: 1, g: 1, b: 1, a: 1}
@@ -22,6 +23,8 @@ MonoBehaviour:
   requiredCoverage: 0.85
   brushRadiusOverride: 0
   onComplete: 0
+  closeUpSprite: {fileID: 0}
+  stickers: []
   titleKey: stage.dust.title
   tutorialKey: stage.dust.prompt
   completeSfx: 4

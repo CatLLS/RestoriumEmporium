@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: Poster01
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.PosterData
   posterId: poster01
+  journalOrder: 1
+  chapterKey: poster.poster01.chapter
   titleKey: poster.poster01.title
   journalThumbnail: {fileID: 6834763075244801744, guid: d5ade2dc8dcd5984ca23aa60584a10fc, type: 3}
   beforeSprite: {fileID: 21300000, guid: 8e2ed91d0fd3a1b4a82268927731e651, type: 3}
   finalSprite: {fileID: 21300000, guid: f841994ac88902147a416649c9e09815, type: 3}
   backSprite: {fileID: 21300000, guid: deb858ba36114f64e9a41d155d103332, type: 3}
   linenBackingSprite: {fileID: -2491478721652878856, guid: 05c1b4cb6e9b33f45a9fe32534e9ab4f, type: 3}
+  completionCutscene: {fileID: 32900000, guid: 13829010e1738cc4eaf9582a7ae8431f, type: 3}
   stages:
   - {fileID: 11400000, guid: efe10f75f42b755418cf276529bf9828, type: 2}
   - {fileID: 11400000, guid: e61125d388efd8144b4594abc65bb677, type: 2}
@@ -26,4 +29,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1aea79224cde57e44b86ae7d4c1c81cd, type: 2}
   - {fileID: 11400000, guid: 599a1213235f6184bae86559bade7351, type: 2}
   - {fileID: 11400000, guid: 68c62cdc90fe810449ff4bdb8fef8054, type: 2}
-  coinReward: 50
+  coinReward: 100

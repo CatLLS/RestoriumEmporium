@@ -79,6 +79,7 @@ namespace RestoriumEmporium.EditorTools
             SceneBuilderCore.FigmaRect(actionGo, 104f, 592f, 202f, 69f);
             SceneBuilderCore.SetImage(actionGo, "Assets/Art/journalAssets/buttonBase.png");
             var actionButton = SceneBuilderCore.SetupButton(actionGo);
+            SceneBuilderCore.RemoveLegacyClicks(actionButton, "StartRestoration");
             SceneBuilderCore.SetupAnchor(actionGo, "journal.restoreButton");
             var actionLabelGo = SceneBuilderCore.FindRenameOrCreateChild(actionGo.transform, "Label", "Text (TMP)");
             SceneBuilderCore.Stretch(actionLabelGo);
@@ -98,7 +99,11 @@ namespace RestoriumEmporium.EditorTools
             nextGo.transform.SetSiblingIndex(6);
             SceneBuilderCore.FigmaRect(nextGo, 330f, 787f, 31f, 59f);
             SceneBuilderCore.SetImage(nextGo, "Assets/Art/journalAssets/arrow.png");
-            nextGo.transform.localEulerAngles = new Vector3(0f, 180f, 0f); // mirrored, per FigmaLayout.md §10
+            // Mirrored per FigmaLayout.md §10 with a negative X scale, not a Y-180 rotation:
+            // GraphicRaycaster's Ignore Reversed Graphics skips back-facing rotations, which
+            // would make the arrow untappable.
+            nextGo.transform.localEulerAngles = Vector3.zero;
+            nextGo.transform.localScale = new Vector3(-1f, 1f, 1f);
             var nextButton = SceneBuilderCore.SetupButton(nextGo, addSfx: false);
             SceneBuilderCore.SetupAnchor(nextGo, "journal.nextPage");
 
@@ -217,6 +222,7 @@ namespace RestoriumEmporium.EditorTools
             SceneBuilderCore.FigmaRect(continueGo, 105f, 734f, 202f, 69f);
             SceneBuilderCore.SetImage(continueGo, "Assets/Art/newGameButton.png");
             var continueButton = SceneBuilderCore.SetupButton(continueGo);
+            SceneBuilderCore.RemoveLegacyClicks(continueButton, "GoToThanksForPlaying");
             SceneBuilderCore.SetupAnchor(continueGo, "finishedRepair.continueButton");
             var continueLabelGo = SceneBuilderCore.FindRenameOrCreateChild(continueGo.transform, "Label",
                 "Text (TMP)");

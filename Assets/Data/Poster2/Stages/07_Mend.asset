@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b5d1d4267696214dbee52060b0b333b, type: 3}
+  m_Name: 07_Mend
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.RestorationStageData
+  stageId: poster02.mend
+  screen: 5
+  requiredTool: 6
+  kind: 0
+  fromSprite: {fileID: -7619392688139120307, guid: 52ccf3ca2f8f47f498c180107275a1ab, type: 3}
+  toSprite: {fileID: 6880378391544895383, guid: 55646e0b7f6d20446bcfa350303abf87, type: 3}
+  revealTint: {r: 1, g: 1, b: 1, a: 1}
+  invertMask: 1
+  requiredCoverage: 0.6
+  brushRadiusOverride: 0
+  onComplete: 4
+  closeUpSprite: {fileID: 0}
+  stickers: []
+  titleKey: stage.mend.title
+  tutorialKey: stage.mend.prompt
+  completeSfx: 4

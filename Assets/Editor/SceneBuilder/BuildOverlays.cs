@@ -86,14 +86,16 @@ namespace RestoriumEmporium.EditorTools
                 "ui.pause.journal", "Journal");
             var settingsButton = BuildPauseRow(root.transform, "SettingsButton", 5, 98f, 601f, 216f, 20f,
                 "ui.pause.settings", "Settings");
-            var quitButton = BuildPauseRow(root.transform, "QuitButton", 6, 98f, 639f, 216f, 20f,
-                "ui.pause.quit", "Quit");
+            // Figma's "Quit" slot is Continue by design decision; rename the old object in place.
+            SceneBuilderCore.FindRenameOrCreateChild(root.transform, "ContinueButton", "QuitButton");
+            var continueButton = BuildPauseRow(root.transform, "ContinueButton", 6, 98f, 639f, 216f, 20f,
+                "ui.pause.continue", "Continue");
 
             var overlay = SceneBuilderCore.AddOrGet<RestoriumEmporium.UI.PauseMenuOverlay>(root);
             var so = new SerializedObject(overlay);
             SceneBuilderCore.SetField(so, "journalButton", journalButton, "PauseMenuOverlay");
             SceneBuilderCore.SetField(so, "settingsButton", settingsButton, "PauseMenuOverlay");
-            SceneBuilderCore.SetField(so, "quitButton", quitButton, "PauseMenuOverlay");
+            SceneBuilderCore.SetField(so, "continueButton", continueButton, "PauseMenuOverlay");
             so.ApplyModifiedProperties();
 
             SceneBuilderCore.SetActive(root, true);

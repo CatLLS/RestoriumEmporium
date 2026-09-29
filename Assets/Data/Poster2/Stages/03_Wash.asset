@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b5d1d4267696214dbee52060b0b333b, type: 3}
+  m_Name: 03_Wash
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.RestorationStageData
+  stageId: poster02.wash
+  screen: 2
+  requiredTool: 2
+  kind: 0
+  fromSprite: {fileID: -2714454822364200600, guid: 8b4ca623fee3d154da26ddd8c8640e52, type: 3}
+  toSprite: {fileID: 4252123796651225742, guid: 651a98f5195cd0d4e8d473b33e3fa4ec, type: 3}
+  revealTint: {r: 1, g: 1, b: 1, a: 1}
+  invertMask: 0
+  requiredCoverage: 0.85
+  brushRadiusOverride: 0
+  onComplete: 0
+  closeUpSprite: {fileID: 0}
+  stickers: []
+  titleKey: stage.wash.title
+  tutorialKey: stage.wash.prompt
+  completeSfx: 4

@@ -15,6 +15,7 @@ MonoBehaviour:
   stageId: mend
   screen: 5
   requiredTool: 6
+  kind: 0
   fromSprite: {fileID: 21300000, guid: 54c09a58005ddc54bb60bf4ba33eb52f, type: 3}
   toSprite: {fileID: 21300000, guid: f841994ac88902147a416649c9e09815, type: 3}
   revealTint: {r: 1, g: 1, b: 1, a: 1}
@@ -22,6 +23,8 @@ MonoBehaviour:
   requiredCoverage: 0.6
   brushRadiusOverride: 0
   onComplete: 4
+  closeUpSprite: {fileID: 0}
+  stickers: []
   titleKey: stage.mend.title
   tutorialKey: stage.mend.prompt
   completeSfx: 4

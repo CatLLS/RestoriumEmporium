@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: pt-BR
   m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocaleTable
   localeCode: pt-BR
-  displayName: Portugues (Brasil)
+  displayName: "Portugu\xEAs (Brasil)"
   entries:
   - key: ui.title.newGame
     value: Novo jogo
@@ -42,7 +42,7 @@ MonoBehaviour:
   - key: ui.linenBacking.toolbar
     value: "Ferramentas de refor\xE7o"
   - key: ui.finishedRepair.title
-    value: Bom trabalho!
+    value: "Restaura\xE7\xE3o conclu\xEDda!"
   - key: ui.finishedRepair.continue
     value: Continuar
   - key: ui.finishedRepair.backToWorkbench
@@ -52,11 +52,11 @@ MonoBehaviour:
   - key: ui.dialogue.advance
     value: "Toque para avan\xE7ar o di\xE1logo"
   - key: ui.pause.title
-    value: Jogo pausado
+    value: JOGO PAUSADO
   - key: ui.pause.resume
     value: Voltar ao jogo
   - key: ui.pause.quit
-    value: Sair do jogo
+    value: Sair
   - key: ui.thanks.title
     value: O fim?
   - key: ui.thanks.body
@@ -140,10 +140,171 @@ MonoBehaviour:
   - key: tutorial.usePencil
     value: Agora complete com carinho os pedacinhos que se perderam pelo caminho.
   - key: tutorial.congrats
-    value: "Olha s\xF3 isso! Ficou lindo. Voc\xEA tem m\xE3o para essa arte, viu?"
+    value: "Olha s\xF3 isso! Ficou lindo. E o trabalho rendeu umas moedinhas pra
+      gente \u2014 viu ali?"
   - key: tutorial.tapContinue
-    value: Toque em Continuar quando quiser seguir.
+    value: Toque em Continuar e vamos para a minha oficina. Quero te mostrar uma
+      coisa!
   - key: ui.journal.pageHint
     value: "Aperte as setas para mudar de p\xE1gina"
   - key: ui.thanks.quit
     value: Fechar
+  - key: ui.cutscene.skipHint
+    value: Toque para pular
+  - key: stage.stickers.title
+    value: Hora de descolar!
+  - key: stage.stickers.prompt
+    value: "Parece que algu\xE9m j\xE1 tentou consertar este cartaz... Toque em cada
+      fita para descol\xE1-la."
+  - key: poster.poster01.chapter
+    value: Cap. 1 - Cartaz de turismo de Lethe Falls
+  - key: poster.poster02.title
+    value: Cine Eternal
+  - key: poster.poster02.chapter
+    value: "Cap. 2 - Programa\xE7\xE3o do Cine Eternal"
+  - key: ui.desk.selected
+    value: 'Selecionado: {0}'
+  - key: ui.desk.desc
+    value: 'Desc.: {0}'
+  - key: ui.edit.title
+    value: "Modo de Edi\xE7\xE3o"
+  - key: ui.edit.hint
+    value: "Selecione um item para mudar a posi\xE7\xE3o dele."
+  - key: ui.edit.dragHint
+    value: "Toque e arraste o item para posicion\xE1-lo"
+  - key: ui.edit.place
+    value: Colocar Item
+  - key: ui.edit.undo
+    value: Desfazer
+  - key: ui.edit.or
+    value: ou
+  - key: ui.edit.backToWorkshop
+    value: "Voltar \xE0 oficina"
+  - key: ui.preview.title
+    value: "Modo de Pr\xE9via"
+  - key: ui.preview.dragHint
+    value: "Toque e arraste o item para posicion\xE1-lo"
+  - key: ui.preview.price
+    value: "Pre\xE7o: {0} moedas"
+  - key: ui.preview.buy
+    value: Comprar Item
+  - key: ui.preview.giveUp
+    value: Desistir
+  - key: ui.preview.notEnoughCoins
+    value: "Ainda n\xE3o tenho moedas suficientes... Restaurar outro p\xF4ster deve
+      ajudar!"
+  - key: ui.shop.back
+    value: "Voltar \xE0 bancada"
+  - key: ui.shop.titleTop
+    value: "Emp\xF3rio da"
+  - key: ui.shop.titleMain
+    value: Tracy
+  - key: ui.shop.removeAds
+    value: "Remover an\xFAncios"
+  - key: ui.shop.buyMoreCoins
+    value: Comprar Moedas
+  - key: ui.shop.tabDecor
+    value: "Decora\xE7\xE3o"
+  - key: ui.shop.tabMisc
+    value: Diversos
+  - key: ui.shop.owned
+    value: Comprado
+  - key: ui.shop.empty
+    value: Mais itens em breve!
+  - key: shop.item.lamp.name
+    value: "Lumin\xE1ria"
+  - key: shop.item.lamp.desc
+    value: "Uma lumin\xE1ria quentinha e bem clara para a bancada. Com essa luz,
+      voc\xEA nunca mais vai deixar um p\xF4ster falso passar despercebido!"
+  - key: shop.item.plant.name
+    value: Vaso de Planta
+  - key: shop.item.plant.desc
+    value: "Este vaso de planta lindinho foi encontrado numa loja perto da oficina,
+      \xE9 muito bonito!"
+  - key: shop.item.books.name
+    value: Pilha de Livros
+  - key: shop.item.books.desc
+    value: "Voc\xEA come\xE7ou a ler livros de mist\xE9rio sobre viagem no tempo,
+      ent\xE3o comprou uma pilha para deixar na oficina!"
+  - key: ui.pause.journal
+    value: "Di\xE1rio"
+  - key: ui.pause.settings
+    value: Ajustes
+  - key: ui.pause.flavour
+    value: "Sem pressa. Os mist\xE9rios por tr\xE1s destes pap\xE9is v\xE3o esperar
+      a sua volta."
+  - key: ui.settings.title
+    value: AJUSTES
+  - key: ui.settings.tracyLine
+    value: Ah, o restorium precisa de uns ajustes? Foi mal, vamos mudar isso agora
+      mesmo!
+  - key: ui.settings.language
+    value: Idioma
+  - key: ui.settings.sfx
+    value: Efeitos sonoros
+  - key: ui.settings.music
+    value: "M\xFAsica"
+  - key: ui.settings.resetProgress
+    value: Apagar progresso
+  - key: ui.settings.resetConfirm
+    value: "Apagar todo o progresso? Suas moedas, decora\xE7\xF5es e cartazes restaurados
+      ser\xE3o perdidos."
+  - key: ui.settings.resetYes
+    value: Apagar
+  - key: ui.settings.resetNo
+    value: Cancelar
+  - key: ui.journal.continue
+    value: Continuar
+  - key: ui.journal.restored
+    value: Restaurado
+  - key: ui.journal.back
+    value: Voltar para a bancada
+  - key: ui.journal.lockedHint
+    value: Restaure o cartaz anterior primeiro
+  - key: ui.finishedRepair.double
+    value: Dobrar recompensa
+  - key: ui.finishedRepair.or
+    value: ou
+  - key: ui.finishedRepair.coins
+    value: +{0}
+  - key: tutorial.deskhub_lamp.welcome
+    value: "Bem-vindo \xE0 minha oficina! \xC9 aqui que a m\xE1gica acontece... bom,
+      quase toda."
+  - key: tutorial.deskhub_lamp.dark
+    value: "Hmm... est\xE1 bem escurinho aqui nessa mesa, n\xE9? Eu preciso muito
+      de uma lumin\xE1ria nova."
+  - key: tutorial.deskhub_lamp.fake
+    value: "Vai ver foi por isso que eu n\xE3o percebi que o \xFAltimo cartaz era
+      falso... Com uma luz dessas, qualquer um deixaria passar! N\xE9?"
+  - key: tutorial.deskhub_lamp.tapShop
+    value: Vamos escolher uma! Toque na bolsa para abrir a loja.
+  - key: tutorial.deskhub_lamp.tapLamp
+    value: "Ah, essa lumin\xE1ria \xE9 perfeita \u2014 e as moedas que voc\xEA acabou
+      de ganhar pagam certinho. Toque nela!"
+  - key: tutorial.deskhub_lamp.drag
+    value: "Olha s\xF3 como ficaria! Arraste para onde quiser na mesa."
+  - key: tutorial.deskhub_lamp.buy
+    value: "Gostou do lugar? Toque em Comprar item e ela \xE9 nossa!"
+  - key: tutorial.deskhub_lamp.happy
+    value: Bem melhor! Agora sim eu consigo ver cada detalhezinho.
+  - key: tutorial.deskhub_lamp.editMode
+    value: "Se quiser mudar as coisas de lugar depois, \xE9 s\xF3 tocar neste bot\xE3o
+      para entrar no modo de edi\xE7\xE3o."
+  - key: tutorial.deskhub_lamp.tapBook
+    value: "Agora vamos abrir o di\xE1rio. Toque no livro \u2014 tenho a impress\xE3o
+      de que chegou trabalho novo."
+  - key: tutorial.journal_page2.newPoster
+    value: Olha! Chegou um cartaz novo enquanto a gente estava ocupada.
+  - key: tutorial.journal_page2.nextPage
+    value: "Toque na seta para virar a p\xE1gina."
+  - key: tutorial.journal_page2.restore
+    value: "Aqui est\xE1 ele. Toque em Restaurar quando estiver pronto."
+  - key: tutorial.stickers.explain
+    value: "Ai, ai, algu\xE9m encheu esse cartaz de adesivos! Vamos ter que tirar
+      um por um."
+  - key: tutorial.stickers.peel
+    value: Toque em um adesivo para descolar. Com cuidado!
+  - key: tutorial.stickers.rest
+    value: Isso mesmo! Agora os outros.
+  - key: ui.pause.continue
+    value: Continuar

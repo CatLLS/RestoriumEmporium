@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e01a3ead5a603646808b99abd7e51e0, type: 3}
+  m_Name: Poster02
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.PosterData
+  posterId: poster02
+  journalOrder: 2
+  chapterKey: poster.poster02.chapter
+  titleKey: poster.poster02.title
+  journalThumbnail: {fileID: 0}
+  beforeSprite: {fileID: 4506009204067950115, guid: b5bb0a6c7b592794d96f08538ccb621c, type: 3}
+  finalSprite: {fileID: 6880378391544895383, guid: 55646e0b7f6d20446bcfa350303abf87, type: 3}
+  backSprite: {fileID: 21300000, guid: deb858ba36114f64e9a41d155d103332, type: 3}
+  linenBackingSprite: {fileID: -2491478721652878856, guid: 05c1b4cb6e9b33f45a9fe32534e9ab4f, type: 3}
+  completionCutscene: {fileID: 0}
+  stages:
+  - {fileID: 11400000, guid: d4e25f63c6bda5b4682a37bd11b940aa, type: 2}
+  - {fileID: 11400000, guid: d244cac09c6a78f41a80f20be2457f95, type: 2}
+  - {fileID: 11400000, guid: 2355c15ef9690b743a0dcbb24e2357dd, type: 2}
+  - {fileID: 11400000, guid: 05e117ad3867ffc48854f2d9e2845e63, type: 2}
+  - {fileID: 11400000, guid: 500a3903e8c758f4aaf8e4f0e1b16e71, type: 2}
+  - {fileID: 11400000, guid: 62a5c449380a43940adc031b57be2dde, type: 2}
+  - {fileID: 11400000, guid: 4fe33fff0a05a9d4db7089359c0c3af8, type: 2}
+  coinReward: 100

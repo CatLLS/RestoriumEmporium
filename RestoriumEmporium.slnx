@@ -1,5 +1,5 @@
 ﻿<Solution>
+  <Project Path="RestoriumEmporium.EditTests.csproj" />
   <Project Path="RestoriumEmporium.Runtime.csproj" />
   <Project Path="RestoriumEmporium.Editor.csproj" />
-  <Project Path="RestoriumEmporium.EditTests.csproj" />
 </Solution>

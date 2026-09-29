@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eae5afc3bd56304fbdd5f6ebe9495dd, type: 3}
+  m_Name: ShopCatalog
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.ShopCatalog
+  items:
+  - {fileID: 11400000, guid: 49d69eeabb5c5ad4381017aed1db86b5, type: 2}
+  - {fileID: 11400000, guid: 2a825b0ada1e2e84cab580cf12bc2d6d, type: 2}
+  - {fileID: 11400000, guid: 26cffb641d8625e45a6f504b94516cb0, type: 2}

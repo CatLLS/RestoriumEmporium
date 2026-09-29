@@ -135,6 +135,7 @@ namespace RestoriumEmporium.UI
         private IPosterProgress _progress;
         private ILocalizationService _localization;
         private IAudioService _audio;
+        private ISaveService _save;
 
         private int _pageIndex;
         private Coroutine _fade;
@@ -252,7 +253,15 @@ namespace RestoriumEmporium.UI
 
             SetButtonEnabled(actionButton, poster != null && JournalPageRules.IsButtonInteractable(state));
             SetButtonEnabled(prevPageButton, JournalPageRules.HasPreviousPage(_pageIndex));
-            SetButtonEnabled(nextPageButton, JournalPageRules.HasNextPage(_pageIndex, count));
+
+            var showNext = FirstPosterTutorialDone();
+
+            if (nextPageButton != null)
+            {
+                nextPageButton.gameObject.SetActive(showNext);
+            }
+
+            SetButtonEnabled(nextPageButton, showNext && JournalPageRules.HasNextPage(_pageIndex, count));
 
             if (backButton != null)
             {
@@ -340,6 +349,33 @@ namespace RestoriumEmporium.UI
             {
                 _audio = ServiceLocator.Get<IAudioService>();
             }
+
+            if (_save == null)
+            {
+                _save = ServiceLocator.Get<ISaveService>();
+            }
+        }
+
+        // The next-page arrow stays hidden through the first poster's guided tutorial so a
+        // first-time player cannot wander off the page it is teaching. Finishing poster 1
+        // also unlocks it, so a skipped or reset tutorial can never hide page 2 for good.
+        private bool FirstPosterTutorialDone()
+        {
+            var data = _save != null ? _save.Data : null;
+
+            if (data == null)
+            {
+                return true;
+            }
+
+            if (data.completedTutorialSequences != null &&
+                data.completedTutorialSequences.Contains(SaveMigration.FirstRestorationSequence))
+            {
+                return true;
+            }
+
+            var ids = OrderedIds();
+            return _progress != null && ids.Count > 0 && _progress.IsCompleted(ids[0]);
         }
 
         private int PageCount() => flow != null && flow.Posters != null ? flow.Posters.Count : 0;

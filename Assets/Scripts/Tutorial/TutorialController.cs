@@ -547,8 +547,10 @@ namespace RestoriumEmporium.Tutorial
             {
                 overlay.Tapped += OnTapSignal;
             }
-            else if (step.advance == TutorialAdvance.TapTarget)
+            else if (step.advance == TutorialAdvance.TapTarget && TutorialAnchor.IsAvailable(step.targetAnchorId))
             {
+                // Not on screen yet (a resumed step, or a screen still routing in):
+                // the act loop attaches the probe once the anchor appears.
                 AttachProbe(step.targetAnchorId);
             }
 
@@ -592,17 +594,11 @@ namespace RestoriumEmporium.Tutorial
             }
 
             // ---- Act phase: the screen belongs to the player -------------------
-            if (inputGate != null)
-            {
-                if (step.gateInputToTarget)
-                {
-                    inputGate.GateTo(step.targetAnchorId);
-                }
-                else
-                {
-                    inputGate.ReleaseAll();
-                }
-            }
+            // A gated step only gates while its target is on screen. Leaving mid-step
+            // (pause -> Journal) must not carry the block to a screen that has no
+            // target on it, or every button there goes dead.
+            var gated = false;
+            inputGate?.ReleaseAll();
 
             if (_restoration != null)
             {
@@ -615,6 +611,27 @@ namespace RestoriumEmporium.Tutorial
 
             while (!_advanced && (!useSafetyTimeout || elapsed < timeout))
             {
+                var targetOnScreen = TutorialAnchor.IsAvailable(step.targetAnchorId);
+
+                if (inputGate != null && step.gateInputToTarget && targetOnScreen != gated)
+                {
+                    if (targetOnScreen)
+                    {
+                        inputGate.GateTo(step.targetAnchorId);
+                    }
+                    else
+                    {
+                        inputGate.ReleaseAll();
+                    }
+
+                    gated = targetOnScreen;
+                }
+
+                if (step.advance == TutorialAdvance.TapTarget && _probe == null && targetOnScreen)
+                {
+                    AttachProbe(step.targetAnchorId);
+                }
+
                 var suspended = IsSuspended;
                 handPointer?.SetSuspended(suspended);
 

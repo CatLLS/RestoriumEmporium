@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3731f3de20dae469718a311ca5d0ac, type: 3}
+  m_Name: first_restoration
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialSequenceData
+  sequenceId: first_restoration
+  trigger: 0
+  triggerScreen: 1
+  triggerStageKind: 0
+  requiresSequence: 
+  requiresPosterCompleted: 
+  steps:
+  - {fileID: 11400000, guid: cff53a1a70049ce4fb4b70d7768f7218, type: 2}
+  - {fileID: 11400000, guid: 75d7f973511150845a3b2f71b04ba668, type: 2}
+  - {fileID: 11400000, guid: 34b6caaf417b95b43af16dd6e85c0e03, type: 2}
+  - {fileID: 11400000, guid: 5303cfaf07e4aee4280fb367639337b3, type: 2}
+  - {fileID: 11400000, guid: 69a44868929f77d4ead1c28fa81a6831, type: 2}
+  - {fileID: 11400000, guid: 4b454519fcbf2e14e84b24ff3e469558, type: 2}
+  - {fileID: 11400000, guid: badff6fa4f424114ebcce0350a29660f, type: 2}
+  - {fileID: 11400000, guid: a76ad0dc85822c34097c58cc6c6f3e48, type: 2}
+  - {fileID: 11400000, guid: 01d55233f09fcfc478134786437f5048, type: 2}
+  - {fileID: 11400000, guid: 85273f8aae4ad714a820e4032709f673, type: 2}
+  - {fileID: 11400000, guid: 314639a7453b2c9439a0d93bc160693b, type: 2}
+  - {fileID: 11400000, guid: aa86a366d848f4e49bafeac176fcf026, type: 2}
+  - {fileID: 11400000, guid: 72fd14b1d5ee7c141bbc3f5d1305fc4e, type: 2}
+  - {fileID: 11400000, guid: 812b05527d20d3c4eafa3ccd8212c2f5, type: 2}
+  - {fileID: 11400000, guid: 8ad838f0c20f2824f86431e8c1ed2513, type: 2}
+  - {fileID: 11400000, guid: 3b0e18f8739f3cc458d8c5ab7804d875, type: 2}

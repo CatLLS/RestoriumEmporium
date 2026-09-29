@@ -95,7 +95,7 @@ namespace RestoriumEmporium.EditorTools
             "ui.journal.lockedHint",
             "ui.pause.flavour",
             "ui.pause.journal",
-            "ui.pause.quit",
+            "ui.pause.continue",
             "ui.pause.settings",
             "ui.pause.title",
             "ui.preview.buy",

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3731f3de20dae469718a311ca5d0ac, type: 3}
+  m_Name: deskhub_lamp
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Data.TutorialSequenceData
+  sequenceId: deskhub_lamp
+  trigger: 0
+  triggerScreen: 7
+  triggerStageKind: 0
+  requiresSequence: first_restoration
+  requiresPosterCompleted: 
+  steps:
+  - {fileID: 11400000, guid: 7b5a057c5fc292540aa08c252c2ca1b6, type: 2}
+  - {fileID: 11400000, guid: 92d436ec9ccc5cf438af31438bbc09f5, type: 2}
+  - {fileID: 11400000, guid: 3977906d4f81119449ffafd28a85bffb, type: 2}
+  - {fileID: 11400000, guid: 087e3b3d88333034889105a2dab1e1ec, type: 2}
+  - {fileID: 11400000, guid: 8d78fa55042edae48a028f38a84e14bc, type: 2}
+  - {fileID: 11400000, guid: c2e5e38013488814093be586ef53482e, type: 2}
+  - {fileID: 11400000, guid: 3551cb1895e01a0438427b2822436c3f, type: 2}
+  - {fileID: 11400000, guid: d7742141af5a60e42b55a200fddff906, type: 2}
+  - {fileID: 11400000, guid: 7e8b6faeb6d3ee34fae9423526490a20, type: 2}
+  - {fileID: 11400000, guid: ea2254b8bfebf634abc922fba09c53fe, type: 2}
+  - {fileID: 11400000, guid: 9cf7d271f69932443b78fa3649c9c92d, type: 2}
+  - {fileID: 11400000, guid: 4eba49f9f856ce841ae04b458bb1a3de, type: 2}

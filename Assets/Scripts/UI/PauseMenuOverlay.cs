@@ -1,6 +1,6 @@
 // ============================================================
 // PauseMenuOverlay — the Game Paused modal (Figma GamePausedOverlay 283:177).
-// WHAT & WHY: Journal / Settings / Quit, reachable from any restoration screen
+// WHAT & WHY: Journal / Settings / Continue, reachable from any restoration screen
 //   or the desk hub through the hamburger. It is a ModalOverlay (see
 //   OverlayController.cs), so OverlayController owns showing, hiding, stacking
 //   and the back key; this component only wires its three buttons.
@@ -10,10 +10,12 @@
 //     exactly what "Journal from pause keeps the restoration saved; the journal
 //     then shows Continue" (contract §1.7) requires, and it is GameFlowController
 //     that owns that rule, not this overlay.
-//   - Every button closes the WHOLE stack (Controller.CloseAll()), not just this
-//     overlay. Journal and Quit both leave the paused context entirely (a new
-//     screen, or a scene reload), so leaving Settings open underneath a screen
-//     that is no longer paused would be a stray modal the player cannot explain.
+//   - Journal and Continue close the WHOLE stack (Controller.CloseAll()), not just
+//     this overlay. Both leave the paused context entirely, so leaving Settings
+//     open underneath a screen that is no longer paused would be a stray modal
+//     the player cannot explain.
+//   - Continue (Figma's "Quit" slot, replaced by design decision) only resumes;
+//     nothing in the pause menu returns to the title screen.
 //   - The flavour line and every button's caption are LocalizedText components
 //     wired in the Inspector, matching the rest of the codebase's rule that
 //     static text never appears in a script.
@@ -38,14 +40,15 @@
 //                      Key = ui.pause.journal. Add Button Sfx (Button Click).
 //       SettingsButton Button - TextMeshPro. Label Key = ui.pause.settings.
 //                      Add Button Sfx.
-//       QuitButton     Button - TextMeshPro. Label Key = ui.pause.quit.
+//       ContinueButton Button - TextMeshPro. Label Key = ui.pause.continue.
 //                      Add Button Sfx.
 // [ ] Select PauseMenuOverlay and drag: Journal Button / Settings Button /
-//     Quit Button <- the three buttons above.
+//     Continue Button <- the three buttons above.
 // [ ] Drag this PauseMenuOverlay object into OverlayController -> "Pause Menu".
 // ---------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace RestoriumEmporium.UI
@@ -56,20 +59,21 @@ namespace RestoriumEmporium.UI
         [Header("Buttons")]
         [SerializeField] private Button journalButton;
         [SerializeField] private Button settingsButton;
-        [SerializeField] private Button quitButton;
+        [FormerlySerializedAs("quitButton")]
+        [SerializeField] private Button continueButton;
 
         private void Awake()
         {
             AddClick(journalButton, OnJournal);
             AddClick(settingsButton, OnSettings);
-            AddClick(quitButton, OnQuit);
+            AddClick(continueButton, OnContinue);
         }
 
         private void OnDestroy()
         {
             RemoveClick(journalButton, OnJournal);
             RemoveClick(settingsButton, OnSettings);
-            RemoveClick(quitButton, OnQuit);
+            RemoveClick(continueButton, OnContinue);
         }
 
         private void OnJournal()
@@ -84,10 +88,9 @@ namespace RestoriumEmporium.UI
             Controller?.OpenSettings();
         }
 
-        private void OnQuit()
+        private void OnContinue()
         {
             Controller?.CloseAll();
-            Controller?.Flow?.QuitToTitle();
         }
 
         private static void AddClick(Button button, UnityEngine.Events.UnityAction action)

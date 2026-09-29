@@ -14,6 +14,7 @@ namespace RestoriumEmporium.EditorTools
             // ui.pause.title / ui.pause.quit / ui.pause.resume live in LocaleSource.Legacy.
             E("ui.pause.journal", "Diário", "Journal"),
             E("ui.pause.settings", "Ajustes", "Settings"),
+            E("ui.pause.continue", "Continuar", "Continue"),
             E("ui.pause.flavour",
                 "Sem pressa. Os mistérios por trás destes papéis vão esperar a sua volta.",
                 "Take your time, Mysteries that lie behind these papers shall wait for your return."),

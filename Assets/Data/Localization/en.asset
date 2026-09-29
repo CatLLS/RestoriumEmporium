@@ -1,0 +1,302 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c5abdcf0891a14e869965abfc32773, type: 3}
+  m_Name: en
+  m_EditorClassIdentifier: RestoriumEmporium.Runtime::RestoriumEmporium.Localization.LocaleTable
+  localeCode: en
+  displayName: English
+  entries:
+  - key: ui.title.newGame
+    value: New Game
+  - key: ui.title.continue
+    value: Continue
+  - key: ui.title.settings
+    value: Settings
+  - key: ui.title.quit
+    value: Quit
+  - key: ui.journal.title
+    value: Restoration Journal
+  - key: ui.journal.restore
+    value: Restore
+  - key: ui.journal.changePages
+    value: Click to change pages
+  - key: ui.journal.locked
+    value: Coming soon
+  - key: ui.journal.complete
+    value: Completed
+  - key: ui.cleaning.title
+    value: Time to clean!
+  - key: ui.cleaning.toolbar
+    value: Cleaning tools
+  - key: ui.linenBacking.title
+    value: Linen backing
+  - key: ui.linenBacking.toolbar
+    value: Backing tools
+  - key: ui.finishedRepair.title
+    value: Restoration Complete!
+  - key: ui.finishedRepair.continue
+    value: Continue
+  - key: ui.finishedRepair.backToWorkbench
+    value: Go back to workbench
+  - key: ui.dialogue.tapToContinue
+    value: tap to continue
+  - key: ui.dialogue.advance
+    value: Tap to advance the dialogue
+  - key: ui.pause.title
+    value: GAME PAUSED
+  - key: ui.pause.resume
+    value: Continue Restoration
+  - key: ui.pause.quit
+    value: Quit
+  - key: ui.thanks.title
+    value: The end?
+  - key: ui.thanks.body
+    value: 'Thank you for testing the game! Sorry it''s so short: we''re still in
+      development and fine-tuning the key parts of the gameplay. Future updates will
+      bring more posters and a mysterious story for you! While you wait for us to
+      build more of the game, how about sending us some feedback? Found a bug? Have
+      an idea to improve the gameplay? I''m all ears!'
+  - key: ui.thanks.continue
+    value: Continue
+  - key: tool.dustRemover
+    value: Duster
+  - key: tool.waterSpray
+    value: Water spray
+  - key: tool.deacidifier
+    value: Deacidifier
+  - key: tool.squeegee
+    value: Squeegee
+  - key: tool.roller
+    value: Glue roller
+  - key: tool.pencil
+    value: Pencil
+  - key: poster.poster01.title
+    value: Visit Lethe Falls
+  - key: stage.dust.title
+    value: Dusting off
+  - key: stage.dust.prompt
+    value: Sweep the duster over the whole poster until the dust is gone.
+  - key: stage.wash.title
+    value: Washing
+  - key: stage.wash.prompt
+    value: Spray water until the whole poster is covered.
+  - key: stage.deacidify.title
+    value: Deacidifying
+  - key: stage.deacidify.prompt
+    value: Spread the deacidifier so the paper turns white again.
+  - key: stage.squeegee.title
+    value: Time to dry
+  - key: stage.squeegee.prompt
+    value: Slide the squeegee from side to side to push the water out.
+  - key: stage.adhesive.title
+    value: Rolling, rolling!
+  - key: stage.adhesive.prompt
+    value: Roll glue over the whole back of the poster.
+  - key: stage.mend.title
+    value: Final touches
+  - key: stage.mend.prompt
+    value: Use the pencil to fill in the missing bits.
+  - key: tutorial.welcome
+    value: Hi, hi! So glad to see you here. I'm Tracy, and this is the Restorium
+      Emporium. Shall we bring a very old poster back to life?
+  - key: tutorial.tapRestore
+    value: Our first job is right here in the journal. Tap Restore and let's begin.
+  - key: tutorial.pickDustRemover
+    value: First, the dust. Pick up the duster from the toolbar.
+  - key: tutorial.useDustRemover
+    value: Now slide your finger over the poster, nice and slow, until all the dust
+      is gone.
+  - key: tutorial.pickWaterSpray
+    value: Very good! Now pick up the water spray.
+  - key: tutorial.useWaterSpray
+    value: Dampen the whole poster. No rush, the paper will thank you.
+  - key: tutorial.pickDeacidifier
+    value: The paper has yellowed over time. Grab the deacidifier and we'll fix that.
+  - key: tutorial.useDeacidifier
+    value: Spread it everywhere and watch the white come back. This is my favourite
+      part.
+  - key: tutorial.pickSqueegee
+    value: Time to dry. The squeegee, please.
+  - key: tutorial.useSqueegee
+    value: Slide the squeegee from side to side to push out the leftover water.
+  - key: tutorial.pickRoller
+    value: I flipped the poster over for you. Now pick up the glue roller.
+  - key: tutorial.useRoller
+    value: "Roll glue over the whole back \u2014 that's what will hold the poster
+      to the linen."
+  - key: tutorial.pickPencil
+    value: Almost there! Pick up the pencil.
+  - key: tutorial.usePencil
+    value: Now lovingly fill in the little pieces that got lost along the way.
+  - key: tutorial.congrats
+    value: "Look at that! It's beautiful. And the job earned us a few coins, too
+      \u2014 see them there?"
+  - key: tutorial.tapContinue
+    value: Tap Continue and let's head to my workshop. There's something I want to
+      show you!
+  - key: ui.cutscene.skipHint
+    value: Tap to skip
+  - key: stage.stickers.title
+    value: Peel them off!
+  - key: stage.stickers.prompt
+    value: Looks like someone tried to fix this poster before... Tap each piece of
+      tape to peel it off.
+  - key: poster.poster01.chapter
+    value: Ch1 - Lethe Falls Tourism Poster
+  - key: poster.poster02.title
+    value: Eternal Theatre
+  - key: poster.poster02.chapter
+    value: Ch2 - Eternal Theatre Cinema Program
+  - key: ui.desk.selected
+    value: 'Selected: {0}'
+  - key: ui.desk.desc
+    value: 'Desc.: {0}'
+  - key: ui.edit.title
+    value: Edit Mode
+  - key: ui.edit.hint
+    value: Select an item to edit its position.
+  - key: ui.edit.dragHint
+    value: Click and drag around the item to position it
+  - key: ui.edit.place
+    value: Place Item
+  - key: ui.edit.undo
+    value: Undo
+  - key: ui.edit.or
+    value: or
+  - key: ui.edit.backToWorkshop
+    value: Back to workshop
+  - key: ui.preview.title
+    value: Preview Mode
+  - key: ui.preview.dragHint
+    value: Click and drag around the item to position it
+  - key: ui.preview.price
+    value: 'Price: {0} coins'
+  - key: ui.preview.buy
+    value: Buy Item
+  - key: ui.preview.giveUp
+    value: Give up
+  - key: ui.preview.notEnoughCoins
+    value: Not enough coins yet... restoring another poster should help!
+  - key: ui.shop.back
+    value: Go back to workbench
+  - key: ui.shop.titleTop
+    value: Tracy's
+  - key: ui.shop.titleMain
+    value: Emporium Shop
+  - key: ui.shop.removeAds
+    value: Remove ads
+  - key: ui.shop.buyMoreCoins
+    value: Buy More Coins
+  - key: ui.shop.tabDecor
+    value: "D\xE9cor"
+  - key: ui.shop.tabMisc
+    value: Misc.
+  - key: ui.shop.owned
+    value: Owned
+  - key: ui.shop.empty
+    value: More items coming soon!
+  - key: shop.item.lamp.name
+    value: Lamp
+  - key: shop.item.lamp.desc
+    value: A warm, bright lamp for the workbench. With light like this, you'll never
+      miss that a poster is a fake again!
+  - key: shop.item.plant.name
+    value: Plant Pot
+  - key: shop.item.plant.desc
+    value: "This pretty plant pot d\xE9cor was found at a store near the workshop,
+      it's really pretty!"
+  - key: shop.item.books.name
+    value: Book Pile
+  - key: shop.item.books.desc
+    value: You've recently gotten into reading mystery books about time travel, so
+      you got yourself a pile to keep at the workshop!
+  - key: ui.pause.journal
+    value: Journal
+  - key: ui.pause.settings
+    value: Settings
+  - key: ui.pause.flavour
+    value: Take your time, Mysteries that lie behind these papers shall wait for
+      your return.
+  - key: ui.settings.title
+    value: SETTINGS
+  - key: ui.settings.tracyLine
+    value: Oh, the restorium needs adjusting? My bad, let's change it right away!
+  - key: ui.settings.language
+    value: Language
+  - key: ui.settings.sfx
+    value: SFX Audio
+  - key: ui.settings.music
+    value: Music Audio
+  - key: ui.settings.resetProgress
+    value: Reset progress
+  - key: ui.settings.resetConfirm
+    value: Erase all progress? Your coins, decorations and restored posters will
+      be lost.
+  - key: ui.settings.resetYes
+    value: Erase
+  - key: ui.settings.resetNo
+    value: Cancel
+  - key: ui.journal.continue
+    value: Continue
+  - key: ui.journal.restored
+    value: Restored
+  - key: ui.journal.back
+    value: Go back to workbench
+  - key: ui.journal.lockedHint
+    value: Restore the previous poster first
+  - key: ui.finishedRepair.double
+    value: Double Reward
+  - key: ui.finishedRepair.or
+    value: or
+  - key: ui.finishedRepair.coins
+    value: +{0}
+  - key: tutorial.deskhub_lamp.welcome
+    value: Welcome to my workshop! This is where the magic happens... well, most
+      of it.
+  - key: tutorial.deskhub_lamp.dark
+    value: Hmm... it's awfully dark over this desk, isn't it? I really need a new
+      lamp.
+  - key: tutorial.deskhub_lamp.fake
+    value: Maybe that's why I didn't notice the last poster was a fake... With lighting
+      this poor, anyone could have missed it! Right?
+  - key: tutorial.deskhub_lamp.tapShop
+    value: Let's pick one out! Tap the bag to open the shop.
+  - key: tutorial.deskhub_lamp.tapLamp
+    value: "Ooh, that lamp is perfect \u2014 and the coins you just earned cover
+      it exactly. Tap it!"
+  - key: tutorial.deskhub_lamp.drag
+    value: Here's how it would look! Drag it wherever you like on the desk.
+  - key: tutorial.deskhub_lamp.buy
+    value: Happy with the spot? Tap Buy Item and it's ours!
+  - key: tutorial.deskhub_lamp.happy
+    value: Much better! Now I can finally see every little detail.
+  - key: tutorial.deskhub_lamp.editMode
+    value: If you ever want to move things around, just tap this button to enter
+      edit mode.
+  - key: tutorial.deskhub_lamp.tapBook
+    value: "Now, let's open the journal. Tap the book \u2014 I have a feeling new
+      work has arrived."
+  - key: tutorial.journal_page2.newPoster
+    value: Look! A new poster arrived while we were busy.
+  - key: tutorial.journal_page2.nextPage
+    value: Tap the arrow to turn the page.
+  - key: tutorial.journal_page2.restore
+    value: There it is. Tap Restore whenever you're ready.
+  - key: tutorial.stickers.explain
+    value: Oh dear, someone covered this poster in stickers! We'll have to peel them
+      off one by one.
+  - key: tutorial.stickers.peel
+    value: Tap a sticker to peel it off. Gently!
+  - key: tutorial.stickers.rest
+    value: Just like that! Now the rest of them.
+  - key: ui.pause.continue
+    value: Continue

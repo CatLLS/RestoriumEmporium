@@ -15,6 +15,7 @@ MonoBehaviour:
   stageId: wash
   screen: 2
   requiredTool: 2
+  kind: 0
   fromSprite: {fileID: 21300000, guid: 19dc89f2f4b92414aae10db8646fb78f, type: 3}
   toSprite: {fileID: 21300000, guid: 6afe2b8cc22722b4ca9d6cd48c52a725, type: 3}
   revealTint: {r: 1, g: 1, b: 1, a: 1}
@@ -22,6 +23,8 @@ MonoBehaviour:
   requiredCoverage: 0.85
   brushRadiusOverride: 0
   onComplete: 0
+  closeUpSprite: {fileID: 0}
+  stickers: []
   titleKey: stage.wash.title
   tutorialKey: stage.wash.prompt
   completeSfx: 4
