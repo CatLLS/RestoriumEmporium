@@ -10,6 +10,7 @@ Library: C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\t
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Library\Burst
 --output=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
@@ -49,6 +50,7 @@ Library: C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\t
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Library\Burst
 --output=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
@@ -167,6 +169,7 @@ Library: C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\t
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\Burst
+--debug=Full
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Library\Burst
 --output=C:\Games(shared)\RestoriumEmporium\RestoriumEmporium\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
