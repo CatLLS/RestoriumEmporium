@@ -2,11 +2,11 @@
 
 A cozy mobile restoration game about a paper conservator whose workshop keeps receiving things it shouldn't.
 
-**RevenueCat Shipaton 2026 — Next Gen Award submission  ₍^. .^₎⟆ **
+**RevenueCat Shipaton 2026 — Next Gen Award submission  ₍^. .^₎⟆**
 
 - 📺 Demo video : https://www.youtube.com/watch?v=Ud0yYI8O5t0
 - 🎮 Platform: Android (Unity 6, portrait)
-⚞^. .^⚟ Monetization: RevenueCat SDK (coin packs on the RevenueCat Test Store)
+- ⚞^. .^⚟ Monetization: RevenueCat SDK (coin packs on the RevenueCat Test Store)
 - 🌐 Languages: English and Brazilian Portuguese 𓂃 ࣪˖ ִֶָ𐀔
 
 •·················•·················•·················•────── .‿୨˚̣̣̣͙୧‿. ──────•·················•·················•·················•
